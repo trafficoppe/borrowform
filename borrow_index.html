@@ -331,7 +331,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 </div>
 
 <footer style="background:#0F4C75;color:rgba(255,255,255,0.7);font-family:'Sarabun',sans-serif;font-size:12px;padding:16px 24px;text-align:center;line-height:1.8;margin-top:auto;">
-  <div><span style="font-weight:700;color:#F2A900;">ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ — v1.1.0</span></div>
+  <div><span style="font-weight:700;color:#F2A900;">ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ — San v1.1.0</span></div>
   <div style="font-size:11.5px;margin-top:3px;">© 2025–2026 Traffic Control and Premises Security Unit, Mahidol University. All rights reserved.</div>
 </footer>
 
@@ -481,9 +481,9 @@ async function loadVehicleMaster() {
   } catch(e) {
     // Fallback
     vehicleMaster = [
-      { vehicleId:'GC001', name:'รถกอล์ฟ EVT 8 ที่นั่ง', assetNo:'01630314020000006740', brand:'EVT', color:'ขาว', capacity:'8 ที่นั่ง', imgPath:'./assets/Golf_cart_EVT_8_Seats.jpg', description:'รถกอล์ฟไฟฟ้า EVT ขนาด 8 ที่นั่ง' },
-      { vehicleId:'GC002', name:'รถกอล์ฟ EVT พยาบาล',    assetNo:'01560224020000004110', brand:'EVT', color:'ขาว', capacity:'4 ที่นั่ง', imgPath:'./assets/Golf_Cart_EVT_Ambulance.jpg', description:'รถกอล์ฟไฟฟ้า EVT สำหรับงานพยาบาล' },
-      { vehicleId:'GC003', name:'รถกอล์ฟ TADA LIFE พยาบาล', assetNo:'01620104020000005580', brand:'TADA LIFE', color:'ขาว', capacity:'4 ที่นั่ง', imgPath:'./assets/Golf_cart_TADA_LIFE_Ambulance.jpg', description:'รถกอล์ฟไฟฟ้า TADA LIFE สำหรับงานพยาบาล' }
+      { vehicleId:'GC001', name:'รถกอล์ฟ EVT 8 ที่นั่ง', assetNo:'01630314020000006740', brand:'EVT', color:'ขาว', capacity:'8 ที่นั่ง', imgPath:'./assets/Golf%20cart%20EVT%208%20Seats.jpg', description:'รถกอล์ฟไฟฟ้า EVT ขนาด 8 ที่นั่ง' },
+      { vehicleId:'GC002', name:'รถกอล์ฟ EVT พยาบาล',    assetNo:'01560224020000004110', brand:'EVT', color:'ขาว', capacity:'4 ที่นั่ง', imgPath:'./assets/Golf%20Cart%20EVT%20Ambulance.jpg', description:'รถกอล์ฟไฟฟ้า EVT สำหรับงานพยาบาล' },
+      { vehicleId:'GC003', name:'รถกอล์ฟ TADA LIFE พยาบาล', assetNo:'01620104020000005580', brand:'TADA LIFE', color:'ขาว', capacity:'4 ที่นั่ง', imgPath:'./assets/Golf%20cart%20TADA%20LIFE%20Ambulance.jpg', description:'รถกอล์ฟไฟฟ้า TADA LIFE สำหรับงานพยาบาล' }
     ];
     document.getElementById('tab-vc-count').textContent = vehicleMaster.length;
   }
@@ -583,7 +583,7 @@ function renderVehicleCards() {
     return `
       <div class="vc-main-card" onclick="openVcModal('${v.vehicleId}')">
         <div class="vc-img-wrap">
-          <img class="vc-img" src="${v.imgPath}" loading="lazy"
+          <img class="vc-img" src="${v.imgPath.replace(/_/g,'%20')}" loading="lazy"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
             alt="${v.name}">
           <div class="vc-img-ph" style="display:none">🚗</div>
@@ -613,7 +613,7 @@ function openVcModal(vehicleId) {
   const now      = new Date();
 
   document.getElementById('vc-modal-title').textContent = v.name;
-  document.getElementById('vc-modal-img').src = v.imgPath;
+  document.getElementById('vc-modal-img').src = v.imgPath.replace(/_/g,'%20');
   document.getElementById('vc-modal-rows').innerHTML = `
     <div class="vc-modal-row"><span class="vc-modal-key">🚗 ชื่อรถ</span><span class="vc-modal-val">${v.name}</span></div>
     <div class="vc-modal-row"><span class="vc-modal-key">🏷️ ยี่ห้อ</span><span class="vc-modal-val">${v.brand}</span></div>
