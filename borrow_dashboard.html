@@ -6,9 +6,8 @@
 <title>Dashboard | ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ มหาวิทยาลัยมหิดล</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root {
   --primary:#0F4C75; --primary-mid:#3282B8; --accent:#F2A900;
@@ -21,7 +20,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* LOGIN */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary-mid));padding:20px;}
 .login-box{background:white;border-radius:20px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
 .login-logo{text-align:center;margin-bottom:28px;}
@@ -33,116 +31,124 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .login-field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14.5px;outline:none;transition:border-color 0.2s;}
 .login-field input:focus{border-color:var(--primary-mid);}
 .login-btn{width:100%;padding:13px;background:var(--primary);color:white;border:none;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
-.login-btn:hover{background:var(--primary-mid);}
 .login-err{color:#c0392b;font-size:13px;text-align:center;margin-top:10px;display:none;}
 
-/* TOP BAR */
 .top-bar{background:linear-gradient(135deg,var(--primary),var(--primary-mid));padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(15,76,117,0.28);}
 .top-bar-left{display:flex;align-items:center;gap:12px;color:white;}
 .top-bar-left h1{font-size:16px;font-weight:700;}
-.ver-badge{font-size:11px;background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:10px;font-weight:400;margin-left:6px;}
+.ver-badge{font-size:11px;background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:10px;margin-left:6px;}
 .top-bar-right{display:flex;gap:10px;align-items:center;}
 .btn-topnav{color:rgba(255,255,255,0.85);text-decoration:none;font-size:13.5px;display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid rgba(255,255,255,0.3);border-radius:8px;transition:all 0.2s;background:transparent;cursor:pointer;font-family:'Sarabun',sans-serif;}
 .btn-topnav:hover{background:rgba(255,255,255,0.15);color:white;}
 .btn-logout{background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.25);padding:7px 14px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13.5px;cursor:pointer;}
 
-/* CONTENT */
-.dash-content{max-width:1300px;margin:0 auto;padding:24px 20px 60px;}
+.content{max-width:1400px;margin:0 auto;padding:24px 20px 60px;}
 
-/* FILTER BAR */
-.filter-bar{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 20px;margin-bottom:20px;}
-.filter-bar-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;}
-.filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-.filter-bar select,.filter-bar input[type=date]{padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;background:white;outline:none;cursor:pointer;}
-.filter-bar select:focus,.filter-bar input[type=date]:focus{border-color:var(--primary-mid);}
-.filter-label{font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap;}
-.btn-refresh-dash{padding:9px 16px;background:var(--accent);color:white;border:none;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.btn-refresh-dash:hover{opacity:0.9;}
-.btn-clear-filter{padding:9px 14px;background:#f8f9fa;color:var(--muted);border:1.5px solid var(--border);border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;cursor:pointer;}
-.btn-clear-filter:hover{border-color:var(--primary-mid);color:var(--primary);}
+.report-toolbar{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;}
+.report-toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.period-label{font-size:13.5px;font-weight:600;color:var(--muted);}
+.period-select{padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;background:white;color:var(--text);}
+.period-select:focus{border-color:var(--primary-mid);}
+.btn-export{display:flex;align-items:center;gap:8px;padding:10px 22px;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-export-pdf{background:linear-gradient(135deg,var(--status-overdue),#a93226);color:white;box-shadow:0 3px 12px rgba(192,57,43,0.3);}
+.btn-export-pdf:hover{transform:translateY(-1px);}
+.btn-export-pdf:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.btn-refresh{background:var(--primary);color:white;}
+.btn-refresh:hover{background:var(--primary-mid);}
 
-/* KPI GRIDS */
-.kpi-section-title{font-family:'Noto Serif Thai',serif;font-size:16px;font-weight:700;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:24px;}
-.kpi{background:white;border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow);border-left:5px solid var(--primary);text-align:center;transition:transform 0.2s;}
-.kpi:hover{transform:translateY(-2px);}
-.kpi.k-eq{border-left-color:var(--primary-mid);}
-.kpi.k-vc{border-left-color:var(--vehicle);}
-.kpi.k-pending{border-left-color:var(--status-pending);}
-.kpi.k-active{border-left-color:var(--status-active);}
-.kpi.k-returned{border-left-color:var(--status-returned);}
-.kpi.k-overdue{border-left-color:var(--status-overdue);}
-.kpi-num{font-size:34px;font-weight:800;color:var(--primary);line-height:1;margin-bottom:5px;}
-.kpi.k-eq .kpi-num{color:var(--primary-mid);}
-.kpi.k-vc .kpi-num{color:var(--vehicle);}
-.kpi.k-pending .kpi-num{color:var(--status-pending);}
-.kpi.k-active .kpi-num{color:var(--status-active);}
-.kpi.k-returned .kpi-num{color:var(--status-returned);}
-.kpi.k-overdue .kpi-num{color:var(--status-overdue);}
-.kpi-label{font-size:12.5px;color:var(--muted);font-weight:600;}
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
+.kpi-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;text-align:center;border-top:4px solid var(--border);transition:all 0.2s;}
+.kpi-card:hover{transform:translateY(-2px);}
+.kpi-card.blue{border-top-color:var(--primary);}
+.kpi-card.orange{border-top-color:var(--status-pending);}
+.kpi-card.green{border-top-color:var(--status-active);}
+.kpi-card.teal{border-top-color:var(--status-returned);}
+.kpi-card.red{border-top-color:var(--status-overdue);}
+.kpi-card.vehicle{border-top-color:var(--vehicle);}
+.kpi-card.gold{border-top-color:var(--accent);}
+.kpi-num{font-size:32px;font-weight:700;color:var(--primary);line-height:1.1;margin-bottom:4px;}
+.kpi-card.orange .kpi-num{color:var(--status-pending);}
+.kpi-card.green .kpi-num{color:var(--status-active);}
+.kpi-card.teal .kpi-num{color:var(--status-returned);}
+.kpi-card.red .kpi-num{color:var(--status-overdue);}
+.kpi-card.vehicle .kpi-num{color:var(--vehicle);}
+.kpi-card.gold .kpi-num{color:var(--accent);}
+.kpi-label{font-size:12px;color:var(--muted);line-height:1.4;}
+.kpi-sub{font-size:11px;color:#aaa;margin-top:2px;}
 
-/* VEHICLE KPI ROW */
-.vc-kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
-.vc-kpi{background:white;border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);border-top:4px solid var(--vehicle);display:flex;align-items:center;gap:14px;}
-.vc-kpi-icon{font-size:28px;}
-.vc-kpi-info{}
-.vc-kpi-name{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:2px;}
-.vc-kpi-stat{font-size:14px;font-weight:700;}
-.vc-stat-avail{color:var(--status-active);}
-.vc-stat-busy{color:var(--status-overdue);}
-.vc-stat-pending{color:var(--status-pending);}
+.section-title{font-family:'Noto Serif Thai',serif;font-size:17px;font-weight:700;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 
 /* CHARTS */
-.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-.chart-card{background:white;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
-.chart-card.full{grid-column:1/-1;}
-.chart-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.chart-wrap{position:relative;height:250px;}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:20px;}
+.chart-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;}
+.chart-card-title{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.chart-wrap{position:relative;height:220px;}
 
-/* QUICK CARDS */
-.quick-cards{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
-.quick-card{flex:1;min-width:220px;border-radius:14px;padding:18px 22px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(0,0,0,0.15);transition:all 0.2s;color:white;cursor:pointer;border:none;font-family:'Sarabun',sans-serif;font-size:15px;}
-.quick-card:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,0.2);}
-.quick-card.card-list{background:linear-gradient(135deg,var(--primary),var(--primary-mid));}
-.quick-card.card-pdf{background:linear-gradient(135deg,#c47a10,var(--accent));}
-.quick-card.card-form{background:linear-gradient(135deg,var(--vehicle),#27ae60);}
-.quick-card-icon{font-size:28px;}
-.quick-card-text .qc-title{font-size:14px;font-weight:700;margin-bottom:3px;}
-.quick-card-text .qc-sub{font-size:12px;opacity:0.75;}
+/* TABLE */
+.table-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+.table-head-bar{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.table-head-bar h3{font-size:15px;font-weight:700;color:var(--primary);}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:#f0f4f8;padding:10px 14px;text-align:left;font-weight:700;color:var(--primary);white-space:nowrap;border-bottom:2px solid var(--border);}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:hover{background:#f8fafd;}
+tbody td{padding:9px 14px;vertical-align:middle;}
 
-/* PDF MODAL */
-.pdf-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:600;align-items:center;justify-content:center;padding:20px;}
-.pdf-modal.show{display:flex;}
-.pdf-modal-box{background:white;border-radius:16px;padding:28px;max-width:560px;width:100%;box-shadow:0 16px 50px rgba(0,0,0,0.25);max-height:90vh;overflow-y:auto;animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);}
-@keyframes popIn{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
-.pdf-modal-box h3{font-size:17px;font-weight:700;color:var(--primary);margin-bottom:16px;}
-.pdf-type-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-.pdf-type-tab{flex:1;min-width:80px;padding:10px 8px;border-radius:9px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:white;color:var(--muted);text-align:center;transition:all 0.2s;}
-.pdf-type-tab.active{background:var(--primary);color:white;border-color:var(--primary);}
-.pdf-field{margin-bottom:14px;}
-.pdf-field label{font-size:13px;font-weight:600;display:block;margin-bottom:6px;}
-.pdf-field input,.pdf-field select,.pdf-field textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;}
-.pdf-field input:focus,.pdf-field select:focus{border-color:var(--primary-mid);}
-.pdf-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.pdf-btn-gen{width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),#c47a10);color:white;border:none;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;}
-.pdf-btn-gen:disabled{opacity:0.6;cursor:not-allowed;}
-.btn-cancel-modal{width:100%;padding:11px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:15px;cursor:pointer;margin-top:8px;}
+.tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;white-space:nowrap;}
+.tag-pending{background:#fff3cd;color:#7a5000;}
+.tag-approved{background:#cce5ff;color:#004085;}
+.tag-active{background:#d4edda;color:#155724;}
+.tag-returned{background:#c3e6cb;color:#1e5631;}
+.tag-overdue{background:#f5c6cb;color:#c0392b;}
+.tag-cancelled{background:#f8d7da;color:#721c24;}
 
-/* SPINNER */
-.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary-mid);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+.tab-row{display:flex;gap:0;background:white;border-radius:12px;padding:4px;box-shadow:var(--shadow);margin-bottom:16px;}
+.tab-btn{flex:1;padding:10px;border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all 0.2s;}
+.tab-btn.active{color:white;box-shadow:0 2px 10px rgba(0,0,0,0.15);}
+.tab-btn.eq-tab.active{background:var(--primary);}
+.tab-btn.vc-tab.active{background:var(--vehicle);}
+.tab-btn.overdue-tab.active{background:var(--status-overdue);}
+
+.overdue-table tbody tr{background:#fff8f8!important;}
+.overdue-table tbody tr td:first-child{border-left:3px solid var(--status-overdue);}
+
+.loading-state{text-align:center;padding:40px;color:var(--muted);}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--primary-mid);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* TOAST */
-.toast-notify{position:fixed;bottom:24px;right:24px;background:#1e5631;color:white;padding:12px 20px;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9999;display:none;align-items:center;gap:8px;}
+.top-items-list{list-style:none;padding:0;}
+.top-items-list li{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+.top-items-list li:last-child{border-bottom:none;}
+.item-bar-wrap{flex:1;margin:0 10px;background:var(--bg);border-radius:20px;height:8px;overflow:hidden;}
+.item-bar{height:100%;background:var(--primary-mid);border-radius:20px;transition:width 0.6s ease;}
+.item-count{font-weight:700;color:var(--primary);min-width:30px;text-align:right;}
+
+/* PDF PROGRESS */
+.pdf-progress-overlay{display:none;position:fixed;inset:0;background:rgba(15,40,60,0.65);backdrop-filter:blur(4px);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.pdf-progress-overlay.show{display:flex;}
+.pdf-box{background:white;border-radius:16px;padding:32px 36px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.pdf-box h3{font-size:18px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+.pdf-box p{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.pdf-spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+.pdf-step{font-size:13px;color:var(--primary-mid);font-weight:600;}
+.pdf-progress-bar{width:100%;height:6px;background:var(--bg);border-radius:10px;margin-top:12px;overflow:hidden;}
+.pdf-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-mid),var(--accent));border-radius:10px;transition:width 0.4s ease;width:0%;}
+
+.toast-notify{position:fixed;bottom:24px;right:24px;background:var(--primary);color:white;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9999;display:none;align-items:center;gap:8px;max-width:320px;}
 .toast-notify.show{display:flex;}
 .toast-notify.error{background:#c0392b;}
+.toast-notify.success{background:#27AE60;}
 
-@media(max-width:768px){
-  .charts-grid{grid-template-columns:1fr;}
-  .kpi-grid{grid-template-columns:repeat(2,1fr);}
-  .vc-kpi-row{grid-template-columns:1fr;}
-  .quick-cards{flex-direction:column;}
-}
+/* Vehicle per-cart stats */
+.vc-stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
+.vc-stat-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:16px;border-left:4px solid var(--vehicle);}
+.vc-stat-name{font-size:13px;font-weight:700;color:var(--vehicle);margin-bottom:8px;}
+.vc-stat-row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-bottom:4px;}
+.vc-stat-row span{font-weight:600;color:var(--text);}
+
+@media(max-width:768px){.content{padding:14px;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.chart-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -152,291 +158,241 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
   <div class="login-box">
     <div class="login-logo">
       <div class="icon">📊</div>
-      <h2>Dashboard ยืม-คืนอุปกรณ์และรถกอล์ฟ</h2>
+      <h2>Dashboard รายงานสรุป</h2>
       <p>งานจราจรและความปลอดภัย มหาวิทยาลัยมหิดล</p>
-      <p style="font-size:11px;color:#aaa;margin-top:4px;">v1.1.0</p>
+      <p style="font-size:11px;color:#aaa;margin-top:4px;">v1.1.1</p>
     </div>
-    <div class="login-field">
-      <label>ชื่อผู้ใช้</label>
-      <input type="text" id="login-user" placeholder="กรอกชื่อผู้ใช้" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div class="login-field">
-      <label>รหัสผ่าน</label>
-      <input type="password" id="login-pass" placeholder="กรอกรหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
+    <div class="login-field"><label>ชื่อผู้ใช้</label><input type="text" id="login-user" placeholder="กรอกชื่อผู้ใช้" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-field"><label>รหัสผ่าน</label><input type="password" id="login-pass" placeholder="กรอกรหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
     <div class="login-err" id="login-err">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-  <div class="top-bar">
-    <div class="top-bar-left">
-      <span style="font-size:22px;">📊</span>
-      <h1>Dashboard <span class="ver-badge">v1.1.0</span></h1>
-    </div>
-    <div class="top-bar-right">
-      <a href="index.html" class="btn-topnav">🏠 หน้าหลัก</a>
-      <a href="borrow_list.html" class="btn-topnav">📋 จัดการรายการ</a>
-      <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
-    </div>
+<div id="main-wrap" style="display:none;">
+<div class="top-bar">
+  <div class="top-bar-left">
+    <span style="font-size:20px;">📊</span>
+    <h1>Dashboard รายงานสรุป <span class="ver-badge">v1.1.1</span></h1>
   </div>
-
-  <div class="dash-content">
-
-    <!-- FILTER BAR -->
-    <div class="filter-bar">
-      <div class="filter-bar-title">🗓️ กรองข้อมูล
-        <span id="filter-active-label" style="font-size:12px;color:var(--accent);font-weight:600;margin-left:8px;"></span>
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">ปี:</span>
-        <select id="filter-year" onchange="applyDashFilter()">
-          <option value="all">ทุกปี</option>
-        </select>
-        <span class="filter-label">เดือน:</span>
-        <select id="filter-month" onchange="applyDashFilter()">
-          <option value="all">ทุกเดือน</option>
-          <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option>
-          <option value="3">มีนาคม</option><option value="4">เมษายน</option>
-          <option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
-          <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option>
-          <option value="9">กันยายน</option><option value="10">ตุลาคม</option>
-          <option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
-        </select>
-        <span class="filter-label">จากวันที่:</span>
-        <input type="date" id="filter-date-from" onchange="applyDashFilter()">
-        <span class="filter-label">ถึง:</span>
-        <input type="date" id="filter-date-to" onchange="applyDashFilter()">
-        <button class="btn-clear-filter" onclick="clearFilter()">✕ ล้าง</button>
-        <button class="btn-refresh-dash" onclick="manualRefresh()">🔄 รีเฟรช</button>
-      </div>
-    </div>
-
-    <!-- KPI — Equipment -->
-    <div class="kpi-section-title">🦺 สถิติอุปกรณ์</div>
-    <div class="kpi-grid">
-      <div class="kpi k-eq">  <div class="kpi-num" id="k-eq-total">-</div><div class="kpi-label">คำขอทั้งหมด</div></div>
-      <div class="kpi k-pending"><div class="kpi-num" id="k-eq-pending">-</div><div class="kpi-label">⏳ รอดำเนินการ</div></div>
-      <div class="kpi k-active"><div class="kpi-num" id="k-eq-active">-</div><div class="kpi-label">📦 กำลังยืม</div></div>
-      <div class="kpi k-returned"><div class="kpi-num" id="k-eq-returned">-</div><div class="kpi-label">✅ คืนแล้ว</div></div>
-      <div class="kpi k-overdue"><div class="kpi-num" id="k-eq-overdue">-</div><div class="kpi-label">⚠️ เกินกำหนด</div></div>
-      <div class="kpi"><div class="kpi-num" id="k-eq-rate">-</div><div class="kpi-label">📈 อัตราคืนสำเร็จ</div></div>
-    </div>
-
-    <!-- KPI — Vehicle -->
-    <div class="kpi-section-title">🚗 สถิติรถกอล์ฟ</div>
-    <div class="kpi-grid">
-      <div class="kpi k-vc">    <div class="kpi-num" id="k-vc-total">-</div><div class="kpi-label">คำขอจองทั้งหมด</div></div>
-      <div class="kpi k-pending"><div class="kpi-num" id="k-vc-pending">-</div><div class="kpi-label">⏳ รอดำเนินการ</div></div>
-      <div class="kpi k-active"><div class="kpi-num" id="k-vc-active">-</div><div class="kpi-label">🚗 อนุมัติ/ใช้งาน</div></div>
-      <div class="kpi k-returned"><div class="kpi-num" id="k-vc-returned">-</div><div class="kpi-label">✅ คืนแล้ว</div></div>
-      <div class="kpi k-overdue"><div class="kpi-num" id="k-vc-overdue">-</div><div class="kpi-label">⚠️ เกินกำหนด</div></div>
-    </div>
-
-    <!-- Per-Vehicle KPIs -->
-    <div class="vc-kpi-row" id="vc-kpi-row">
-      <!-- rendered by JS -->
-    </div>
-
-    <!-- CHARTS -->
-    <div class="charts-grid">
-      <div class="chart-card full">
-        <div class="chart-title">📅 แนวโน้มรายเดือน (อุปกรณ์ + รถกอล์ฟ)</div>
-        <div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">🥧 สัดส่วนสถานะอุปกรณ์</div>
-        <div class="chart-wrap"><canvas id="chart-eq-status"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">🚗 การจองรถกอล์ฟแต่ละคัน</div>
-        <div class="chart-wrap"><canvas id="chart-vc-per"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">👥 ประเภทบุคคลที่ยืมบ่อย</div>
-        <div class="chart-wrap"><canvas id="chart-person"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">🦺 อุปกรณ์ที่ยืมบ่อยที่สุด</div>
-        <div class="chart-wrap"><canvas id="chart-items"></canvas></div>
-      </div>
-    </div>
-
-    <!-- QUICK ACCESS -->
-    <div class="quick-cards">
-      <a href="borrow_list.html" class="quick-card card-list">
-        <div class="quick-card-text">
-          <div class="qc-title">📋 จัดการรายการทั้งหมด</div>
-          <div class="qc-sub">อัปเดตสถานะ · ค้นหา · กรองข้อมูล</div>
-        </div>
-        <div class="quick-card-icon">→</div>
-      </a>
-      <button onclick="openPdfModal()" class="quick-card card-pdf">
-        <div class="quick-card-text">
-          <div class="qc-title">📄 Export PDF รายงาน</div>
-          <div class="qc-sub">รายวัน · รายเดือน · รายปี · กำหนดเอง</div>
-        </div>
-        <div class="quick-card-icon">⬇</div>
-      </button>
-      <a href="borrow_form.html" class="quick-card card-form">
-        <div class="quick-card-text">
-          <div class="qc-title">✍️ ยืมอุปกรณ์ / จองรถ</div>
-          <div class="qc-sub">ฟอร์มสำหรับผู้ต้องการยืม</div>
-        </div>
-        <div class="quick-card-icon">+</div>
-      </a>
-    </div>
-
+  <div class="top-bar-right">
+    <a href="index.html" class="btn-topnav">🏠 หน้าหลัก</a>
+    <a href="borrow_list.html" class="btn-topnav">📋 จัดการรายการ</a>
+    <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
   </div>
 </div>
 
-<!-- PDF MODAL -->
-<div class="pdf-modal" id="pdf-modal">
-  <div class="pdf-modal-box">
-    <h3>📄 Export PDF รายงาน</h3>
+<div class="content">
 
-    <!-- Report Type -->
-    <div class="pdf-field">
-      <label>ประเภทรายงาน</label>
-      <select id="pdf-report-scope" onchange="onScopeChange()">
-        <option value="both">รวม (อุปกรณ์ + รถกอล์ฟ)</option>
-        <option value="eq">เฉพาะอุปกรณ์</option>
-        <option value="vc">เฉพาะรถกอล์ฟ</option>
+  <!-- TOOLBAR -->
+  <div class="report-toolbar">
+    <div class="report-toolbar-left">
+      <span class="period-label">📅 งวด:</span>
+      <select class="period-select" id="sel-month" onchange="onPeriodChange()">
+        <option value="all">ทุกเดือน</option>
+        <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option>
+        <option value="3">มีนาคม</option><option value="4" selected>เมษายน</option>
+        <option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
+        <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option>
+        <option value="9">กันยายน</option><option value="10">ตุลาคม</option>
+        <option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
       </select>
-    </div>
-
-    <!-- Period Type Tabs -->
-    <div class="pdf-type-tabs">
-      <button class="pdf-type-tab active" id="ptab-daily"   onclick="setPdfType('daily')">📅 รายวัน</button>
-      <button class="pdf-type-tab"         id="ptab-monthly" onclick="setPdfType('monthly')">🗓️ รายเดือน</button>
-      <button class="pdf-type-tab"         id="ptab-yearly"  onclick="setPdfType('yearly')">📊 รายปี</button>
-      <button class="pdf-type-tab"         id="ptab-custom"  onclick="setPdfType('custom')">📆 กำหนดเอง</button>
-    </div>
-
-    <div id="pform-daily">
-      <div class="pdf-field"><label>วันที่</label><input type="date" id="p-daily-date"></div>
-    </div>
-    <div id="pform-monthly" style="display:none">
-      <div class="pdf-row2">
-        <div class="pdf-field"><label>ปี (ค.ศ.)</label><select id="p-monthly-year"></select></div>
-        <div class="pdf-field"><label>เดือน</label>
-          <select id="p-monthly-month">
-            <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option>
-            <option value="3">มีนาคม</option><option value="4">เมษายน</option>
-            <option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
-            <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option>
-            <option value="9">กันยายน</option><option value="10">ตุลาคม</option>
-            <option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div id="pform-yearly" style="display:none">
-      <div class="pdf-field"><label>ปี (ค.ศ.)</label><select id="p-yearly-year"></select></div>
-    </div>
-    <div id="pform-custom" style="display:none">
-      <div class="pdf-row2">
-        <div class="pdf-field"><label>วันที่เริ่มต้น</label><input type="date" id="p-custom-from"></div>
-        <div class="pdf-field"><label>วันที่สิ้นสุด</label><input type="date" id="p-custom-to"></div>
-      </div>
-    </div>
-
-    <div class="pdf-row2" style="margin-top:12px;">
-      <div class="pdf-field"><label>ผู้จัดทำ</label><input type="text" id="p-preparer" placeholder="ชื่อ-นามสกุล"></div>
-      <div class="pdf-field"><label>ตำแหน่ง</label><input type="text" id="p-position" placeholder="ตำแหน่ง"></div>
-    </div>
-    <div class="pdf-field">
-      <label>วัตถุประสงค์</label>
-      <select id="p-purpose" onchange="onPurposeChange()">
-        <option value="iso">ประกอบการประเมิน ISO</option>
-        <option value="internal">รายงานภายใน</option>
-        <option value="management">รายงานต่อผู้บริหาร</option>
-        <option value="audit">ตรวจสอบภายใน</option>
-        <option value="other">อื่นๆ (ระบุ)</option>
+      <select class="period-select" id="sel-year" onchange="onPeriodChange()">
+        <option value="2026" selected>พ.ศ. 2569</option>
+        <option value="2025">พ.ศ. 2568</option>
+        <option value="all">ทุกปี</option>
       </select>
+      <button class="btn-export btn-refresh" onclick="loadData()">🔄 รีเฟรช</button>
     </div>
-    <div id="p-purpose-other-wrap" style="display:none;">
-      <div class="pdf-field">
-        <label>ระบุวัตถุประสงค์</label>
-        <input type="text" id="p-purpose-other" placeholder="กรอกวัตถุประสงค์...">
-      </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-export btn-export-pdf" id="btn-export-pdf" onclick="exportPDF()">📄 Export PDF</button>
     </div>
+  </div>
 
-    <button class="pdf-btn-gen" id="pdf-btn-gen" onclick="runPdfExport()">📄 สร้าง PDF และดาวน์โหลด</button>
-    <button class="btn-cancel-modal" onclick="closePdfModal()">ยกเลิก</button>
+  <!-- KPI — Equipment -->
+  <div class="section-title">🦺 สรุปอุปกรณ์</div>
+  <div class="kpi-grid" id="kpi-eq">
+    <div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>กำลังโหลด...</div>
+  </div>
+
+  <!-- KPI — Vehicle -->
+  <div class="section-title">🚗 สรุปรถกอล์ฟ</div>
+  <div class="kpi-grid" id="kpi-vc">
+    <div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>กำลังโหลด...</div>
+  </div>
+
+  <!-- Per-vehicle stats -->
+  <div class="vc-stat-grid" id="vc-per-cart"></div>
+
+  <!-- CHARTS -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-card-title">📊 สัดส่วนสถานะอุปกรณ์</div>
+      <div class="chart-wrap"><canvas id="chart-eq-status"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">📅 แนวโน้มการยืมรายเดือน</div>
+      <div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">📊 สัดส่วนสถานะรถกอล์ฟ</div>
+      <div class="chart-wrap"><canvas id="chart-vc-status"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">🏢 Top คณะ/หน่วยงานที่ยืมบ่อย</div>
+      <div class="chart-wrap"><canvas id="chart-dept"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TOP ITEMS -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-card-title">🦺 อุปกรณ์ที่ยืมบ่อย Top 10</div>
+      <ul class="top-items-list" id="top-items-list">
+        <li style="color:var(--muted);">กำลังโหลด...</li>
+      </ul>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">🚗 สถิติการใช้รถกอล์ฟ</div>
+      <div class="chart-wrap"><canvas id="chart-vc-usage"></canvas></div>
+    </div>
+  </div>
+
+  <!-- DATA TABS -->
+  <div class="tab-row">
+    <button class="tab-btn eq-tab active" onclick="showTab('eq')">🦺 รายการอุปกรณ์</button>
+    <button class="tab-btn vc-tab" onclick="showTab('vc')">🚗 รายการรถกอล์ฟ</button>
+    <button class="tab-btn overdue-tab" onclick="showTab('overdue')">⚠️ เกินกำหนด</button>
+  </div>
+
+  <!-- TABLE EQ -->
+  <div id="table-eq" class="table-card">
+    <div class="table-head-bar"><h3>🦺 รายการยืมอุปกรณ์</h3><span id="eq-count" style="font-size:13px;color:var(--muted)"></span></div>
+    <div class="table-wrap">
+      <table><thead><tr>
+        <th>RefCode</th><th>ชื่อ</th><th>คณะ/หน่วยงาน</th>
+        <th>ชื่องาน</th><th>วันเริ่ม</th><th>วันคืน</th>
+        <th>สถานะ</th><th>เจ้าหน้าที่</th><th>อัปเดตโดย</th>
+      </tr></thead>
+      <tbody id="tbody-eq"><tr><td colspan="9" class="loading-state"><div class="spinner"></div>กำลังโหลด...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABLE VC -->
+  <div id="table-vc" class="table-card" style="display:none;">
+    <div class="table-head-bar"><h3>🚗 รายการจองรถกอล์ฟ</h3><span id="vc-count" style="font-size:13px;color:var(--muted)"></span></div>
+    <div class="table-wrap">
+      <table><thead><tr>
+        <th>RefCode</th><th>รถที่จอง</th><th>ชื่อ</th><th>คณะ/หน่วยงาน</th>
+        <th>ชื่องาน</th><th>เริ่ม</th><th>สิ้นสุด</th><th>สถานะ</th>
+      </tr></thead>
+      <tbody id="tbody-vc"><tr><td colspan="8" class="loading-state"><div class="spinner"></div>กำลังโหลด...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABLE OVERDUE -->
+  <div id="table-overdue" class="table-card" style="display:none;">
+    <div class="table-head-bar"><h3>⚠️ รายการเกินกำหนด</h3><span id="overdue-count" style="font-size:13px;color:var(--muted);font-weight:600;"></span></div>
+    <div class="table-wrap">
+      <table class="overdue-table"><thead><tr>
+        <th>ประเภท</th><th>RefCode</th><th>ชื่อ</th><th>คณะ/หน่วยงาน</th>
+        <th>กำหนดคืน</th><th>เกินมา</th><th>Email</th>
+      </tr></thead>
+      <tbody id="tbody-overdue"><tr><td colspan="7" class="loading-state"><div class="spinner"></div>กำลังโหลด...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- PDF PROGRESS -->
+<div class="pdf-progress-overlay" id="pdf-progress">
+  <div class="pdf-box">
+    <div class="pdf-spinner"></div>
+    <h3>กำลังสร้าง PDF</h3>
+    <p id="pdf-step-text">กำลังโหลดฟอนต์ภาษาไทย...</p>
+    <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast-notify" id="toast-notify"></div>
 
 <script>
-/* =====================================================
- * Equipment Borrowing System — borrow_dashboard.html v1.1.0
- * © 2025–2026 Traffic Control and Premises Security Unit,
- *   Mahidol University. All rights reserved.
- * ===================================================== */
-
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzhjJfMlXK-TI3g8d8f1b3S-mRhSfI-9FZAjfcsyA2fy5YQz_6RHSmzYOEsy03EbQG0AQ/exec';
-
 const CREDENTIALS = [
-  { user:'admin',   pass:'024414400' },
-  { user:'admin01', pass:'024414400' }
-];
-
-const THAI_MONTHS      = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-const THAI_MONTHS_FULL = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-
-const GOLF_CARTS = [
-  { vehicleId:'GC001', name:'รถกอล์ฟ EVT 8 ที่นั่ง' },
-  { vehicleId:'GC002', name:'รถกอล์ฟ EVT พยาบาล' },
-  { vehicleId:'GC003', name:'รถกอล์ฟ TADA LIFE พยาบาล' }
+  { user:'admin',   pass:'024414400', role:'admin' },
+  { user:'admin01', pass:'024414400', role:'closer' }
 ];
 
 let allEqData = [], allVcData = [];
-let filteredEq = [], filteredVc = [];
 let charts = {};
+let filteredEq = [], filteredVc = [];
 
 // ── Login ──
 function doLogin() {
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value.trim();
-  if (CREDENTIALS.find(c => c.user===u && c.pass===p)) {
-    sessionStorage.setItem('borrow_dash_auth','1');
-    document.getElementById('login-wrap').style.display  = 'none';
-    document.getElementById('dashboard').style.display   = 'block';
-    loadDashboard();
+  const ok = CREDENTIALS.find(c => c.user===u && c.pass===p);
+  if (ok) {
+    sessionStorage.setItem('dash_auth', ok.role);
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('main-wrap').style.display  = 'block';
+    setPeriodDefaults();
+    loadData();
   } else {
     document.getElementById('login-err').style.display = 'block';
   }
 }
-function logout() { sessionStorage.removeItem('borrow_dash_auth'); location.reload(); }
+function logout() { sessionStorage.removeItem('dash_auth'); location.reload(); }
 
 // ── Helpers ──
 function parseDate(str) {
   if (!str) return null;
   const s = String(str).trim();
-  try { const d = new Date(s); if (!isNaN(d) && d.getFullYear()>2000) return d; } catch(e) {}
-  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  try { const d = new Date(s); if (!isNaN(d.getTime()) && d.getFullYear()>2000) return d; } catch(e) {}
+  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
   if (m) return new Date(parseInt(m[3]),parseInt(m[2])-1,parseInt(m[1]),parseInt(m[4]||0),parseInt(m[5]||0));
   return null;
 }
-function fmtDateTH(d) {
-  if (!d||isNaN(d)) return '-';
-  return `${d.getDate()} ${THAI_MONTHS[d.getMonth()]} ${d.getFullYear()+543} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} น.`;
+function fmtDateTH(str) {
+  if (!str) return '-';
+  const d = parseDate(String(str));
+  if (!d || isNaN(d.getTime())) return String(str).substring(0,10);
+  try { return d.toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'}); } catch(e) { return String(str); }
 }
-function showToast(msg, isErr=false) {
+function fmtDateTimeTH(str) {
+  if (!str) return '-';
+  const d = parseDate(String(str));
+  if (!d || isNaN(d.getTime())) return String(str).substring(0,16);
+  try { return d.toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); } catch(e) { return String(str); }
+}
+function getStatusTag(status) {
+  const s = String(status||'');
+  if (s.includes('เกินกำหนด'))   return 'tag-overdue';
+  if (s.includes('ยกเลิก'))      return 'tag-cancelled';
+  if (s.includes('คืนแล้ว'))     return 'tag-returned';
+  if (s.includes('กำลัง')||s.includes('รับของแล้ว')) return 'tag-active';
+  if (s.includes('อนุมัติ'))     return 'tag-approved';
+  return 'tag-pending';
+}
+function showToast(msg, type='success') {
   const el = document.getElementById('toast-notify');
   el.textContent = msg;
-  el.className = 'toast-notify show'+(isErr?' error':'');
-  setTimeout(()=>el.classList.remove('show'), 3500);
+  el.className = `toast-notify show ${type}`;
+  setTimeout(() => el.classList.remove('show'), 3500);
 }
-function destroyChart(id) { if (charts[id]) { charts[id].destroy(); charts[id]=null; } }
+function setPeriodDefaults() {
+  const now = new Date();
+  document.getElementById('sel-month').value = String(now.getMonth()+1);
+  document.getElementById('sel-year').value  = String(now.getFullYear());
+}
+function onPeriodChange() { applyFilters(); }
 
-// ── Load Data ──
-async function loadDashboard() {
+// ── Load ──
+async function loadData() {
   try {
     const [eqR, vcR] = await Promise.all([
       fetch(`${GAS_URL}?action=getAllData&t=${Date.now()}`),
@@ -444,512 +400,745 @@ async function loadDashboard() {
     ]);
     const [eqJson, vcJson] = await Promise.all([eqR.json(), vcR.json()]);
 
-    allEqData = (eqJson.data||[]).map(r=>({
-      refCode: r['RefCode']||'', name: r['Name']||'',
-      personType: r['PersonType']||'', dept: r['Dept']||'',
-      eventName: r['EventName']||'', startDate: r['StartDate']||'',
-      endDate: r['EndDate']||'', items: r['BorrowedItems']||'',
-      status: r['Status']||'รอดำเนินการ',
-      dateObj: parseDate(r['Timestamp'])
-    })).filter(d => d.dateObj && d.dateObj <= new Date());
+    allEqData = (eqJson.data||[]).map(r => ({
+      type:'eq', refCode:r['RefCode']||'', name:r['Name']||'',
+      prefix:r['Prefix']||'', dept:r['Dept']||'', email:r['Email']||'',
+      eventName:r['EventName']||'', items:r['BorrowedItems']||'',
+      startDate:r['StartDate']||'', endDate:r['EndDate']||'',
+      status:r['Status']||'รอดำเนินการ',
+      handlerName:r['HandlerName']||'', updatedBy:r['UpdatedBy']||'',
+      dateObj:parseDate(r['Timestamp']), endDateObj:parseDate(r['EndDate'])
+    }));
+    allVcData = (vcJson.bookings||[]).map(r => ({
+      type:'vc', refCode:r['RefCode']||'', name:r['Name']||'',
+      dept:r['Dept']||'', email:r['Email']||'', vcName:r['VehicleName']||'',
+      vehicleId:r['VehicleId']||'', eventName:r['EventName']||'',
+      startDT:r['StartDateTime']||'', endDT:r['EndDateTime']||'',
+      totalHours:r['TotalHours']||'', passengers:r['PassengerCount']||'',
+      status:r['Status']||'รอดำเนินการ',
+      dateObj:parseDate(r['Timestamp']), endDTObj:parseDate(r['EndDateTime'])
+    }));
 
-    allVcData = (vcJson.bookings||[]).map(r=>({
-      refCode: r['RefCode']||'', name: r['Name']||'',
-      personType: r['PersonType']||'', dept: r['Dept']||'',
-      vehicleId: r['VehicleId']||'', vcName: r['VehicleName']||'',
-      eventName: r['EventName']||'', startDT: r['StartDateTime']||'',
-      endDT: r['EndDateTime']||'',
-      status: r['Status']||'รอดำเนินการ',
-      dateObj: parseDate(r['Timestamp'])
-    })).filter(d => d.dateObj && d.dateObj <= new Date());
-
-    buildYearFilter();
-    applyDashFilter();
+    applyFilters();
+    showToast('✅ โหลดข้อมูลเรียบร้อย');
   } catch(err) {
-    console.error('loadDashboard error:', err);
-    showToast('❌ โหลดข้อมูลไม่สำเร็จ', true);
+    showToast('❌ โหลดข้อมูลไม่สำเร็จ: '+err.message, 'error');
   }
 }
 
-function buildYearFilter() {
-  const years = [...new Set([...allEqData,...allVcData].map(d=>d.dateObj?.getFullYear()).filter(Boolean))].sort((a,b)=>b-a);
-  const sel = document.getElementById('filter-year');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="all">ทุกปี</option>' + years.map(y=>`<option value="${y}">พ.ศ. ${y+543}</option>`).join('');
-  if (cur) sel.value = cur;
-}
+function applyFilters() {
+  const month = document.getElementById('sel-month').value;
+  const year  = document.getElementById('sel-year').value;
 
-function clearFilter() {
-  document.getElementById('filter-year').value = 'all';
-  document.getElementById('filter-month').value = 'all';
-  document.getElementById('filter-date-from').value = '';
-  document.getElementById('filter-date-to').value = '';
-  document.getElementById('filter-active-label').textContent = '';
-  applyDashFilter();
-}
-
-function applyDashFilter() {
-  const yr    = document.getElementById('filter-year').value;
-  const mo    = document.getElementById('filter-month').value;
-  const dfrom = document.getElementById('filter-date-from').value;
-  const dto   = document.getElementById('filter-date-to').value;
-
-  const filterFn = d => {
-    if (!d.dateObj) return false;
-    const y = d.dateObj.getFullYear().toString();
-    const m = d.dateObj.getMonth()+1;
-    if (yr!=='all' && y!==yr) return false;
-    if (mo!=='all' && m!==parseInt(mo)) return false;
-    if (dfrom || dto) {
-      const dStr = d.dateObj.toISOString().split('T')[0];
-      if (dfrom && dStr < dfrom) return false;
-      if (dto   && dStr > dto)   return false;
-    }
+  filteredEq = allEqData.filter(d => {
+    if (!d.dateObj) return year==='all';
+    if (year!=='all' && d.dateObj.getFullYear()!==parseInt(year)) return false;
+    if (month!=='all' && d.dateObj.getMonth()+1!==parseInt(month)) return false;
     return true;
-  };
-  filteredEq = allEqData.filter(filterFn);
-  filteredVc = allVcData.filter(filterFn);
+  });
+  filteredVc = allVcData.filter(d => {
+    if (!d.dateObj) return year==='all';
+    if (year!=='all' && d.dateObj.getFullYear()!==parseInt(year)) return false;
+    if (month!=='all' && d.dateObj.getMonth()+1!==parseInt(month)) return false;
+    return true;
+  });
 
-  // Label
-  let label = '';
-  if (yr!=='all') label += `พ.ศ.${parseInt(yr)+543}`;
-  if (mo!=='all') label += ` ${THAI_MONTHS_FULL[parseInt(mo)-1]}`;
-  document.getElementById('filter-active-label').textContent = label ? `(${label})` : '';
-
-  updateKPIs();
-  updateCharts();
+  renderKPIs(); renderCharts(); renderTables();
 }
 
-// ── KPIs ──
-function updateKPIs() {
+function renderKPIs() {
   const now = new Date();
+  // Equipment KPIs
+  const eqTotal    = filteredEq.length;
+  const eqPending  = filteredEq.filter(d=>d.status.includes('รอดำเนินการ')).length;
+  const eqActive   = filteredEq.filter(d=>d.status.includes('กำลังยืม')||d.status.includes('รับของแล้ว')).length;
+  const eqReturned = filteredEq.filter(d=>d.status.includes('รับของคืน')).length;
+  const eqOverdue  = filteredEq.filter(d=>{
+    return d.endDateObj && d.endDateObj<now && !['รับของคืน','ยกเลิก'].some(s=>d.status.includes(s));
+  }).length;
+  const eqRate = eqTotal>0 ? Math.round(eqReturned/eqTotal*100) : 0;
 
-  // Equipment
-  const eqT = filteredEq.length;
-  const eqPending  = filteredEq.filter(d=>(d.status||'').includes('รอดำเนินการ')).length;
-  const eqActive   = filteredEq.filter(d=>(d.status||'').includes('กำลังยืม')||(d.status||'').includes('รับของแล้ว')).length;
-  const eqReturned = filteredEq.filter(d=>(d.status||'').includes('คืนแล้ว')).length;
-  const eqOverdue  = filteredEq.filter(d=>(d.status||'').includes('เกินกำหนด')).length;
-  const eqRate     = eqT>0 ? Math.round((eqReturned/eqT)*100)+'%' : '-';
+  document.getElementById('kpi-eq').innerHTML = `
+    <div class="kpi-card blue"><div class="kpi-num">${eqTotal}</div><div class="kpi-label">คำขอยืมทั้งหมด</div></div>
+    <div class="kpi-card orange"><div class="kpi-num">${eqPending}</div><div class="kpi-label">⏳ รอดำเนินการ</div></div>
+    <div class="kpi-card green"><div class="kpi-num">${eqActive}</div><div class="kpi-label">📦 กำลังยืม</div></div>
+    <div class="kpi-card teal"><div class="kpi-num">${eqReturned}</div><div class="kpi-label">✅ คืนแล้ว</div></div>
+    <div class="kpi-card red"><div class="kpi-num">${eqOverdue}</div><div class="kpi-label">⚠️ เกินกำหนด</div></div>
+    <div class="kpi-card gold"><div class="kpi-num">${eqRate}%</div><div class="kpi-label">อัตราคืนสำเร็จ</div></div>`;
 
-  document.getElementById('k-eq-total').textContent   = eqT;
-  document.getElementById('k-eq-pending').textContent = eqPending;
-  document.getElementById('k-eq-active').textContent  = eqActive;
-  document.getElementById('k-eq-returned').textContent= eqReturned;
-  document.getElementById('k-eq-overdue').textContent = eqOverdue;
-  document.getElementById('k-eq-rate').textContent    = eqRate;
+  // Vehicle KPIs
+  const vcTotal    = filteredVc.length;
+  const vcPending  = filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length;
+  const vcActive   = filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลังใช้งาน')).length;
+  const vcReturned = filteredVc.filter(d=>d.status.includes('คืนแล้ว')).length;
+  const vcOverdue  = filteredVc.filter(d=>d.endDTObj&&d.endDTObj<now&&!['คืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s))).length;
+  const totalHrs   = filteredVc.reduce((acc,d)=>acc+(parseFloat(d.totalHours)||0),0).toFixed(1);
 
-  // Vehicle
-  const vcT = filteredVc.length;
-  const vcPending  = filteredVc.filter(d=>(d.status||'').includes('รอดำเนินการ')).length;
-  const vcActive   = filteredVc.filter(d=>(d.status||'').includes('อนุมัติ')||(d.status||'').includes('กำลังใช้งาน')).length;
-  const vcReturned = filteredVc.filter(d=>(d.status||'').includes('คืนแล้ว')).length;
-  const vcOverdue  = filteredVc.filter(d=>(d.status||'').includes('เกินกำหนด')).length;
+  document.getElementById('kpi-vc').innerHTML = `
+    <div class="kpi-card vehicle"><div class="kpi-num">${vcTotal}</div><div class="kpi-label">การจองทั้งหมด</div></div>
+    <div class="kpi-card orange"><div class="kpi-num">${vcPending}</div><div class="kpi-label">⏳ รอดำเนินการ</div></div>
+    <div class="kpi-card green"><div class="kpi-num">${vcActive}</div><div class="kpi-label">🚗 อนุมัติ/ใช้งาน</div></div>
+    <div class="kpi-card teal"><div class="kpi-num">${vcReturned}</div><div class="kpi-label">✅ คืนแล้ว</div></div>
+    <div class="kpi-card red"><div class="kpi-num">${vcOverdue}</div><div class="kpi-label">⚠️ เกินกำหนด</div></div>
+    <div class="kpi-card gold"><div class="kpi-num">${totalHrs}</div><div class="kpi-label">ชม. ใช้งานรวม</div></div>`;
 
-  document.getElementById('k-vc-total').textContent   = vcT;
-  document.getElementById('k-vc-pending').textContent = vcPending;
-  document.getElementById('k-vc-active').textContent  = vcActive;
-  document.getElementById('k-vc-returned').textContent= vcReturned;
-  document.getElementById('k-vc-overdue').textContent = vcOverdue;
-
-  // Per-vehicle KPIs
-  const row = document.getElementById('vc-kpi-row');
-  row.innerHTML = GOLF_CARTS.map(gc => {
-    const vcRows = filteredVc.filter(d=>d.vehicleId===gc.vehicleId);
-    const active = vcRows.filter(d=>(d.status||'').includes('อนุมัติ')||(d.status||'').includes('กำลังใช้งาน')).length;
-    const pending= vcRows.filter(d=>(d.status||'').includes('รอดำเนินการ')).length;
-    const total  = vcRows.length;
-
-    // Is currently in use?
-    const isNowBusy = filteredVc.filter(d=>d.vehicleId===gc.vehicleId).some(d=>{
-      const s = new Date(d.startDT), e = new Date(d.endDT);
-      return !isNaN(s)&&!isNaN(e)&&now>=s&&now<=e&&d.status!=='ยกเลิก'&&d.status!=='คืนแล้ว';
-    });
-
-    const statusTxt = isNowBusy
-      ? `<span class="vc-stat-busy">🔴 กำลังใช้งาน</span>`
-      : `<span class="vc-stat-avail">✅ ว่างอยู่</span>`;
-
-    return `<div class="vc-kpi">
-      <div class="vc-kpi-icon">🚗</div>
-      <div class="vc-kpi-info">
-        <div class="vc-kpi-name">${gc.name}</div>
-        <div class="vc-kpi-stat">${statusTxt}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:3px;">จอง ${total} ครั้ง${pending?` · รอ ${pending}`:''}${active?` · ใช้งาน ${active}`:''}</div>
-      </div>
+  // Per-vehicle stats
+  const vehicles = ['GC001','GC002','GC003'];
+  const vcNames  = {'GC001':'รถกอล์ฟ EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE พยาบาล'};
+  document.getElementById('vc-per-cart').innerHTML = vehicles.map(vid => {
+    const vd = filteredVc.filter(d=>d.vehicleId===vid);
+    return `<div class="vc-stat-card">
+      <div class="vc-stat-name">🚗 ${vcNames[vid]}</div>
+      <div class="vc-stat-row">คำขอรวม<span>${vd.length}</span></div>
+      <div class="vc-stat-row">กำลังใช้/อนุมัติ<span>${vd.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length}</span></div>
+      <div class="vc-stat-row">คืนแล้ว<span>${vd.filter(d=>d.status.includes('คืน')).length}</span></div>
+      <div class="vc-stat-row">ชม.ใช้งาน<span>${vd.reduce((a,d)=>a+(parseFloat(d.totalHours)||0),0).toFixed(1)}</span></div>
     </div>`;
   }).join('');
 }
 
-// ── Charts ──
-function updateCharts() {
-  drawMonthlyChart();
-  drawEqStatusChart();
-  drawVcPerChart();
-  drawPersonChart();
-  drawItemChart();
-}
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
 
-function drawMonthlyChart() {
-  destroyChart('monthly');
-  const mm = {};
-  [...filteredEq.map(d=>({...d,_type:'eq'})), ...filteredVc.map(d=>({...d,_type:'vc'}))].forEach(d=>{
-    if (!d.dateObj) return;
-    const k = `${d.dateObj.getFullYear()}-${String(d.dateObj.getMonth()+1).padStart(2,'0')}`;
-    if (!mm[k]) mm[k]={eq:0,vc:0};
-    mm[k][d._type]++;
-  });
-  const sorted = Object.keys(mm).sort();
-  const labels = sorted.map(k=>{const[y,m]=k.split('-');return `${THAI_MONTHS[parseInt(m)-1]} ${parseInt(y)+543}`;});
-  charts.monthly = new Chart(document.getElementById('chart-monthly'),{
-    type:'bar',
-    data:{labels,datasets:[
-      {label:'อุปกรณ์',data:sorted.map(k=>mm[k].eq),backgroundColor:'rgba(50,130,184,0.75)',borderRadius:4},
-      {label:'รถกอล์ฟ',data:sorted.map(k=>mm[k].vc),backgroundColor:'rgba(26,107,58,0.75)',borderRadius:4}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{stacked:false},y:{beginAtZero:true,ticks:{stepSize:1}}}}
-  });
-}
+function renderCharts() {
+  const now = new Date();
 
-function drawEqStatusChart() {
+  // EQ Status Pie
   destroyChart('eq-status');
-  const statMap = {'รอดำเนินการ':0,'กำลังยืม':0,'คืนแล้ว':0,'เกินกำหนด':0,'อื่นๆ':0};
-  filteredEq.forEach(d=>{
-    const s = d.status||'';
-    if (s.includes('รอดำเนินการ'))   statMap['รอดำเนินการ']++;
-    else if (s.includes('กำลัง')||s.includes('รับของแล้ว')) statMap['กำลังยืม']++;
-    else if (s.includes('คืนแล้ว'))  statMap['คืนแล้ว']++;
-    else if (s.includes('เกินกำหนด'))statMap['เกินกำหนด']++;
-    else                              statMap['อื่นๆ']++;
-  });
-  const labels = Object.keys(statMap).filter(k=>statMap[k]>0);
-  const data   = labels.map(k=>statMap[k]);
-  const colors = {'รอดำเนินการ':'#f39c12','กำลังยืม':'#27ae60','คืนแล้ว':'#2980b9','เกินกำหนด':'#c0392b','อื่นๆ':'#95a5a6'};
-  charts['eq-status'] = new Chart(document.getElementById('chart-eq-status'),{
+  const eqCounts = {
+    'รอดำเนินการ': filteredEq.filter(d=>d.status.includes('รอดำเนินการ')).length,
+    'กำลังยืม':    filteredEq.filter(d=>d.status.includes('กำลัง')||d.status.includes('รับของแล้ว')).length,
+    'คืนแล้ว':     filteredEq.filter(d=>d.status.includes('รับของคืน')).length,
+    'เกินกำหนด':  filteredEq.filter(d=>d.endDateObj&&d.endDateObj<now&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length,
+    'ยกเลิก':      filteredEq.filter(d=>d.status.includes('ยกเลิก')).length
+  };
+  charts['eq-status'] = new Chart(document.getElementById('chart-eq-status'), {
     type:'doughnut',
-    data:{labels,datasets:[{data,backgroundColor:labels.map(k=>colors[k]||'#ccc'),borderWidth:3,borderColor:'#fff'}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}
+    data:{ labels:Object.keys(eqCounts), datasets:[{ data:Object.values(eqCounts),
+      backgroundColor:['#F39C12','#27AE60','#2980B9','#C0392B','#aaa'], borderWidth:2, borderColor:'#fff' }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:8 } } } }
   });
-}
 
-function drawVcPerChart() {
-  destroyChart('vc-per');
-  const counts = GOLF_CARTS.map(gc=>filteredVc.filter(d=>d.vehicleId===gc.vehicleId).length);
-  charts['vc-per'] = new Chart(document.getElementById('chart-vc-per'),{
+  // Monthly trend (last 12 months)
+  destroyChart('monthly');
+  const monthLabels=[], monthEq=[], monthVc=[];
+  for (let i=11; i>=0; i--) {
+    const d = new Date(); d.setMonth(d.getMonth()-i);
+    monthLabels.push(`${d.getMonth()+1}/${String(d.getFullYear()).slice(-2)}`);
+    monthEq.push(allEqData.filter(r=>r.dateObj&&r.dateObj.getMonth()===d.getMonth()&&r.dateObj.getFullYear()===d.getFullYear()).length);
+    monthVc.push(allVcData.filter(r=>r.dateObj&&r.dateObj.getMonth()===d.getMonth()&&r.dateObj.getFullYear()===d.getFullYear()).length);
+  }
+  charts['monthly'] = new Chart(document.getElementById('chart-monthly'), {
+    type:'line',
+    data:{ labels:monthLabels, datasets:[
+      { label:'อุปกรณ์', data:monthEq, borderColor:'#3282B8', backgroundColor:'rgba(50,130,184,0.1)', tension:0.3, fill:true },
+      { label:'รถกอล์ฟ', data:monthVc, borderColor:'#1a6b3a', backgroundColor:'rgba(26,107,58,0.1)', tension:0.3, fill:true }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } }, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1 } } } }
+  });
+
+  // VC Status Pie
+  destroyChart('vc-status');
+  const vcCounts = {
+    'รอดำเนินการ': filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length,
+    'อนุมัติ/ใช้งาน': filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length,
+    'คืนแล้ว': filteredVc.filter(d=>d.status.includes('คืน')).length,
+    'เกินกำหนด': filteredVc.filter(d=>d.endDTObj&&d.endDTObj<now&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length,
+    'ยกเลิก': filteredVc.filter(d=>d.status.includes('ยกเลิก')).length
+  };
+  charts['vc-status'] = new Chart(document.getElementById('chart-vc-status'), {
+    type:'doughnut',
+    data:{ labels:Object.keys(vcCounts), datasets:[{ data:Object.values(vcCounts),
+      backgroundColor:['#F39C12','#27AE60','#2980B9','#C0392B','#aaa'], borderWidth:2, borderColor:'#fff' }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:8 } } } }
+  });
+
+  // Dept bar
+  destroyChart('dept');
+  const deptCount = {};
+  [...filteredEq,...filteredVc].forEach(d => { deptCount[d.dept||'ไม่ระบุ'] = (deptCount[d.dept||'ไม่ระบุ']||0)+1; });
+  const topDepts = Object.entries(deptCount).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  charts['dept'] = new Chart(document.getElementById('chart-dept'), {
     type:'bar',
-    data:{
-      labels:GOLF_CARTS.map(gc=>gc.name.replace('รถกอล์ฟ ','')),
-      datasets:[{label:'จำนวนคำขอจอง',data:counts,backgroundColor:['rgba(26,107,58,0.8)','rgba(50,130,184,0.8)','rgba(242,169,0,0.8)'],borderRadius:6}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
+    data:{ labels:topDepts.map(d=>d[0].length>16?d[0].substring(0,16)+'…':d[0]),
+      datasets:[{ label:'จำนวนรายการ', data:topDepts.map(d=>d[1]),
+        backgroundColor:'rgba(50,130,184,0.7)', borderColor:'#3282B8', borderWidth:1 }] },
+    options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{ legend:{ display:false } }, scales:{ x:{ beginAtZero:true, ticks:{ stepSize:1 } } } }
   });
-}
 
-function drawPersonChart() {
-  destroyChart('person');
-  const map = {};
-  [...filteredEq,...filteredVc].forEach(d=>{
-    const pt = (d.personType||'ไม่ระบุ').split(' ')[0];
-    map[pt]=(map[pt]||0)+1;
-  });
-  const s = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  charts.person = new Chart(document.getElementById('chart-person'),{
+  // Vehicle usage bar
+  destroyChart('vc-usage');
+  const vcNames = {'GC001':'EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE'};
+  const vcIds   = ['GC001','GC002','GC003'];
+  charts['vc-usage'] = new Chart(document.getElementById('chart-vc-usage'), {
     type:'bar',
-    data:{labels:s.map(x=>x[0]),datasets:[{label:'จำนวน',data:s.map(x=>x[1]),backgroundColor:'rgba(50,130,184,0.7)',borderRadius:4}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}
+    data:{ labels:vcIds.map(v=>vcNames[v]||v),
+      datasets:[
+        { label:'จำนวนครั้ง', data:vcIds.map(v=>allVcData.filter(d=>d.vehicleId===v).length),
+          backgroundColor:'rgba(26,107,58,0.7)', borderColor:'#1a6b3a', borderWidth:1 },
+        { label:'ชม.ใช้งาน', data:vcIds.map(v=>parseFloat(allVcData.filter(d=>d.vehicleId===v).reduce((a,d)=>a+(parseFloat(d.totalHours)||0),0).toFixed(1))),
+          backgroundColor:'rgba(242,169,0,0.7)', borderColor:'#F2A900', borderWidth:1 }
+      ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } }, scales:{ y:{ beginAtZero:true } } }
   });
-}
 
-function drawItemChart() {
-  destroyChart('items');
-  const map = {};
-  filteredEq.forEach(d=>{
-    if (!d.items) return;
+  // Top items
+  const itemCount = {};
+  filteredEq.forEach(d => {
     try {
-      const arr = JSON.parse(d.items);
-      arr.forEach(it=>{
-        const n = String(it.name||'').split('(')[0].trim();
-        if (n) map[n]=(map[n]||0)+(parseInt(it.qty)||1);
-      });
+      const arr = JSON.parse(d.items||'[]');
+      arr.forEach(it => { const n=it.name||'-'; itemCount[n]=(itemCount[n]||0)+(parseInt(it.qty)||1); });
     } catch(e) {}
   });
-  const s = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  charts.items = new Chart(document.getElementById('chart-items'),{
-    type:'bar',
-    data:{labels:s.map(x=>x[0]),datasets:[{label:'จำนวนยืม (ชิ้น)',data:s.map(x=>x[1]),backgroundColor:'rgba(242,169,0,0.75)',borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  const topItems = Object.entries(itemCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const maxVal = topItems.length ? topItems[0][1] : 1;
+  document.getElementById('top-items-list').innerHTML = topItems.length ?
+    topItems.map(([n,cnt]) => `<li>
+      <span style="min-width:80px;font-size:13px;">${n}</span>
+      <div class="item-bar-wrap"><div class="item-bar" style="width:${Math.round(cnt/maxVal*100)}%"></div></div>
+      <span class="item-count">${cnt}</span>
+    </li>`).join('') :
+    '<li style="color:var(--muted);justify-content:center;">ไม่มีข้อมูล</li>';
+}
+
+function renderTables() {
+  const now = new Date();
+
+  // EQ table
+  const eqRows = filteredEq.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+  document.getElementById('eq-count').textContent = eqRows.length + ' รายการ';
+  document.getElementById('tbody-eq').innerHTML = eqRows.length ?
+    eqRows.map(d => `<tr>
+      <td style="font-size:12px;color:var(--muted);">${d.refCode||'—'}</td>
+      <td style="font-weight:600;">${d.name||'-'}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.dept||'-'}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.eventName||'-'}</td>
+      <td style="white-space:nowrap;">${fmtDateTH(d.startDate)}</td>
+      <td style="white-space:nowrap;">${fmtDateTH(d.endDate)}</td>
+      <td><span class="tag ${getStatusTag(d.status)}">${d.status||'-'}</span></td>
+      <td style="font-size:12px;">${d.handlerName||'-'}</td>
+      <td style="font-size:12px;color:var(--muted);">${d.updatedBy?d.updatedBy.split('(')[0].trim():'-'}</td>
+    </tr>`).join('') :
+    '<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--muted);">ไม่พบข้อมูลในช่วงเวลาที่เลือก</td></tr>';
+
+  // VC table
+  const vcRows = filteredVc.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+  document.getElementById('vc-count').textContent = vcRows.length + ' รายการ';
+  document.getElementById('tbody-vc').innerHTML = vcRows.length ?
+    vcRows.map(d => `<tr>
+      <td style="font-size:12px;color:var(--muted);">${d.refCode||'—'}</td>
+      <td><span style="font-weight:600;color:var(--vehicle);">${d.vcName||'-'}</span></td>
+      <td style="font-weight:600;">${d.name||'-'}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.dept||'-'}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.eventName||'-'}</td>
+      <td style="white-space:nowrap;font-size:12.5px;">${fmtDateTimeTH(d.startDT)}</td>
+      <td style="white-space:nowrap;font-size:12.5px;">${fmtDateTimeTH(d.endDT)}</td>
+      <td><span class="tag ${getStatusTag(d.status)}">${d.status||'-'}</span></td>
+    </tr>`).join('') :
+    '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">ไม่พบข้อมูลในช่วงเวลาที่เลือก</td></tr>';
+
+  // Overdue table
+  const overdueEq = filteredEq.filter(d => d.endDateObj && d.endDateObj<now && !['รับของคืน','ยกเลิก'].some(s=>d.status.includes(s)));
+  const overdueVc = filteredVc.filter(d => d.endDTObj && d.endDTObj<now && !['คืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s)));
+  const allOverdue = [
+    ...overdueEq.map(d => ({ ...d, overdueStr: Math.floor((now-d.endDateObj)/86400000)+' วัน', endStr: fmtDateTH(d.endDate) })),
+    ...overdueVc.map(d => ({ ...d, overdueStr: Math.floor((now-d.endDTObj)/3600000)+' ชม.', endStr: fmtDateTimeTH(d.endDT) }))
+  ];
+  document.getElementById('overdue-count').textContent = allOverdue.length ? `⚠️ ${allOverdue.length} รายการ — ต้องติดตาม!` : 'ไม่มีรายการค้าง ✅';
+  document.getElementById('overdue-count').style.color = allOverdue.length ? '#c0392b' : '#27AE60';
+  document.getElementById('tbody-overdue').innerHTML = allOverdue.length ?
+    allOverdue.map(d => `<tr>
+      <td><span class="tag ${d.type==='eq'?'tag-approved':'tag-active'}">${d.type==='eq'?'🦺 อุปกรณ์':'🚗 รถกอล์ฟ'}</span></td>
+      <td style="font-size:12px;color:var(--muted);">${d.refCode||'—'}</td>
+      <td style="font-weight:600;">${d.name||'-'}</td>
+      <td>${d.dept||'-'}</td>
+      <td style="white-space:nowrap;">${d.endStr}</td>
+      <td style="color:#c0392b;font-weight:700;">${d.overdueStr}</td>
+      <td style="font-size:12px;">${d.email||'-'}</td>
+    </tr>`).join('') :
+    '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">✅ ไม่มีรายการเกินกำหนด</td></tr>';
+}
+
+function showTab(tab) {
+  ['eq','vc','overdue'].forEach(t => {
+    document.getElementById(`table-${t}`).style.display = t===tab ? 'block':'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.${tab}-tab`) ? document.querySelector(`.${tab==='overdue'?'overdue':tab}-tab`).classList.add('active') : null;
+  // Fix for overdue tab button
+  if (tab==='overdue') {
+    document.querySelectorAll('.tab-btn').forEach(b => { if(b.textContent.includes('เกินกำหนด')) b.classList.add('active'); });
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PDF EXPORT — ใช้ fetch() โหลด font จาก ./fonts/ (ห้าม base64)
+// ═══════════════════════════════════════════════════════
+
+let fontNormalLoaded = null;
+let fontBoldLoaded   = null;
+let logoLoaded       = null;
+
+async function loadFontAsArrayBuffer(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error('โหลดฟอนต์ไม่ได้: ' + url);
+  return await resp.arrayBuffer();
+}
+
+async function loadImageAsBase64(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error('โหลดรูปไม่ได้: ' + url);
+  const blob = await resp.blob();
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload  = e => res(e.target.result);
+    reader.onerror = () => rej(new Error('อ่านรูปไม่ได้'));
+    reader.readAsDataURL(blob);
   });
 }
 
-async function manualRefresh() { await loadDashboard(); showToast('🔄 โหลดข้อมูลใหม่แล้ว'); }
-
-// ── PDF Export ──
-let pdfType = 'daily';
-
-function openPdfModal()  { document.getElementById('pdf-modal').classList.add('show'); }
-function closePdfModal() { document.getElementById('pdf-modal').classList.remove('show'); }
-
-function setPdfType(t) {
-  pdfType = t;
-  ['daily','monthly','yearly','custom'].forEach(r=>{
-    document.getElementById('ptab-'+r).classList.toggle('active', r===t);
-    document.getElementById('pform-'+r).style.display = r===t?'':'none';
-  });
+function arrayBufferToBase64(buffer) {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
 }
-function onScopeChange()  {}
-function onPurposeChange(){ document.getElementById('p-purpose-other-wrap').style.display = document.getElementById('p-purpose').value==='other'?'block':'none'; }
 
-async function runPdfExport() {
-  const btn = document.getElementById('pdf-btn-gen');
-  btn.disabled=true; btn.textContent='⏳ กำลังสร้าง...';
+function setPdfProgress(pct, text) {
+  document.getElementById('pdf-progress-fill').style.width = pct + '%';
+  document.getElementById('pdf-step-text').textContent     = text;
+}
+
+async function exportPDF() {
+  const btn = document.getElementById('btn-export-pdf');
+  btn.disabled = true;
+  document.getElementById('pdf-progress').classList.add('show');
+  setPdfProgress(5, 'เริ่มสร้างรายงาน...');
+
   try {
-    // Determine date range
-    let fromDate, toDate, periodTH, reportLabel;
-    const now = new Date();
-
-    if (pdfType==='daily') {
-      const d = new Date(document.getElementById('p-daily-date').value);
-      fromDate = new Date(d.getFullYear(),d.getMonth(),d.getDate());
-      toDate   = new Date(d.getFullYear(),d.getMonth(),d.getDate(),23,59,59);
-      periodTH = `วันที่ ${d.getDate()} ${THAI_MONTHS_FULL[d.getMonth()]} พ.ศ. ${d.getFullYear()+543}`;
-      reportLabel = 'รายงานรายวัน';
-    } else if (pdfType==='monthly') {
-      const y=parseInt(document.getElementById('p-monthly-year').value);
-      const m=parseInt(document.getElementById('p-monthly-month').value)-1;
-      fromDate=new Date(y,m,1); toDate=new Date(y,m+1,0,23,59,59);
-      periodTH=`เดือน${THAI_MONTHS_FULL[m]} พ.ศ. ${y+543}`;
-      reportLabel='รายงานรายเดือน';
-    } else if (pdfType==='yearly') {
-      const y=parseInt(document.getElementById('p-yearly-year').value);
-      fromDate=new Date(y,0,1); toDate=new Date(y,11,31,23,59,59);
-      periodTH=`ประจำปี พ.ศ. ${y+543}`;
-      reportLabel='รายงานประจำปี';
-    } else {
-      fromDate=new Date(document.getElementById('p-custom-from').value);
-      toDate=new Date(document.getElementById('p-custom-to').value+'T23:59:59');
-      periodTH=`${document.getElementById('p-custom-from').value} ถึง ${document.getElementById('p-custom-to').value}`;
-      reportLabel='รายงานช่วงที่กำหนด';
+    // ── 1. Load fonts ──
+    setPdfProgress(15, 'กำลังโหลดฟอนต์ภาษาไทย (Normal)...');
+    if (!fontNormalLoaded) {
+      const buf = await loadFontAsArrayBuffer('./fonts/NotoSansThai-Regular.ttf');
+      fontNormalLoaded = arrayBufferToBase64(buf);
     }
 
-    const scope    = document.getElementById('pdf-report-scope').value;
-    const preparer = document.getElementById('p-preparer').value||'—';
-    const position = document.getElementById('p-position').value||'—';
-    const purposeSel=document.getElementById('p-purpose').value;
-    const purpose  = purposeSel==='other'?(document.getElementById('p-purpose-other').value||'อื่นๆ'):document.getElementById('p-purpose').selectedOptions[0].text;
+    setPdfProgress(30, 'กำลังโหลดฟอนต์ภาษาไทย (Bold)...');
+    if (!fontBoldLoaded) {
+      const buf = await loadFontAsArrayBuffer('./fonts/NotoSansThai-Bold.ttf');
+      fontBoldLoaded = arrayBufferToBase64(buf);
+    }
 
-    const filterPeriod = it => { if(!it.dateObj)return false; const d=new Date(it.dateObj.getFullYear(),it.dateObj.getMonth(),it.dateObj.getDate()); return d>=fromDate&&d<=toDate; };
-    const eqItems = scope==='vc' ? [] : allEqData.filter(filterPeriod);
-    const vcItems = scope==='eq' ? [] : allVcData.filter(filterPeriod);
+    // ── 2. Load logo ──
+    setPdfProgress(45, 'กำลังโหลดโลโก้มหาวิทยาลัย...');
+    if (!logoLoaded) {
+      try { logoLoaded = await loadImageAsBase64('./assets/mu_logo.png'); } catch(e) { logoLoaded = null; }
+    }
 
-    // Build PDF
-    const {jsPDF} = window.jspdf;
-    const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    const PW=210,PH=297,ML=14,MR=14;
-    const NAVY=[15,76,117], BLACK=[28,40,51], WHITE=[255,255,255], GOLD=[242,169,0], MUTED=[108,122,137];
-    let pageNum=1;
-    const F='helvetica';
+    setPdfProgress(55, 'กำลังสร้างเอกสาร PDF...');
 
-    // Load MU logo
-    let logoData=null;
-    try {
-      const logoBuf=await fetch('./assets/mu_logo.png').then(r=>r.arrayBuffer());
-      const bytes=new Uint8Array(logoBuf);
-      let bin=''; for(let i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
-      logoData='data:image/png;base64,'+btoa(bin);
-    } catch(e) {}
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
 
-    const hdr = () => {
-      doc.setFillColor(...NAVY); doc.rect(0,0,PW,32,'F');
-      doc.setFillColor(...GOLD); doc.rect(0,30,PW,2,'F');
-      if(logoData) doc.addImage(logoData,'PNG',ML,2,26,26);
-      const tx=ML+30;
-      doc.setTextColor(...WHITE);
-      doc.setFont(F,'bold'); doc.setFontSize(13);
-      doc.text('Equipment & Golf Cart Borrowing System Report',tx,11);
-      doc.setFont(F,'normal'); doc.setFontSize(8.5);
-      doc.text('Traffic Control and Safety Unit, Division of Physical and Environmental, Mahidol University',tx,18);
-      doc.setFont(F,'bold'); doc.setFontSize(7.5);
-      doc.text(`Period: ${periodTH}   |   Page ${pageNum}`, tx,25);
-      doc.setTextColor(...BLACK);
-    };
+    // Register fonts
+    doc.addFileToVFS('NotoSansThai-Regular.ttf', fontNormalLoaded);
+    doc.addFont('NotoSansThai-Regular.ttf', 'NotoSansThai', 'normal');
+    doc.addFileToVFS('NotoSansThai-Bold.ttf', fontBoldLoaded);
+    doc.addFont('NotoSansThai-Bold.ttf', 'NotoSansThai', 'bold');
 
-    const ftr = () => {
-      doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(ML,PH-13,PW-MR,PH-13);
-      doc.setFontSize(7); doc.setFont(F,'normal'); doc.setTextColor(...MUTED);
-      doc.text(`Prepared by: ${preparer} (${position})`, ML, PH-9);
-      doc.text(`Purpose: ${purpose}`, ML, PH-5);
-      doc.text(`Generated: ${fmtDateTH(now)}`, PW-MR, PH-9, {align:'right'});
-      doc.text('Traffic Control and Safety Unit, Mahidol University', PW-MR, PH-5, {align:'right'});
-      doc.setTextColor(...BLACK);
-    };
+    const W=210, margin=14;
+    const now = new Date();
+    const month = document.getElementById('sel-month').value;
+    const year  = document.getElementById('sel-year').value;
+    const THAI_MONTHS=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    const periodStr = month==='all' ? 'ทุกเดือน' : THAI_MONTHS[parseInt(month)];
+    const yearStr   = year==='all'  ? 'ทุกปี'    : 'พ.ศ. ' + (parseInt(year)+543);
+    const docCode   = 'RPT-DAI-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*900)+100);
+    const genStr    = now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
 
-    // DocCode
-    const docCode=`RPT-${pdfType.toUpperCase().slice(0,3)}-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*900)+100)}`;
+    let y = 0;
+
+    // ── Helper functions ──
+    function setFont(bold=false, size=11) {
+      doc.setFont('NotoSansThai', bold?'bold':'normal');
+      doc.setFontSize(size);
+    }
+    function txtC(text, yPos, size=11, bold=false, color=[0,0,0]) {
+      setFont(bold, size);
+      doc.setTextColor(...color);
+      doc.text(String(text||''), W/2, yPos, { align:'center' });
+    }
+    function txt(text, xPos, yPos, size=11, bold=false, color=[0,0,0]) {
+      setFont(bold, size);
+      doc.setTextColor(...color);
+      doc.text(String(text||''), xPos, yPos);
+    }
+    function hRule(yPos, color=[15,76,117], lw=0.5) {
+      doc.setDrawColor(...color); doc.setLineWidth(lw);
+      doc.line(margin, yPos, W-margin, yPos);
+    }
+    function newPage() {
+      doc.addPage(); y=0;
+      drawPageHeader();
+      drawPageFooter();
+    }
+    function checkY(need=12) { if (y+need > 270) newPage(); }
+
+    function drawPageHeader() {
+      // Header background
+      doc.setFillColor(15,76,117);
+      doc.rect(0,0,W,26,  'F');
+      // Gold stripe
+      doc.setFillColor(242,169,0);
+      doc.rect(0,26,W,1.5,'F');
+
+      if (logoLoaded) {
+        try { doc.addImage(logoLoaded,'PNG',margin,3,18,18); } catch(e) {}
+      }
+
+      txt('Equipment & Golf Cart Borrowing System Report', margin+22, 9, 12, true, [255,255,255]);
+      txt('Traffic Control and Safety Unit, Division of Physical and Environmental, Mahidol University', margin+22, 15, 8, false, [200,220,240]);
+      txt(`Period: '${periodStr}' '(. ${yearStr}'  |  Page ${doc.getCurrentPageInfo().pageNumber}`, margin+22, 21, 7.5, false, [200,220,240]);
+      y = 34;
+    }
+
+    function drawPageFooter() {
+      const pn = doc.getCurrentPageInfo().pageNumber;
+      doc.setFillColor(240,244,248);
+      doc.rect(0,285,W,12,'F');
+      doc.setDrawColor(208,218,232); doc.setLineWidth(0.3);
+      doc.line(0,285,W,285);
+      txt(`Prepared by:  งานจราจรและความปลอดภัย กองกายภาพและสิ่งแวดล้อม`, margin, 291, 7, false, [108,122,137]);
+      txt(`Generated: ${genStr}  |  Page ${pn}`, W-margin, 291, 7, false, [108,122,137]);
+      doc.setTextColor(108,122,137);
+      doc.setFont('NotoSansThai','normal'); doc.setFontSize(7);
+      doc.text('Traffic Control and Safety Unit, Mahidol University', W-margin, 295.5, {align:'right'});
+      txt(`Purpose:  รายงานสรุปการยืม-คืน`, margin, 295.5, 7, false, [108,122,137]);
+    }
 
     // ── PAGE 1 ──
-    hdr(); ftr(); let curY=40;
+    drawPageHeader();
+    drawPageFooter();
 
-    doc.setFont(F,'bold'); doc.setFontSize(13); doc.setTextColor(...NAVY);
-    doc.text(`${periodTH}  (${reportLabel})`,ML,curY); curY+=7;
-    doc.setFont(F,'normal'); doc.setFontSize(8); doc.setTextColor(...MUTED);
-    doc.text(`Doc Code: ${docCode}   |   Generated: ${fmtDateTH(now)}`,ML,curY); curY+=8;
-    doc.setDrawColor(...GOLD); doc.setLineWidth(1); doc.line(ML,curY,PW-MR,curY); curY+=5; doc.setLineWidth(0.3);
+    // Report title
+    doc.setFillColor(248,250,255);
+    doc.roundedRect(margin, y, W-margin*2, 24, 3, 3, 'F');
+    doc.setDrawColor(15,76,117); doc.setLineWidth(0.4);
+    doc.roundedRect(margin, y, W-margin*2, 24, 3, 3, 'S');
+    txtC(`รายงานสรุปการยืม-คืนอุปกรณ์และรถกอล์ฟ  ${periodStr}  ${yearStr}`, y+8, 14, true, [15,76,117]);
+    txtC(`Doc Code: ${docCode}  |  Generated: ${genStr}`, y+16, 8, false, [108,122,137]);
+    y += 30;
 
-    // ── Equipment KPI boxes ──
-    if (scope!=='vc') {
-      doc.setFont(F,'bold'); doc.setFontSize(9); doc.setTextColor(...NAVY);
-      doc.text('Equipment Summary / สรุปอุปกรณ์', ML, curY); curY+=5;
-      const eqT=eqItems.length;
-      const eqP=eqItems.filter(d=>(d.status||'').includes('รอดำเนินการ')).length;
-      const eqA=eqItems.filter(d=>(d.status||'').includes('กำลัง')).length;
-      const eqR=eqItems.filter(d=>(d.status||'').includes('คืนแล้ว')).length;
-      const eqO=eqItems.filter(d=>(d.status||'').includes('เกินกำหนด')).length;
-      const kpis=[{l:'Total',v:eqT,c:NAVY},{l:'Pending',v:eqP,c:[243,156,18]},{l:'Active',v:eqA,c:[39,174,96]},{l:'Returned',v:eqR,c:[41,128,185]},{l:'Overdue',v:eqO,c:[192,57,43]},{l:'Rate',v:eqT>0?Math.round((eqR/eqT)*100)+'%':'-',c:[15,76,117]}];
-      const kw=(PW-ML-MR-10)/6;
-      kpis.forEach((k,i)=>{
-        const x=ML+i*(kw+2);
-        doc.setFillColor(245,247,252); doc.roundedRect(x,curY,kw,18,2,2,'F');
-        doc.setDrawColor(...k.c); doc.setLineWidth(0.5); doc.line(x,curY,x,curY+18); doc.setLineWidth(0.3);
-        doc.setFont(F,'bold'); doc.setFontSize(11); doc.setTextColor(...k.c);
-        doc.text(String(k.v),x+kw/2,curY+9,{align:'center'});
-        doc.setFont(F,'normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
-        doc.text(k.l,x+kw/2,curY+14,{align:'center'});
-      });
-      curY+=22;
-    }
+    // ── Equipment Summary ──
+    hRule(y, [242,169,0], 0.8); y+=4;
+    txt(`Equipment Summary / สรุปอุปกรณ์`, margin, y, 12, true, [15,76,117]); y+=6;
+    hRule(y, [208,218,232], 0.3); y+=5;
 
-    // ── Vehicle KPI boxes ──
-    if (scope!=='eq') {
-      doc.setFont(F,'bold'); doc.setFontSize(9); doc.setTextColor(...NAVY);
-      doc.text('Golf Cart Summary / สรุปรถกอล์ฟ', ML, curY); curY+=5;
-      const vcT=vcItems.length;
-      const vcP=vcItems.filter(d=>(d.status||'').includes('รอดำเนินการ')).length;
-      const vcA=vcItems.filter(d=>(d.status||'').includes('อนุมัติ')||(d.status||'').includes('กำลัง')).length;
-      const vcR=vcItems.filter(d=>(d.status||'').includes('คืนแล้ว')).length;
-      const gcKpis=[
-        {l:'Total Bookings',v:vcT,c:NAVY},{l:'Pending',v:vcP,c:[243,156,18]},
-        {l:'Active',v:vcA,c:[39,174,96]},{l:'Returned',v:vcR,c:[41,128,185]},
-        ...GOLF_CARTS.map(gc=>({l:gc.name.replace('รถกอล์ฟ ',''),v:vcItems.filter(d=>d.vehicleId===gc.vehicleId).length,c:[26,107,58]}))
-      ].slice(0,6);
-      const kw2=(PW-ML-MR-10)/6;
-      gcKpis.forEach((k,i)=>{
-        const x=ML+i*(kw2+2);
-        doc.setFillColor(240,248,240); doc.roundedRect(x,curY,kw2,18,2,2,'F');
-        doc.setDrawColor(...k.c); doc.setLineWidth(0.5); doc.line(x,curY,x,curY+18); doc.setLineWidth(0.3);
-        doc.setFont(F,'bold'); doc.setFontSize(11); doc.setTextColor(...k.c);
-        doc.text(String(k.v),x+kw2/2,curY+9,{align:'center'});
-        doc.setFont(F,'normal'); doc.setFontSize(5.5); doc.setTextColor(...MUTED);
-        const wrapped=k.l.length>12?k.l.substring(0,12)+'…':k.l;
-        doc.text(wrapped,x+kw2/2,curY+14,{align:'center'});
-      });
-      curY+=22;
-    }
+    const eqNow = new Date();
+    const eqTotal    = filteredEq.length;
+    const eqPending  = filteredEq.filter(d=>d.status.includes('รอดำเนินการ')).length;
+    const eqActive   = filteredEq.filter(d=>d.status.includes('กำลัง')||d.status.includes('รับของแล้ว')).length;
+    const eqReturned = filteredEq.filter(d=>d.status.includes('รับของคืน')).length;
+    const eqOverdue  = filteredEq.filter(d=>d.endDateObj&&d.endDateObj<eqNow&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length;
+    const eqRate     = eqTotal>0?Math.round(eqReturned/eqTotal*100):0;
 
-    // ── Equipment Table ──
-    if (scope!=='vc' && eqItems.length>0) {
-      if(curY>PH-60){doc.addPage();pageNum++;hdr();ftr();curY=40;}
-      doc.setFont(F,'bold'); doc.setFontSize(9); doc.setTextColor(...NAVY);
-      doc.text('Equipment Borrowing Records / รายการยืมอุปกรณ์',ML,curY); curY+=4;
-      doc.autoTable({
-        startY:curY, margin:{left:ML,right:MR},
-        styles:{fontSize:7.5,cellPadding:2.5,font:F,overflow:'linebreak',textColor:BLACK},
-        headStyles:{fillColor:NAVY,textColor:WHITE,fontStyle:'bold',fontSize:7.5},
-        alternateRowStyles:{fillColor:[248,250,253]},
-        columnStyles:{0:{cellWidth:22},1:{cellWidth:28},2:{cellWidth:35},3:{cellWidth:25},4:{cellWidth:20},5:{cellWidth:'auto'}},
-        head:[['RefCode','Name / ชื่อ','Dept / หน่วยงาน','Event / กิจกรรม','Period / ช่วงเวลา','Status / สถานะ']],
-        body:eqItems.map(it=>{
-          let items='-';try{const arr=JSON.parse(it.items);items=arr.slice(0,2).map(a=>a.name+':'+a.qty).join(', ')+(arr.length>2?'…':'');}catch(e){}
-          return[it.refCode||'(old)',it.name||'-',(it.dept||'-').substring(0,20),it.eventName||'-',`${it.startDate||'-'}~${it.endDate||'-'}`,it.status||'รอดำเนินการ'];
-        }),
-        didDrawPage:()=>{pageNum++;hdr();ftr();}
-      });
-      curY=doc.lastAutoTable.finalY+8;
-    }
-
-    // ── Vehicle Table ──
-    if (scope!=='eq' && vcItems.length>0) {
-      if(curY>PH-60){doc.addPage();pageNum++;hdr();ftr();curY=40;}
-      doc.setFont(F,'bold'); doc.setFontSize(9); doc.setTextColor(...NAVY);
-      doc.text('Golf Cart Booking Records / รายการจองรถกอล์ฟ',ML,curY); curY+=4;
-      doc.autoTable({
-        startY:curY, margin:{left:ML,right:MR},
-        styles:{fontSize:7.5,cellPadding:2.5,font:F,overflow:'linebreak',textColor:BLACK},
-        headStyles:{fillColor:[26,107,58],textColor:WHITE,fontStyle:'bold',fontSize:7.5},
-        alternateRowStyles:{fillColor:[240,248,240]},
-        columnStyles:{0:{cellWidth:22},1:{cellWidth:30},2:{cellWidth:28},3:{cellWidth:35},4:{cellWidth:30},5:{cellWidth:'auto'}},
-        head:[['RefCode','Vehicle / รถ','Name / ชื่อ','Dept / หน่วยงาน','Period / ช่วงเวลา','Status / สถานะ']],
-        body:vcItems.map(it=>[
-          it.refCode||'-',it.vcName||'-',it.name||'-',(it.dept||'-').substring(0,20),
-          `${it.startDT?it.startDT.substring(0,10):'-'}~${it.endDT?it.endDT.substring(0,10):'-'}`,
-          it.status||'รอดำเนินการ'
-        ]),
-        didDrawPage:()=>{pageNum++;hdr();ftr();}
-      });
-      curY=doc.lastAutoTable.finalY+8;
-    }
-
-    // ── Signature block ──
-    if(curY>PH-55){doc.addPage();pageNum++;hdr();ftr();curY=40;}
-    curY+=5;
-    doc.setDrawColor(200,200,200); doc.setLineWidth(0.5); doc.line(ML,curY,PW-MR,curY); curY+=8;
-    doc.setFont(F,'bold'); doc.setFontSize(9); doc.setTextColor(...NAVY);
-    doc.text('Document Certification',ML,curY); curY+=5;
-    doc.setFont(F,'normal'); doc.setFontSize(8); doc.setTextColor(...BLACK);
-    doc.text('This report is generated from Equipment & Golf Cart Borrowing System,',ML,curY,{maxWidth:PW-ML-MR}); curY+=4.5;
-    doc.text('Traffic Control and Safety Unit, Division of Physical and Environmental, Mahidol University.',ML,curY); curY+=10;
-
-    const signers=[
-      ['Preparer / ผู้จัดทำ',preparer,`(${position})`],
-      ['Checker / ผู้ตรวจสอบ','นายรวี จำเนียร','(เจ้าหน้าที่บริหารงานทั่วไป)'],
-      ['Approver / ผู้รับรอง','นายยุทธภูมิ ญานเพิ่ม','(หัวหน้างานจราจรฯ)']
+    const kpiEq=[
+      {label:'Total\nทั้งหมด', val:eqTotal, c:[15,76,117]},
+      {label:'Pending\nรอดำเนินการ', val:eqPending, c:[243,156,18]},
+      {label:'Active\nกำลังยืม', val:eqActive, c:[39,174,96]},
+      {label:'Returned\nคืนแล้ว', val:eqReturned, c:[41,128,185]},
+      {label:'Overdue\nเกินกำหนด', val:eqOverdue, c:[192,57,43]},
+      {label:'Rate\nอัตราคืน', val:eqRate+'%', c:[108,122,137]}
     ];
-    const sw=(PW-ML-MR-20)/3;
-    signers.forEach((sig,i)=>{
-      const x=ML+i*(sw+10);
-      doc.setDrawColor(200,210,220); doc.roundedRect(x,curY,sw,30,2,2,'S');
-      doc.setFont(F,'bold'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
-      doc.text(sig[0],x+sw/2,curY+6,{align:'center'});
-      doc.setDrawColor(180,190,210); doc.line(x+5,curY+16,x+sw-5,curY+16);
-      doc.setFont(F,'normal'); doc.setFontSize(7.5); doc.setTextColor(...BLACK);
-      doc.text(sig[1].substring(0,22),x+sw/2,curY+22,{align:'center'});
-      doc.setTextColor(...MUTED);
-      doc.text(sig[2].substring(0,22),x+sw/2,curY+28,{align:'center'});
+    const colW = (W-margin*2)/kpiEq.length;
+    kpiEq.forEach((k,i) => {
+      const x = margin + i*colW;
+      // Card bg
+      doc.setFillColor(248,250,255);
+      doc.rect(x+0.5, y, colW-1, 16, 'F');
+      // Left border color
+      doc.setFillColor(...k.c);
+      doc.rect(x+0.5, y, 2, 16, 'F');
+      // Value
+      setFont(true, 16); doc.setTextColor(...k.c);
+      doc.text(String(k.val), x+colW/2+1, y+8, {align:'center'});
+      // Label
+      setFont(false, 6.5); doc.setTextColor(108,122,137);
+      const lines = k.label.split('\n');
+      doc.text(lines[1]||lines[0], x+colW/2+1, y+13.5, {align:'center'});
+    });
+    y += 22;
+
+    // Golf Cart Summary
+    hRule(y, [26,107,58], 0.6); y+=4;
+    txt('Golf Cart Summary / สรุปรถกอล์ฟ', margin, y, 12, true, [26,107,58]); y+=6;
+    hRule(y, [208,218,232], 0.3); y+=5;
+
+    const vcTotal    = filteredVc.length;
+    const vcPending  = filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length;
+    const vcActive   = filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length;
+    const vcReturned = filteredVc.filter(d=>d.status.includes('คืน')).length;
+    const totalHrs   = filteredVc.reduce((a,d)=>a+(parseFloat(d.totalHours)||0),0).toFixed(1);
+    const vcNames2   = {'GC001':'EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE'};
+    const vc001cnt = allVcData.filter(d=>d.vehicleId==='GC001').length;
+    const vc002cnt = allVcData.filter(d=>d.vehicleId==='GC002').length;
+
+    const kpiVc=[
+      {label:'Total Bookings\nการจองทั้งหมด', val:vcTotal, c:[26,107,58]},
+      {label:'Pending\nรอดำเนินการ', val:vcPending, c:[243,156,18]},
+      {label:'Active\nกำลังใช้งาน', val:vcActive, c:[39,174,96]},
+      {label:'Returned\nคืนแล้ว', val:vcReturned, c:[41,128,185]},
+      {label:'EVT 8 Seats 1H...\nรถ EVT 8 ที่นั่ง', val:vc001cnt, c:[26,107,58]},
+      {label:'EVT *2 2%\nรถ EVT พยาบาล', val:vc002cnt, c:[26,107,58]}
+    ];
+    kpiVc.forEach((k,i) => {
+      const x = margin + i*colW;
+      doc.setFillColor(240,248,244);
+      doc.rect(x+0.5, y, colW-1, 16, 'F');
+      doc.setFillColor(...k.c);
+      doc.rect(x+0.5, y, 2, 16, 'F');
+      setFont(true, 16); doc.setTextColor(...k.c);
+      doc.text(String(k.val), x+colW/2+1, y+8, {align:'center'});
+      setFont(false, 6.5); doc.setTextColor(108,122,137);
+      const lines = k.label.split('\n');
+      doc.text(lines[1]||lines[0], x+colW/2+1, y+13.5, {align:'center'});
+    });
+    y += 24;
+
+    // ── Document Certification ──
+    hRule(y, [208,218,232], 0.3); y+=6;
+    txt('Document Certification', margin, y, 11, true, [15,76,117]); y+=5;
+    txt('This report is generated from Equipment & Golf Cart Borrowing System,', margin, y, 9, false, [60,60,60]); y+=5;
+    txt('Traffic Control and Safety Unit, Division of Physical and Environmental, Mahidol University.', margin, y, 9, false, [60,60,60]); y+=10;
+
+    // Signature boxes
+    const sigW = (W-margin*2-8)/3;
+    const sigBoxes = [
+      { title:'Preparer / ผู้จัดทำ', name:'—', position:'(งาน จราจร ม.5H #4+2# 2' },
+      { title:'Checker / ผู้ตรวจสอบ', name:'2*#\'5 3@ 5*#', position:'(งาน จราจร ม.5H #4+2# 2' },
+      { title:'Approver / ผู้อนุมัติ', name:'2**8 9!4 2 @ 4H!', position:'(+1\'+ ล2 2  #2 #/)' }
+    ];
+    sigBoxes.forEach((s,i) => {
+      const x = margin + i*(sigW+4);
+      doc.setDrawColor(208,218,232); doc.setLineWidth(0.4);
+      doc.rect(x, y, sigW, 34, 'S');
+      // Title
+      doc.setFillColor(240,244,248);
+      doc.rect(x, y, sigW, 7, 'F');
+      setFont(true, 8); doc.setTextColor(15,76,117);
+      doc.text(s.title, x+sigW/2, y+5, {align:'center'});
+      // Signature line
+      doc.setDrawColor(180,180,180); doc.setLineWidth(0.3);
+      doc.line(x+6, y+22, x+sigW-6, y+22);
+      // Name
+      setFont(false, 8); doc.setTextColor(40,40,40);
+      doc.text(s.name, x+sigW/2, y+27, {align:'center'});
+      setFont(false, 7); doc.setTextColor(108,122,137);
+      doc.text(s.position, x+sigW/2, y+32, {align:'center'});
+    });
+    y += 40;
+
+    // ── PAGE 2: Equipment Details ──
+    setPdfProgress(65, 'สร้างหน้ารายละเอียดอุปกรณ์...');
+    newPage();
+
+    txt('รายการยืมอุปกรณ์  /  Equipment Borrowing Details', margin, y, 13, true, [15,76,117]); y+=3;
+    hRule(y,[242,169,0],0.8); y+=6;
+
+    // Table header
+    const eqCols = [{h:'RefCode',w:28},{h:'ชื่อ-นามสกุล',w:36},{h:'คณะ/หน่วยงาน',w:40},{h:'วันเริ่ม',w:22},{h:'วันคืน',w:22},{h:'สถานะ',w:28},{h:'เจ้าหน้าที่',w:26}];
+    let xOff = margin;
+    doc.setFillColor(15,76,117);
+    doc.rect(margin, y, W-margin*2, 7, 'F');
+    eqCols.forEach(col => {
+      setFont(true, 7.5); doc.setTextColor(255,255,255);
+      doc.text(col.h, xOff+1, y+5);
+      xOff += col.w;
+    });
+    y += 8;
+
+    const eqRowsForPdf = filteredEq.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+    eqRowsForPdf.forEach((d,idx) => {
+      checkY(7);
+      if (idx%2===0) { doc.setFillColor(248,250,255); doc.rect(margin,y-1,W-margin*2,7,'F'); }
+      const rowData = [
+        d.refCode||'—', d.name||'-', d.dept||'-',
+        fmtDateTH(d.startDate), fmtDateTH(d.endDate), d.status||'-', d.handlerName||'-'
+      ];
+      let xd = margin;
+      eqCols.forEach((col,ci) => {
+        const val = rowData[ci];
+        const maxLen = Math.floor(col.w/2.2);
+        const display = String(val).length>maxLen ? String(val).substring(0,maxLen)+'…' : String(val);
+        setFont(false, 7);
+        const textColor = col.h==='สถานะ' && d.status.includes('เกิน') ? [192,57,43] : [28,40,51];
+        doc.setTextColor(...textColor);
+        doc.text(display, xd+1, y+4);
+        xd += col.w;
+      });
+      // Bottom border
+      doc.setDrawColor(220,225,232); doc.setLineWidth(0.2);
+      doc.line(margin, y+6, W-margin, y+6);
+      y += 7;
     });
 
-    doc.save(`BorrowReport_${docCode}.pdf`);
-    closePdfModal();
-    showToast(`✅ Export PDF สำเร็จ: ${eqItems.length} อุปกรณ์, ${vcItems.length} รถกอล์ฟ`);
+    if (!eqRowsForPdf.length) {
+      setFont(false,9); doc.setTextColor(108,122,137);
+      doc.text('ไม่มีข้อมูลในช่วงเวลาที่เลือก', W/2, y+8, {align:'center'});
+      y+=14;
+    }
+
+    // ── PAGE 3: Vehicle Details ──
+    setPdfProgress(78, 'สร้างหน้ารายละเอียดรถกอล์ฟ...');
+    newPage();
+
+    txt('รายการจองรถกอล์ฟ  /  Golf Cart Booking Details', margin, y, 13, true, [26,107,58]); y+=3;
+    hRule(y,[26,107,58],0.8); y+=6;
+
+    const vcCols = [{h:'RefCode',w:28},{h:'รถที่จอง',w:36},{h:'ชื่อ-นามสกุล',w:36},{h:'คณะ/หน่วยงาน',w:40},{h:'เริ่ม',w:30},{h:'สถานะ',w:28}];
+    let xVc = margin;
+    doc.setFillColor(26,107,58);
+    doc.rect(margin, y, W-margin*2, 7, 'F');
+    vcCols.forEach(col => {
+      setFont(true, 7.5); doc.setTextColor(255,255,255);
+      doc.text(col.h, xVc+1, y+5);
+      xVc += col.w;
+    });
+    y += 8;
+
+    const vcRowsForPdf = filteredVc.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+    vcRowsForPdf.forEach((d,idx) => {
+      checkY(7);
+      if (idx%2===0) { doc.setFillColor(240,248,244); doc.rect(margin,y-1,W-margin*2,7,'F'); }
+      const rowData = [d.refCode||'—', d.vcName||'-', d.name||'-', d.dept||'-', fmtDateTimeTH(d.startDT), d.status||'-'];
+      let xd = margin;
+      vcCols.forEach((col,ci) => {
+        const val = rowData[ci];
+        const maxLen = Math.floor(col.w/2.2);
+        const display = String(val).length>maxLen ? String(val).substring(0,maxLen)+'…' : String(val);
+        setFont(false, 7);
+        const textColor = col.h==='สถานะ' && d.status.includes('เกิน') ? [192,57,43] : [28,40,51];
+        doc.setTextColor(...textColor);
+        doc.text(display, xd+1, y+4);
+        xd += col.w;
+      });
+      doc.setDrawColor(220,225,232); doc.setLineWidth(0.2);
+      doc.line(margin, y+6, W-margin, y+6);
+      y += 7;
+    });
+
+    if (!vcRowsForPdf.length) {
+      setFont(false,9); doc.setTextColor(108,122,137);
+      doc.text('ไม่มีข้อมูลในช่วงเวลาที่เลือก', W/2, y+8, {align:'center'});
+      y+=14;
+    }
+
+    // ── PAGE 4: Overdue + Top Items ──
+    setPdfProgress(88, 'สร้างหน้าสรุปรายการค้างและสถิติ...');
+    newPage();
+
+    txt('รายการเกินกำหนด  /  Overdue List', margin, y, 13, true, [192,57,43]); y+=3;
+    hRule(y,[192,57,43],0.8); y+=6;
+
+    const nowO = new Date();
+    const oEq = filteredEq.filter(d=>d.endDateObj&&d.endDateObj<nowO&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s)));
+    const oVc = filteredVc.filter(d=>d.endDTObj&&d.endDTObj<nowO&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s)));
+    const allO = [
+      ...oEq.map(d=>({...d,overdueStr:Math.floor((nowO-d.endDateObj)/86400000)+' วัน',endStr:fmtDateTH(d.endDate),typeStr:'🦺 อุปกรณ์'})),
+      ...oVc.map(d=>({...d,overdueStr:Math.floor((nowO-d.endDTObj)/3600000)+' ชม.',endStr:fmtDateTimeTH(d.endDT),typeStr:'🚗 รถกอล์ฟ'}))
+    ];
+
+    if (allO.length) {
+      const oCols = [{h:'ประเภท',w:22},{h:'RefCode',w:30},{h:'ชื่อ',w:38},{h:'คณะ/หน่วยงาน',w:44},{h:'กำหนดคืน',w:32},{h:'เกินมา',w:22}];
+      let xO = margin;
+      doc.setFillColor(192,57,43);
+      doc.rect(margin,y,W-margin*2,7,'F');
+      oCols.forEach(col => {
+        setFont(true,7.5); doc.setTextColor(255,255,255);
+        doc.text(col.h, xO+1, y+5); xO+=col.w;
+      });
+      y+=8;
+      allO.forEach((d,idx) => {
+        checkY(7);
+        doc.setFillColor(255,245,245);
+        doc.rect(margin,y-1,W-margin*2,7,'F');
+        const rowData=[d.typeStr,d.refCode||'—',d.name||'-',d.dept||'-',d.endStr,d.overdueStr];
+        let xd=margin;
+        oCols.forEach((col,ci) => {
+          const val=rowData[ci];
+          const ml=Math.floor(col.w/2.2);
+          const dv=String(val).length>ml?String(val).substring(0,ml)+'…':String(val);
+          setFont(false,7); doc.setTextColor(192,57,43);
+          doc.text(dv,xd+1,y+4); xd+=col.w;
+        });
+        doc.setDrawColor(248,215,218); doc.setLineWidth(0.2);
+        doc.line(margin,y+6,W-margin,y+6); y+=7;
+      });
+    } else {
+      setFont(false,10); doc.setTextColor(39,174,96);
+      doc.text('✅ ไม่มีรายการเกินกำหนด', W/2, y+8, {align:'center'}); y+=14;
+    }
+
+    y+=8;
+    txt('Top อุปกรณ์ที่ยืมบ่อย  /  Most Borrowed Equipment', margin, y, 12, true, [15,76,117]); y+=3;
+    hRule(y,[242,169,0],0.6); y+=6;
+
+    const topItems2 = Object.entries(
+      filteredEq.reduce((acc,d) => {
+        try { JSON.parse(d.items||'[]').forEach(it=>{ const n=it.name||'-'; acc[n]=(acc[n]||0)+(parseInt(it.qty)||1); }); } catch(e){}
+        return acc;
+      }, {})
+    ).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+    const maxV2 = topItems2.length ? topItems2[0][1] : 1;
+    topItems2.forEach((item,i) => {
+      checkY(6);
+      const barW = Math.round((item[1]/maxV2)*(W-margin*2-50));
+      // Bar bg
+      doc.setFillColor(230,236,244); doc.rect(margin+40, y, W-margin*2-50, 4, 'F');
+      // Bar fill
+      doc.setFillColor(50,130,184); doc.rect(margin+40, y, barW, 4, 'F');
+      setFont(false,8); doc.setTextColor(40,40,51);
+      doc.text(`${i+1}. ${String(item[0]).substring(0,18)}`, margin, y+3);
+      setFont(true,8); doc.setTextColor(15,76,117);
+      doc.text(String(item[1]), W-margin-5, y+3, {align:'right'});
+      y+=7;
+    });
+
+    setPdfProgress(96, 'บันทึก PDF...');
+
+    const filename = `BorrowReport_${periodStr.replace(/\s/g,'')}_${yearStr.replace(/\s/g,'_')}_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.pdf`;
+    doc.save(filename);
+
+    setPdfProgress(100, 'สร้าง PDF เสร็จสมบูรณ์!');
+    setTimeout(() => { document.getElementById('pdf-progress').classList.remove('show'); }, 1200);
+    showToast('✅ ดาวน์โหลด PDF เรียบร้อยแล้ว', 'success');
 
   } catch(err) {
-    console.error(err);
-    showToast('❌ เกิดข้อผิดพลาด: '+err.message, true);
+    document.getElementById('pdf-progress').classList.remove('show');
+    showToast('❌ สร้าง PDF ไม่สำเร็จ: ' + err.message, 'error');
+    console.error('PDF error:', err);
   } finally {
-    btn.disabled=false; btn.textContent='📄 สร้าง PDF และดาวน์โหลด';
+    btn.disabled = false;
   }
 }
 
 // ── Init ──
 window.onload = () => {
-  if (sessionStorage.getItem('borrow_dash_auth')==='1') {
-    document.getElementById('login-wrap').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    loadDashboard();
+  const role = sessionStorage.getItem('dash_auth');
+  if (role) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('main-wrap').style.display  = 'block';
+    setPeriodDefaults();
+    loadData();
   }
-  const yr=new Date().getFullYear();
-  ['p-monthly-year','p-yearly-year'].forEach(id=>{
-    const sel=document.getElementById(id);
-    for(let y=yr;y>=yr-5;y--) sel.innerHTML+=`<option value="${y}">${y} (พ.ศ. ${y+543})</option>`;
-  });
-  document.getElementById('p-daily-date').value   = new Date().toISOString().split('T')[0];
-  document.getElementById('p-custom-from').value  = new Date().toISOString().split('T')[0];
-  document.getElementById('p-custom-to').value    = new Date().toISOString().split('T')[0];
-  document.getElementById('p-monthly-month').value= new Date().getMonth()+1;
 };
-document.addEventListener('keydown',e=>{if(e.key==='Escape') closePdfModal();});
+document.addEventListener('keydown', e => { if(e.key==='Enter' && document.getElementById('login-wrap').style.display!=='none') doLogin(); });
 </script>
 
-<footer style="background:#0F4C75;color:rgba(255,255,255,0.7);font-family:'Sarabun',sans-serif;font-size:12px;padding:16px 24px;text-align:center;line-height:1.8;">
-  <div><span style="font-weight:700;color:#F2A900;">ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ — Dashboard San v1.1.0</span></div>
+<footer style="background:#0F4C75;color:rgba(255,255,255,0.7);font-family:'Sarabun',sans-serif;font-size:12px;padding:16px 24px;text-align:center;line-height:1.8;margin-top:0;">
+  <div><span style="font-weight:700;color:#F2A900;">Dashboard ระบบยืม-คืน — San v1.1.1</span></div>
   <div style="font-size:11.5px;margin-top:3px;">© 2025–2026 Traffic Control and Premises Security Unit, Mahidol University. All rights reserved.</div>
 </footer>
 </body>
