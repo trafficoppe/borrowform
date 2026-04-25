@@ -113,12 +113,13 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 .prefix-name-row input{flex:1;}
 
 .autocomplete-wrap{position:relative;}
-.autocomplete-list{position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--primary-mid);border-top:none;border-radius:0 0 9px 9px;max-height:200px;overflow-y:auto;z-index:200;box-shadow:0 8px 20px rgba(0,0,0,0.12);display:none;}
+.autocomplete-list{position:fixed;background:white;border:1.5px solid var(--primary-mid);border-radius:9px;max-height:240px;overflow-y:auto;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.18);display:none;min-width:200px;}
 .autocomplete-list.show{display:block;}
-.ac-item{padding:10px 14px;font-size:14px;cursor:pointer;transition:background 0.15s;}
+.ac-item{padding:11px 14px;font-size:14px;cursor:pointer;transition:background 0.15s;border-bottom:1px solid var(--border);}
+.ac-item:last-child{border-bottom:none;}
 .ac-item:hover{background:#eef3fb;color:var(--primary);}
 .ac-item mark{background:#fff3cd;color:var(--text);border-radius:2px;padding:0 2px;}
-.ac-sub{font-size:11.5px;color:var(--muted);}
+.ac-sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
 
 .radio-group{display:flex;flex-direction:column;gap:8px;}
 .radio-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all 0.18s;background:#fafbfd;}
@@ -384,22 +385,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
         </div>
       </div>
     </div>
-    <!-- เจ้าหน้าที่ผู้รับเรื่อง -->
-    <div class="card-section">
-      <div class="card-section-head"><span class="dot"></span>เจ้าหน้าที่ผู้รับเรื่อง</div>
-      <div class="card-section-body">
-        <div class="field">
-          <label>ชื่อเจ้าหน้าที่ผู้รับเรื่อง <span class="req">*</span></label>
-          <div class="hint">เจ้าหน้าที่งานจราจรและความปลอดภัยผู้ดำเนินการรับเรื่องนี้</div>
-          <div class="autocomplete-wrap">
-            <input type="text" id="f-handler" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="acSearchStaff(this.value)" autocomplete="off">
-            <div class="autocomplete-list" id="ac-handler"></div>
-          </div>
-          <input type="hidden" id="f-handler-name">
-          <input type="hidden" id="f-handler-email">
-        </div>
-      </div>
-    </div>
   </div>
   <div class="nav-bar">
     <button class="btn btn-back" onclick="goStep(1)">← กลับ</button>
@@ -423,8 +408,16 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
           <input type="date" id="eq-start-date" onchange="calcDays()">
         </div>
         <div class="field">
+          <label>เวลาเริ่มยืม <span class="req">*</span></label>
+          <input type="time" id="eq-start-time" onchange="calcDays()" value="08:00">
+        </div>
+        <div class="field">
           <label>วันคืน <span class="req">*</span></label>
           <input type="date" id="eq-end-date" onchange="calcDays()">
+        </div>
+        <div class="field">
+          <label>เวลาคืน <span class="req">*</span></label>
+          <input type="time" id="eq-end-date-time" onchange="calcDays()" value="16:30">
         </div>
       </div>
       <div id="eq-days-display" style="display:none"></div>
@@ -729,17 +722,35 @@ function updateClock() {
 setInterval(updateClock, 1000); updateClock();
 
 // ── Autocomplete ──
+function positionDropdown(inputEl, listEl) {
+  const rect = inputEl.getBoundingClientRect();
+  const spaceBelow = window.innerHeight - rect.bottom;
+  const spaceAbove = rect.top;
+  const dropH = Math.min(240, listEl.scrollHeight || 200);
+  listEl.style.width = rect.width + 'px';
+  listEl.style.left  = rect.left + 'px';
+  if (spaceBelow >= dropH || spaceBelow >= spaceAbove) {
+    listEl.style.top    = (rect.bottom + 2) + 'px';
+    listEl.style.bottom = 'auto';
+  } else {
+    listEl.style.bottom = (window.innerHeight - rect.top + 2) + 'px';
+    listEl.style.top    = 'auto';
+  }
+}
+
 function acSearch(q, listId, dataKey) {
-  const list = document.getElementById(listId);
-  const data = dataKey === 'DEPTS' ? DEPTS : [];
+  const list  = document.getElementById(listId);
+  const input = list.previousElementSibling;
+  const data  = dataKey === 'DEPTS' ? DEPTS : [];
   if (!q.trim()) { list.classList.remove('show'); return; }
   const matches = data.filter(d => d.toLowerCase().includes(q.toLowerCase()));
   if (!matches.length) { list.classList.remove('show'); return; }
   list.innerHTML = matches.slice(0, 8).map(m => {
     const hi = m.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<mark>$1</mark>');
-    return `<div class="ac-item" onclick="pickAc('${listId}','${m}')">${hi}</div>`;
+    return `<div class="ac-item" onclick="pickAc('${listId}','${m.replace(/'/g,"\\'")}')">${hi}</div>`;
   }).join('');
   list.classList.add('show');
+  positionDropdown(input, list);
 }
 function pickAc(listId, val) {
   const list  = document.getElementById(listId);
@@ -749,7 +760,8 @@ function pickAc(listId, val) {
 }
 
 function acSearchStaffEq(q) {
-  const list = document.getElementById('ac-handler-eq');
+  const list  = document.getElementById('ac-handler-eq');
+  const input = document.getElementById('f-handler-eq');
   if (!q.trim()) { list.classList.remove('show'); return; }
   const matches = STAFF_LIST.filter(s => s.name.includes(q));
   if (!matches.length) { list.classList.remove('show'); return; }
@@ -758,6 +770,7 @@ function acSearchStaffEq(q) {
       ${s.name}<div class="ac-sub">${s.email}</div>
     </div>`).join('');
   list.classList.add('show');
+  positionDropdown(input, list);
 }
 function pickHandlerEq(name, email) {
   document.getElementById('f-handler-eq').value       = name;
@@ -766,9 +779,10 @@ function pickHandlerEq(name, email) {
   document.getElementById('ac-handler-eq').classList.remove('show');
 }
 
-// ── Staff Autocomplete (handler) ──
+// ── Staff Autocomplete (handler Step 2 - vc only) ──
 function acSearchStaff(q) {
-  const list = document.getElementById('ac-handler');
+  const list  = document.getElementById('ac-handler');
+  const input = document.getElementById('f-handler');
   if (!q.trim()) { list.classList.remove('show'); return; }
   const matches = STAFF_LIST.filter(s => s.name.includes(q));
   if (!matches.length) { list.classList.remove('show'); return; }
@@ -777,6 +791,7 @@ function acSearchStaff(q) {
       ${s.name}<div class="ac-sub">${s.email}</div>
     </div>`).join('');
   list.classList.add('show');
+  positionDropdown(input, list);
 }
 function pickHandler(name, email) {
   document.getElementById('f-handler').value      = name;
@@ -988,27 +1003,31 @@ async function loadInventory() {
 function renderEquipmentGrid() {
   const grid = document.getElementById('eq-grid');
   grid.innerHTML = inventoryData.map(item => {
-    const remaining = parseInt(item.Remaining) || 0;
-    const maxLimit  = parseInt(item.MaxLimitPerUser) || 99;
+    const totalStock= parseInt(item.TotalStock) || 0;
+    const borrowed  = parseInt(item.BorrowedCount) || 0;
+    const remaining = parseInt(item.Remaining) !== undefined ? parseInt(item.Remaining) : (totalStock - borrowed);
+    const maxLimit  = Math.min(parseInt(item.MaxLimitPerUser) || 99, Math.max(0, remaining));
     const isOut     = remaining <= 0;
     const isLow     = !isOut && remaining <= 3;
     const stockClass= isOut ? 'stock-out' : isLow ? 'stock-low' : 'stock-ok';
     const stockText = isOut ? '❌ หมด' : `เหลือ ${remaining}`;
     const name      = String(item.ItemName || '');
     const isKeem    = name.includes('คีมตัด');
+    const encName   = encodeURIComponent(name);
     let extraHtml   = '';
     if (isKeem) {
-      extraHtml = `<div class="keem-type" id="keem-type-${encodeURIComponent(name)}" style="display:none;">
+      extraHtml = `<div class="keem-type" id="keem-type-${encName}" style="display:none;">
         <button class="keem-btn" onclick="setKeemType('${name}','เล็ก',event)">เล็ก</button>
         <button class="keem-btn" onclick="setKeemType('${name}','ใหญ่',event)">ใหญ่</button>
       </div>`;
     }
-    return `<div class="eq-item ${isOut?'out-of-stock':''}" id="eq-item-${encodeURIComponent(name)}" onclick="toggleEqItem('${name}','${maxLimit}',${isOut})">
-      <div class="eq-item-top"><div class="eq-name">${name}</div><span class="eq-stock ${stockClass}">${stockText}</span></div>
+    // ถ้า maxLimit=0 แต่ isOut ก็จะถูกจัดการแยก
+    return `<div class="eq-item ${isOut?'out-of-stock':''}" id="eq-item-${encName}" onclick="toggleEqItem('${name}','${Math.max(1,maxLimit)}',${isOut})">
+      <div class="eq-item-top"><div class="eq-name">${name}</div><span class="eq-stock ${stockClass}" id="eq-stock-${encName}">${stockText}</span></div>
       ${isKeem ? '<div class="eq-special-note">กรุณาระบุขนาด</div>' : ''}
-      <div class="eq-qty-wrap" id="eq-qty-${encodeURIComponent(name)}" style="display:none;" onclick="event.stopPropagation()">
-        <button class="qty-btn" onclick="changeQty('${name}',-1,'${maxLimit}')">−</button>
-        <input class="qty-input" type="number" id="qty-${encodeURIComponent(name)}" value="1" min="1" max="${maxLimit}" onchange="onQtyChange('${name}','${maxLimit}')">
+      <div class="eq-qty-wrap" id="eq-qty-${encName}" style="display:none;" onclick="event.stopPropagation()">
+        <button class="qty-btn" onclick="changeQty('${name}',-1)">−</button>
+        <input class="qty-input" type="number" id="qty-${encName}" value="1" min="1" max="${Math.max(1,maxLimit)}" onchange="onQtyChange('${name}')">
         <span class="qty-unit">${getUnit(name)}</span>
       </div>
       ${extraHtml}
@@ -1053,20 +1072,49 @@ function toggleEqItem(name, maxLimit, isOut) {
   updateEqSummary();
 }
 
-function changeQty(name, delta, maxLimit) {
-  const input = document.getElementById('qty-'+encodeURIComponent(name));
+function getItemRemaining(name) {
+  const item = inventoryData.find(d => String(d.ItemName) === name);
+  if (!item) return 99;
+  return parseInt(item.Remaining) !== undefined ? parseInt(item.Remaining) : parseInt(item.TotalStock) - parseInt(item.BorrowedCount || 0);
+}
+
+function updateStockBadge(name) {
+  const encName   = encodeURIComponent(name);
+  const badge     = document.getElementById('eq-stock-' + encName);
+  const input     = document.getElementById('qty-' + encName);
+  if (!badge || !input) return;
+  const remaining = getItemRemaining(name);
+  const selected  = parseInt(input.value) || 0;
+  const available = remaining - selected;
+  badge.textContent = available <= 0 ? '❌ หมด' : `เหลือ ${available}`;
+  badge.className   = 'eq-stock ' + (available <= 0 ? 'stock-out' : available <= 3 ? 'stock-low' : 'stock-ok');
+}
+
+function changeQty(name, delta) {
+  const encName = encodeURIComponent(name);
+  const input   = document.getElementById('qty-' + encName);
   if (!input) return;
-  let val = Math.max(1, Math.min(parseInt(maxLimit)||99, (parseInt(input.value)||1) + delta));
+  const remaining = getItemRemaining(name);
+  const maxLimit  = inventoryData.find(d=>String(d.ItemName)===name)?.MaxLimitPerUser || 99;
+  const maxAllowed= Math.min(parseInt(maxLimit), remaining);
+  let val = Math.max(1, Math.min(maxAllowed, (parseInt(input.value)||1) + delta));
   input.value = val;
+  input.max   = maxAllowed;
   if (eqSelections[name]) eqSelections[name].qty = val;
+  updateStockBadge(name);
   updateEqSummary();
 }
-function onQtyChange(name, maxLimit) {
-  const input = document.getElementById('qty-'+encodeURIComponent(name));
+function onQtyChange(name) {
+  const encName = encodeURIComponent(name);
+  const input   = document.getElementById('qty-' + encName);
   if (!input) return;
-  let val = Math.max(1, Math.min(parseInt(maxLimit)||99, parseInt(input.value)||1));
+  const remaining = getItemRemaining(name);
+  const maxLimit  = inventoryData.find(d=>String(d.ItemName)===name)?.MaxLimitPerUser || 99;
+  const maxAllowed= Math.min(parseInt(maxLimit), remaining);
+  let val = Math.max(1, Math.min(maxAllowed, parseInt(input.value)||1));
   input.value = val;
   if (eqSelections[name]) eqSelections[name].qty = val;
+  updateStockBadge(name);
   updateEqSummary();
 }
 function setKeemType(name, type, event) {
@@ -1091,14 +1139,18 @@ function updateEqSummary() {
 // ── Days / Hours ──
 function calcDays() {
   const sv = document.getElementById('eq-start-date').value;
+  const st = document.getElementById('eq-start-time').value || '08:00';
   const ev = document.getElementById('eq-end-date').value;
+  const et = document.getElementById('eq-end-date-time').value || '16:30';
   const disp = document.getElementById('eq-days-display');
   if (!sv || !ev) { disp.style.display='none'; return; }
-  const s = new Date(sv), e2 = new Date(ev);
-  if (e2 < s) { showToast(['วันคืนต้องไม่ก่อนวันเริ่มยืม']); document.getElementById('eq-end-date').value=''; disp.style.display='none'; return; }
-  const days = Math.ceil((e2-s)/86400000)+1;
+  const s  = new Date(`${sv}T${st}`);
+  const e2 = new Date(`${ev}T${et}`);
+  if (e2 <= s) { showToast(['วัน/เวลาคืนต้องหลังวัน/เวลาเริ่มยืม']); document.getElementById('eq-end-date').value=''; disp.style.display='none'; return; }
+  const days = Math.ceil((new Date(ev) - new Date(sv)) / 86400000) + 1;
+  const hrs  = ((e2 - s) / 3600000).toFixed(1);
   disp.style.display='block';
-  disp.innerHTML=`<span class="days-badge">📅 รวม ${days} วัน</span>`;
+  disp.innerHTML=`<span class="days-badge">📅 รวม ${days} วัน (${hrs} ชั่วโมง)</span>`;
 }
 
 function onVcDateChange() {
@@ -1331,14 +1383,7 @@ function goStep(n) {
     const email = document.getElementById('f-email').value.trim();
     if (!email) errors.push('อีเมล — ยังไม่ได้กรอก');
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('อีเมล — รูปแบบไม่ถูกต้อง');
-    // Handler validation
-    const handlerName = document.getElementById('f-handler-name').value || document.getElementById('f-handler').value.trim();
-    if (!handlerName) errors.push('เจ้าหน้าที่ผู้รับเรื่อง — ยังไม่ได้ระบุ');
     if (errors.length) { showToast(errors); return; }
-    // เก็บชื่อ handler กรณีพิมพ์เองไม่ผ่าน autocomplete
-    if (!document.getElementById('f-handler-name').value) {
-      document.getElementById('f-handler-name').value = document.getElementById('f-handler').value.trim();
-    }
   }
 
   if (n === 4 && currentStep === 3) {
@@ -1346,7 +1391,9 @@ function goStep(n) {
     if (currentCategory === 'equipment') {
       if (!document.getElementById('eq-event').value.trim()) errors.push('ชื่องาน/กิจกรรม — ยังไม่ได้กรอก');
       if (!document.getElementById('eq-start-date').value)   errors.push('วันเริ่มยืม — ยังไม่ได้เลือก');
+      if (!document.getElementById('eq-start-time').value)   errors.push('เวลาเริ่มยืม — ยังไม่ได้ระบุ');
       if (!document.getElementById('eq-end-date').value)     errors.push('วันคืน — ยังไม่ได้เลือก');
+      if (!document.getElementById('eq-end-date-time').value)errors.push('เวลาคืน — ยังไม่ได้ระบุ');
       if (!Object.keys(eqSelections).length)                 errors.push('อุปกรณ์ — ยังไม่ได้เลือกรายการ');
       Object.keys(eqSelections).forEach(k => {
         if (k.includes('คีมตัด') && !eqSelections[k].keemType) errors.push('คีมตัดโซ่ — กรุณาเลือกขนาด (เล็ก/ใหญ่)');
@@ -1431,7 +1478,9 @@ function buildSummary() {
 
   if (currentCategory === 'equipment') {
     const startDate = document.getElementById('eq-start-date').value;
+    const startTime = document.getElementById('eq-start-time').value || '08:00';
     const endDate   = document.getElementById('eq-end-date').value;
+    const endTime   = document.getElementById('eq-end-date-time').value || '16:30';
     const event     = document.getElementById('eq-event').value;
     const days      = startDate && endDate ? Math.ceil((new Date(endDate)-new Date(startDate))/86400000)+1 : '-';
     const itemList  = Object.entries(eqSelections).map(([k,v]) => `${k}${v.keemType?` (${v.keemType})`:''}: ${v.qty} ${v.unit}`).join(', ');
@@ -1439,8 +1488,8 @@ function buildSummary() {
     const photoCount = uploadedEqPhotos.length;
     detailHtml = `
       <div class="sum-row"><span class="sum-k">📋 ชื่องาน</span><span class="sum-v">${event||'-'}</span></div>
-      <div class="sum-row"><span class="sum-k">📅 วันเริ่มยืม</span><span class="sum-v">${startDate||'-'}</span></div>
-      <div class="sum-row"><span class="sum-k">📅 วันคืน</span><span class="sum-v">${endDate||'-'} (รวม ${days} วัน)</span></div>
+      <div class="sum-row"><span class="sum-k">📅 วันเริ่มยืม</span><span class="sum-v">${startDate||'-'} เวลา ${startTime} น.</span></div>
+      <div class="sum-row"><span class="sum-k">📅 วันคืน</span><span class="sum-v">${endDate||'-'} เวลา ${endTime} น. (รวม ${days} วัน)</span></div>
       <div class="sum-row"><span class="sum-k">🦺 อุปกรณ์</span><span class="sum-v">${itemList||'-'}</span></div>
       <div class="sum-row"><span class="sum-k">📷 รูปอุปกรณ์</span><span class="sum-v">${photoCount > 0 ? `✅ แนบแล้ว ${photoCount} ไฟล์` : '—'}</span></div>
       <div class="sum-row"><span class="sum-k">✍️ ลายเซ็น</span><span class="sum-v">${sigThumb}</span></div>`;
@@ -1536,9 +1585,14 @@ async function submitForm() {
     if (currentCategory === 'equipment') {
       refCode = genRefCode('BORROW');
       const startDate = document.getElementById('eq-start-date').value;
+      const startTime = document.getElementById('eq-start-time').value || '08:00';
       const endDate   = document.getElementById('eq-end-date').value;
+      const endTime   = document.getElementById('eq-end-date-time').value || '16:30';
       const totalDays = startDate && endDate ? Math.ceil((new Date(endDate)-new Date(startDate))/86400000)+1 : '';
-      const items     = Object.entries(eqSelections).map(([k,v]) => ({ name: k + (v.keemType?` (${v.keemType})`:``), qty: v.qty, unit: v.unit }));
+      const items     = Object.entries(eqSelections).map(([k,v]) => ({
+        name: k + (v.keemType?` (${v.keemType})`:``), qty: v.qty, unit: v.unit,
+        remaining: getItemRemaining(k)
+      }));
 
       // Equipment photos as JSON
       sendText.textContent = 'กำลังอัปโหลดรูปอุปกรณ์...';
@@ -1552,7 +1606,7 @@ async function submitForm() {
         name, personType: ptype, dept, phone, email,
         handlerName, handlerEmail,
         eventName:     document.getElementById('eq-event').value,
-        startDate, endDate, totalDays,
+        startDate, startTime, endDate, endTime, totalDays,
         borrowedItems: JSON.stringify(items),
         idImageData, idImageMime, idImageName,
         equipmentPhotosData: equipPhotosJson,
@@ -1638,6 +1692,9 @@ function resetAll() {
   document.getElementById('vc-hours-display').style.display = 'none';
   document.getElementById('eq-summary-wrap').style.display  = 'none';
   document.getElementById('eq-photos-count').style.display  = 'none';
+  // Reset time defaults
+  document.getElementById('eq-start-time').value    = '08:00';
+  document.getElementById('eq-end-date-time').value = '16:30';
 
   clearSignature();
   // Reset eq handler step 3
@@ -1654,8 +1711,10 @@ function resetAll() {
 window.onload = () => {
   const today   = new Date().toISOString().split('T')[0];
   const nowTime = new Date().toTimeString().slice(0,5);
-  document.getElementById('eq-start-date').value = today;
-  document.getElementById('eq-end-date').value   = today;
+  document.getElementById('eq-start-date').value    = today;
+  document.getElementById('eq-end-date').value      = today;
+  document.getElementById('eq-start-time').value    = '08:00';
+  document.getElementById('eq-end-date-time').value = '16:30';
   document.getElementById('vc-start-date').value = today;
   document.getElementById('vc-end-date').value   = today;
   document.getElementById('vc-start-time').value = nowTime;
