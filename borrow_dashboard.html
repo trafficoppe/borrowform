@@ -49,6 +49,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .period-label{font-size:13.5px;font-weight:600;color:var(--muted);}
 .period-select{padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;background:white;color:var(--text);}
 .period-select:focus{border-color:var(--primary-mid);}
+.period-sep{font-size:13px;color:var(--muted);font-weight:600;}
 .btn-export{display:flex;align-items:center;gap:8px;padding:10px 22px;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
 .btn-export-pdf{background:linear-gradient(135deg,var(--status-overdue),#a93226);color:white;box-shadow:0 3px 12px rgba(192,57,43,0.3);}
 .btn-export-pdf:hover{transform:translateY(-1px);}
@@ -56,7 +57,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .btn-refresh{background:var(--primary);color:white;}
 .btn-refresh:hover{background:var(--primary-mid);}
 
-/* KPI CARDS */
+/* KPI */
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
 .kpi-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;text-align:center;border-top:4px solid var(--border);transition:all 0.2s;}
 .kpi-card:hover{transform:translateY(-2px);}
@@ -75,7 +76,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .kpi-card.vehicle .kpi-num{color:var(--vehicle);}
 .kpi-card.gold .kpi-num{color:var(--accent);}
 .kpi-label{font-size:12px;color:var(--muted);line-height:1.4;}
-.kpi-sub{font-size:11px;color:#aaa;margin-top:2px;}
 
 .section-title{font-family:'Noto Serif Thai',serif;font-size:17px;font-weight:700;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 
@@ -101,6 +101,7 @@ tbody td{padding:9px 14px;vertical-align:middle;}
 .tag-approved{background:#cce5ff;color:#004085;}
 .tag-active{background:#d4edda;color:#155724;}
 .tag-returned{background:#c3e6cb;color:#1e5631;}
+.tag-return-pending{background:#fff3cd;color:#7a3000;border:1px solid #e8a020;}
 .tag-overdue{background:#f5c6cb;color:#c0392b;}
 .tag-cancelled{background:#f8d7da;color:#721c24;}
 
@@ -136,17 +137,35 @@ tbody td{padding:9px 14px;vertical-align:middle;}
 .pdf-progress-bar{width:100%;height:6px;background:var(--bg);border-radius:10px;margin-top:12px;overflow:hidden;}
 .pdf-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-mid),var(--accent));border-radius:10px;transition:width 0.4s ease;width:0%;}
 
-.toast-notify{position:fixed;bottom:24px;right:24px;background:var(--primary);color:white;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9999;display:none;align-items:center;gap:8px;max-width:320px;}
+.toast-notify{position:fixed;bottom:24px;right:24px;background:var(--primary);color:white;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9999;display:none;align-items:center;gap:8px;max-width:320px;font-family:'Sarabun',sans-serif;}
 .toast-notify.show{display:flex;}
 .toast-notify.error{background:#c0392b;}
 .toast-notify.success{background:#27AE60;}
 
-/* Vehicle per-cart stats */
 .vc-stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
 .vc-stat-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:16px;border-left:4px solid var(--vehicle);}
 .vc-stat-name{font-size:13px;font-weight:700;color:var(--vehicle);margin-bottom:8px;}
 .vc-stat-row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-bottom:4px;}
 .vc-stat-row span{font-weight:600;color:var(--text);}
+
+/* DETAIL MODAL */
+.detail-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(5px);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.detail-modal-bg.show{display:flex;}
+.detail-modal{background:white;border-radius:18px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,0.35);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes popIn{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+.detail-banner{padding:14px 20px;color:white;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;border-radius:18px 18px 0 0;}
+.detail-banner.eq{background:var(--primary);}
+.detail-banner.vc{background:var(--vehicle);}
+.detail-banner.overdue{background:var(--status-overdue);}
+.detail-close{background:rgba(255,255,255,0.2);border:none;font-size:20px;color:white;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.detail-body{padding:22px;}
+.detail-row{display:flex;margin-bottom:10px;font-size:14px;gap:10px;}
+.detail-key{color:var(--muted);min-width:130px;flex-shrink:0;font-weight:600;}
+.detail-val{flex:1;color:var(--text);line-height:1.5;word-break:break-word;}
+.detail-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
+
+.name-link{cursor:pointer;color:var(--primary);font-weight:600;text-decoration:underline dotted;transition:color 0.15s;}
+.name-link:hover{color:var(--primary-mid);}
 
 @media(max-width:768px){.content{padding:14px;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.chart-grid{grid-template-columns:1fr;}}
 </style>
@@ -160,7 +179,7 @@ tbody td{padding:9px 14px;vertical-align:middle;}
       <div class="icon">📊</div>
       <h2>Dashboard รายงานสรุป</h2>
       <p>งานจราจรและความปลอดภัย มหาวิทยาลัยมหิดล</p>
-      <p style="font-size:11px;color:#aaa;margin-top:4px;">v1.1.1</p>
+      <p style="font-size:11px;color:#aaa;margin-top:4px;">v1.2.0</p>
     </div>
     <div class="login-field"><label>ชื่อผู้ใช้</label><input type="text" id="login-user" placeholder="กรอกชื่อผู้ใช้" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <div class="login-field"><label>รหัสผ่าน</label><input type="password" id="login-pass" placeholder="กรอกรหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -173,7 +192,7 @@ tbody td{padding:9px 14px;vertical-align:middle;}
 <div class="top-bar">
   <div class="top-bar-left">
     <span style="font-size:20px;">📊</span>
-    <h1>Dashboard รายงานสรุป <span class="ver-badge">v1.1.1</span></h1>
+    <h1>Dashboard รายงานสรุป <span class="ver-badge">v1.2.0</span></h1>
   </div>
   <div class="top-bar-right">
     <a href="index.html" class="btn-topnav">🏠 หน้าหลัก</a>
@@ -187,11 +206,21 @@ tbody td{padding:9px 14px;vertical-align:middle;}
   <!-- TOOLBAR -->
   <div class="report-toolbar">
     <div class="report-toolbar-left">
-      <span class="period-label">📅 งวด:</span>
-      <select class="period-select" id="sel-month" onchange="onPeriodChange()">
+      <span class="period-label">📅 งวดจาก:</span>
+      <select class="period-select" id="sel-month-from" onchange="onPeriodChange()">
         <option value="all">ทุกเดือน</option>
         <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option>
-        <option value="3">มีนาคม</option><option value="4" selected>เมษายน</option>
+        <option value="3">มีนาคม</option><option value="4">เมษายน</option>
+        <option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
+        <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option>
+        <option value="9">กันยายน</option><option value="10">ตุลาคม</option>
+        <option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
+      </select>
+      <span class="period-sep">ถึง</span>
+      <select class="period-select" id="sel-month-to" onchange="onPeriodChange()">
+        <option value="all">ทุกเดือน</option>
+        <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option>
+        <option value="3">มีนาคม</option><option value="4">เมษายน</option>
         <option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
         <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option>
         <option value="9">กันยายน</option><option value="10">ตุลาคม</option>
@@ -209,19 +238,17 @@ tbody td{padding:9px 14px;vertical-align:middle;}
     </div>
   </div>
 
-  <!-- KPI — Equipment -->
+  <!-- KPI Equipment -->
   <div class="section-title">🦺 สรุปอุปกรณ์</div>
   <div class="kpi-grid" id="kpi-eq">
     <div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>กำลังโหลด...</div>
   </div>
 
-  <!-- KPI — Vehicle -->
+  <!-- KPI Vehicle -->
   <div class="section-title">🚗 สรุปรถกอล์ฟ</div>
   <div class="kpi-grid" id="kpi-vc">
     <div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>กำลังโหลด...</div>
   </div>
-
-  <!-- Per-vehicle stats -->
   <div class="vc-stat-grid" id="vc-per-cart"></div>
 
   <!-- CHARTS -->
@@ -306,7 +333,7 @@ tbody td{padding:9px 14px;vertical-align:middle;}
   </div>
 
 </div>
-</div>
+</div><!-- end main-wrap -->
 
 <!-- PDF PROGRESS -->
 <div class="pdf-progress-overlay" id="pdf-progress">
@@ -315,6 +342,20 @@ tbody td{padding:9px 14px;vertical-align:middle;}
     <h3>กำลังสร้าง PDF</h3>
     <p id="pdf-step-text">กำลังโหลดฟอนต์ภาษาไทย...</p>
     <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="detail-modal-bg" id="detail-modal-bg" onclick="bgCloseDetail(event)">
+  <div class="detail-modal">
+    <div class="detail-banner" id="detail-banner">
+      <span id="detail-type-text"></span>
+      <button class="detail-close" onclick="closeDetailModal()">✕</button>
+    </div>
+    <div class="detail-body" id="detail-body"></div>
+    <div class="detail-footer">
+      <button style="padding:9px 20px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;cursor:pointer;" onclick="closeDetailModal()">ปิด</button>
+    </div>
   </div>
 </div>
 
@@ -327,11 +368,18 @@ const CREDENTIALS = [
   { user:'admin01', pass:'024414400', role:'closer' }
 ];
 
+const THAI_MONTHS = ['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+
 let allEqData = [], allVcData = [];
 let charts = {};
 let filteredEq = [], filteredVc = [];
 
-// ── Login ──
+// Font cache — โหลดครั้งเดียว ใช้ซ้ำได้
+let _fontNormal = null;
+let _fontBold   = null;
+let _logoB64    = null;
+
+/* ═══ AUTH ═══ */
 function doLogin() {
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value.trim();
@@ -348,7 +396,7 @@ function doLogin() {
 }
 function logout() { sessionStorage.removeItem('dash_auth'); location.reload(); }
 
-// ── Helpers ──
+/* ═══ HELPERS ═══ */
 function parseDate(str) {
   if (!str) return null;
   const s = String(str).trim();
@@ -369,10 +417,18 @@ function fmtDateTimeTH(str) {
   if (!d || isNaN(d.getTime())) return String(str).substring(0,16);
   try { return d.toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); } catch(e) { return String(str); }
 }
+function fmtDateLongTH(d) {
+  if (!d) return '-';
+  const dd = (d instanceof Date) ? d : parseDate(d);
+  if (!dd || isNaN(dd)) return String(d||'-');
+  const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+  return `วัน${days[dd.getDay()]}ที่ ${dd.getDate()} ${THAI_MONTHS[dd.getMonth()+1]} พ.ศ. ${dd.getFullYear()+543}`;
+}
 function getStatusTag(status) {
   const s = String(status||'');
   if (s.includes('เกินกำหนด'))   return 'tag-overdue';
   if (s.includes('ยกเลิก'))      return 'tag-cancelled';
+  if (s.includes('แจ้งคืนแล้ว')||s.includes('รอยืนยัน')) return 'tag-return-pending';
   if (s.includes('คืนแล้ว'))     return 'tag-returned';
   if (s.includes('กำลัง')||s.includes('รับของแล้ว')) return 'tag-active';
   if (s.includes('อนุมัติ'))     return 'tag-approved';
@@ -386,12 +442,14 @@ function showToast(msg, type='success') {
 }
 function setPeriodDefaults() {
   const now = new Date();
-  document.getElementById('sel-month').value = String(now.getMonth()+1);
-  document.getElementById('sel-year').value  = String(now.getFullYear());
+  const m   = String(now.getMonth()+1);
+  document.getElementById('sel-month-from').value = m;
+  document.getElementById('sel-month-to').value   = m;
+  document.getElementById('sel-year').value       = String(now.getFullYear());
 }
 function onPeriodChange() { applyFilters(); }
 
-// ── Load ──
+/* ═══ LOAD DATA ═══ */
 async function loadData() {
   try {
     const [eqR, vcR] = await Promise.all([
@@ -401,22 +459,41 @@ async function loadData() {
     const [eqJson, vcJson] = await Promise.all([eqR.json(), vcR.json()]);
 
     allEqData = (eqJson.data||[]).map(r => ({
-      type:'eq', refCode:r['RefCode']||'', name:r['Name']||'',
-      prefix:r['Prefix']||'', dept:r['Dept']||'', email:r['Email']||'',
+      type:'eq',
+      refCode:r['RefCode']||'', prefix:r['Prefix']||'', name:r['Name']||'',
+      personType:r['PersonType']||'', dept:r['Dept']||'',
+      phone:r['Phone']||'', email:r['Email']||'',
       eventName:r['EventName']||'', items:r['BorrowedItems']||'',
       startDate:r['StartDate']||'', endDate:r['EndDate']||'',
+      startTime:r['StartTime']||'', endTime:r['EndTime']||'',
+      totalDays:r['TotalDays']||'',
       status:r['Status']||'รอดำเนินการ',
-      handlerName:r['HandlerName']||'', updatedBy:r['UpdatedBy']||'',
-      dateObj:parseDate(r['Timestamp']), endDateObj:parseDate(r['EndDate'])
+      note:r['ActionNote']||'',
+      handlerName:r['HandlerName']||'', handlerEmail:r['HandlerEmail']||'',
+      updatedBy:r['UpdatedBy']||'', updatedAt:r['UpdatedAt']||'',
+      signatureUrl:r['Signature_Url']||'',
+      staffSigUrl:r['StaffSig_Url']||'',
+      idImageUrl:r['ID_ImageUrl']||'',
+      dateObj:parseDate(r['Timestamp']),
+      endDateObj:parseDate(r['EndDate'])
     }));
+
     allVcData = (vcJson.bookings||[]).map(r => ({
-      type:'vc', refCode:r['RefCode']||'', name:r['Name']||'',
-      dept:r['Dept']||'', email:r['Email']||'', vcName:r['VehicleName']||'',
-      vehicleId:r['VehicleId']||'', eventName:r['EventName']||'',
+      type:'vc',
+      refCode:r['RefCode']||'', name:r['Name']||'',
+      personType:r['PersonType']||'', dept:r['Dept']||'',
+      phone:r['Phone']||'', email:r['Email']||'',
+      vcName:r['VehicleName']||'', vehicleId:r['VehicleId']||'',
+      eventName:r['EventName']||'', purpose:r['Purpose']||'',
       startDT:r['StartDateTime']||'', endDT:r['EndDateTime']||'',
       totalHours:r['TotalHours']||'', passengers:r['PassengerCount']||'',
       status:r['Status']||'รอดำเนินการ',
-      dateObj:parseDate(r['Timestamp']), endDTObj:parseDate(r['EndDateTime'])
+      note:r['ActionNote']||'', updatedBy:r['UpdatedBy']||'',
+      returnNote:r['ReturnConditionNote']||'',
+      signatureUrl:r['Signature_Url']||'',
+      idImageUrl:r['ID_ImageUrl']||'',
+      dateObj:parseDate(r['Timestamp']),
+      endDTObj:parseDate(r['EndDateTime'])
     }));
 
     applyFilters();
@@ -426,37 +503,36 @@ async function loadData() {
   }
 }
 
+/* ═══ FILTERS ═══ */
 function applyFilters() {
-  const month = document.getElementById('sel-month').value;
+  const mFrom = document.getElementById('sel-month-from').value;
+  const mTo   = document.getElementById('sel-month-to').value;
   const year  = document.getElementById('sel-year').value;
 
-  filteredEq = allEqData.filter(d => {
-    if (!d.dateObj) return year==='all';
-    if (year!=='all' && d.dateObj.getFullYear()!==parseInt(year)) return false;
-    if (month!=='all' && d.dateObj.getMonth()+1!==parseInt(month)) return false;
-    return true;
-  });
-  filteredVc = allVcData.filter(d => {
-    if (!d.dateObj) return year==='all';
-    if (year!=='all' && d.dateObj.getFullYear()!==parseInt(year)) return false;
-    if (month!=='all' && d.dateObj.getMonth()+1!==parseInt(month)) return false;
-    return true;
-  });
+  function inRange(d) {
+    if (!d) return year==='all';
+    if (year!=='all' && d.getFullYear()!==parseInt(year)) return false;
+    if (mFrom==='all' || mTo==='all') return true;
+    const mon = d.getMonth()+1;
+    const mF  = parseInt(mFrom), mT = parseInt(mTo);
+    return mF <= mT ? (mon>=mF && mon<=mT) : (mon>=mF || mon<=mT);
+  }
 
+  filteredEq = allEqData.filter(d => inRange(d.dateObj));
+  filteredVc = allVcData.filter(d => inRange(d.dateObj));
   renderKPIs(); renderCharts(); renderTables();
 }
 
+/* ═══ KPIs ═══ */
 function renderKPIs() {
   const now = new Date();
-  // Equipment KPIs
   const eqTotal    = filteredEq.length;
   const eqPending  = filteredEq.filter(d=>d.status.includes('รอดำเนินการ')).length;
   const eqActive   = filteredEq.filter(d=>d.status.includes('กำลังยืม')||d.status.includes('รับของแล้ว')).length;
   const eqReturned = filteredEq.filter(d=>d.status.includes('รับของคืน')).length;
-  const eqOverdue  = filteredEq.filter(d=>{
-    return d.endDateObj && d.endDateObj<now && !['รับของคืน','ยกเลิก'].some(s=>d.status.includes(s));
-  }).length;
-  const eqRate = eqTotal>0 ? Math.round(eqReturned/eqTotal*100) : 0;
+  const eqRetPend  = filteredEq.filter(d=>d.status.includes('แจ้งคืนแล้ว')).length;
+  const eqOverdue  = filteredEq.filter(d=>d.endDateObj&&d.endDateObj<now&&!['รับของคืน','ยกเลิก'].some(s=>d.status.includes(s))).length;
+  const eqRate     = eqTotal>0 ? Math.round(eqReturned/eqTotal*100) : 0;
 
   document.getElementById('kpi-eq').innerHTML = `
     <div class="kpi-card blue"><div class="kpi-num">${eqTotal}</div><div class="kpi-label">คำขอยืมทั้งหมด</div></div>
@@ -466,10 +542,9 @@ function renderKPIs() {
     <div class="kpi-card red"><div class="kpi-num">${eqOverdue}</div><div class="kpi-label">⚠️ เกินกำหนด</div></div>
     <div class="kpi-card gold"><div class="kpi-num">${eqRate}%</div><div class="kpi-label">อัตราคืนสำเร็จ</div></div>`;
 
-  // Vehicle KPIs
   const vcTotal    = filteredVc.length;
   const vcPending  = filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length;
-  const vcActive   = filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลังใช้งาน')).length;
+  const vcActive   = filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length;
   const vcReturned = filteredVc.filter(d=>d.status.includes('คืนแล้ว')).length;
   const vcOverdue  = filteredVc.filter(d=>d.endDTObj&&d.endDTObj<now&&!['คืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s))).length;
   const totalHrs   = filteredVc.reduce((acc,d)=>acc+(parseFloat(d.totalHours)||0),0).toFixed(1);
@@ -482,13 +557,12 @@ function renderKPIs() {
     <div class="kpi-card red"><div class="kpi-num">${vcOverdue}</div><div class="kpi-label">⚠️ เกินกำหนด</div></div>
     <div class="kpi-card gold"><div class="kpi-num">${totalHrs}</div><div class="kpi-label">ชม. ใช้งานรวม</div></div>`;
 
-  // Per-vehicle stats
   const vehicles = ['GC001','GC002','GC003'];
-  const vcNames  = {'GC001':'รถกอล์ฟ EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE พยาบาล'};
+  const vcNm  = {'GC001':'รถกอล์ฟ EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE พยาบาล'};
   document.getElementById('vc-per-cart').innerHTML = vehicles.map(vid => {
     const vd = filteredVc.filter(d=>d.vehicleId===vid);
     return `<div class="vc-stat-card">
-      <div class="vc-stat-name">🚗 ${vcNames[vid]}</div>
+      <div class="vc-stat-name">🚗 ${vcNm[vid]}</div>
       <div class="vc-stat-row">คำขอรวม<span>${vd.length}</span></div>
       <div class="vc-stat-row">กำลังใช้/อนุมัติ<span>${vd.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length}</span></div>
       <div class="vc-stat-row">คืนแล้ว<span>${vd.filter(d=>d.status.includes('คืน')).length}</span></div>
@@ -497,16 +571,16 @@ function renderKPIs() {
   }).join('');
 }
 
+/* ═══ CHARTS ═══ */
 function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
 
 function renderCharts() {
   const now = new Date();
-
-  // EQ Status Pie
   destroyChart('eq-status');
   const eqCounts = {
     'รอดำเนินการ': filteredEq.filter(d=>d.status.includes('รอดำเนินการ')).length,
     'กำลังยืม':    filteredEq.filter(d=>d.status.includes('กำลัง')||d.status.includes('รับของแล้ว')).length,
+    'แจ้งคืนรอยืนยัน': filteredEq.filter(d=>d.status.includes('แจ้งคืนแล้ว')).length,
     'คืนแล้ว':     filteredEq.filter(d=>d.status.includes('รับของคืน')).length,
     'เกินกำหนด':  filteredEq.filter(d=>d.endDateObj&&d.endDateObj<now&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length,
     'ยกเลิก':      filteredEq.filter(d=>d.status.includes('ยกเลิก')).length
@@ -514,11 +588,10 @@ function renderCharts() {
   charts['eq-status'] = new Chart(document.getElementById('chart-eq-status'), {
     type:'doughnut',
     data:{ labels:Object.keys(eqCounts), datasets:[{ data:Object.values(eqCounts),
-      backgroundColor:['#F39C12','#27AE60','#2980B9','#C0392B','#aaa'], borderWidth:2, borderColor:'#fff' }] },
+      backgroundColor:['#F39C12','#27AE60','#e8a020','#2980B9','#C0392B','#aaa'], borderWidth:2, borderColor:'#fff' }] },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:8 } } } }
   });
 
-  // Monthly trend (last 12 months)
   destroyChart('monthly');
   const monthLabels=[], monthEq=[], monthVc=[];
   for (let i=11; i>=0; i--) {
@@ -536,14 +609,13 @@ function renderCharts() {
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } }, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1 } } } }
   });
 
-  // VC Status Pie
   destroyChart('vc-status');
   const vcCounts = {
-    'รอดำเนินการ': filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length,
+    'รอดำเนินการ':  filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length,
     'อนุมัติ/ใช้งาน': filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length,
-    'คืนแล้ว': filteredVc.filter(d=>d.status.includes('คืน')).length,
-    'เกินกำหนด': filteredVc.filter(d=>d.endDTObj&&d.endDTObj<now&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length,
-    'ยกเลิก': filteredVc.filter(d=>d.status.includes('ยกเลิก')).length
+    'คืนแล้ว':     filteredVc.filter(d=>d.status.includes('คืน')).length,
+    'เกินกำหนด':  filteredVc.filter(d=>d.endDTObj&&d.endDTObj<now&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length,
+    'ยกเลิก':      filteredVc.filter(d=>d.status.includes('ยกเลิก')).length
   };
   charts['vc-status'] = new Chart(document.getElementById('chart-vc-status'), {
     type:'doughnut',
@@ -552,7 +624,6 @@ function renderCharts() {
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:8 } } } }
   });
 
-  // Dept bar
   destroyChart('dept');
   const deptCount = {};
   [...filteredEq,...filteredVc].forEach(d => { deptCount[d.dept||'ไม่ระบุ'] = (deptCount[d.dept||'ไม่ระบุ']||0)+1; });
@@ -566,13 +637,12 @@ function renderCharts() {
       plugins:{ legend:{ display:false } }, scales:{ x:{ beginAtZero:true, ticks:{ stepSize:1 } } } }
   });
 
-  // Vehicle usage bar
   destroyChart('vc-usage');
-  const vcNames = {'GC001':'EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE'};
-  const vcIds   = ['GC001','GC002','GC003'];
+  const vcIds = ['GC001','GC002','GC003'];
+  const vcNm2 = {'GC001':'EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE'};
   charts['vc-usage'] = new Chart(document.getElementById('chart-vc-usage'), {
     type:'bar',
-    data:{ labels:vcIds.map(v=>vcNames[v]||v),
+    data:{ labels:vcIds.map(v=>vcNm2[v]||v),
       datasets:[
         { label:'จำนวนครั้ง', data:vcIds.map(v=>allVcData.filter(d=>d.vehicleId===v).length),
           backgroundColor:'rgba(26,107,58,0.7)', borderColor:'#1a6b3a', borderWidth:1 },
@@ -583,13 +653,9 @@ function renderCharts() {
       plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } }, scales:{ y:{ beginAtZero:true } } }
   });
 
-  // Top items
   const itemCount = {};
   filteredEq.forEach(d => {
-    try {
-      const arr = JSON.parse(d.items||'[]');
-      arr.forEach(it => { const n=it.name||'-'; itemCount[n]=(itemCount[n]||0)+(parseInt(it.qty)||1); });
-    } catch(e) {}
+    try { const arr=JSON.parse(d.items||'[]'); arr.forEach(it=>{ const n=it.name||'-'; itemCount[n]=(itemCount[n]||0)+(parseInt(it.qty)||1); }); } catch(e) {}
   });
   const topItems = Object.entries(itemCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
   const maxVal = topItems.length ? topItems[0][1] : 1;
@@ -602,16 +668,17 @@ function renderCharts() {
     '<li style="color:var(--muted);justify-content:center;">ไม่มีข้อมูล</li>';
 }
 
+/* ═══ TABLES ═══ */
 function renderTables() {
   const now = new Date();
 
-  // EQ table
-  const eqRows = filteredEq.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+  // EQ table — ชื่อคลิกได้
+  const eqRows = filteredEq.slice().sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
   document.getElementById('eq-count').textContent = eqRows.length + ' รายการ';
   document.getElementById('tbody-eq').innerHTML = eqRows.length ?
-    eqRows.map(d => `<tr>
+    eqRows.map((d,i) => `<tr>
       <td style="font-size:12px;color:var(--muted);">${d.refCode||'—'}</td>
-      <td style="font-weight:600;">${d.name||'-'}</td>
+      <td><span class="name-link" onclick="openDetailModal('eq',${allEqData.indexOf(d)})">${d.name||'-'}</span></td>
       <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.dept||'-'}</td>
       <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.eventName||'-'}</td>
       <td style="white-space:nowrap;">${fmtDateTH(d.startDate)}</td>
@@ -623,13 +690,13 @@ function renderTables() {
     '<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--muted);">ไม่พบข้อมูลในช่วงเวลาที่เลือก</td></tr>';
 
   // VC table
-  const vcRows = filteredVc.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+  const vcRows = filteredVc.slice().sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
   document.getElementById('vc-count').textContent = vcRows.length + ' รายการ';
   document.getElementById('tbody-vc').innerHTML = vcRows.length ?
-    vcRows.map(d => `<tr>
+    vcRows.map((d,i) => `<tr>
       <td style="font-size:12px;color:var(--muted);">${d.refCode||'—'}</td>
       <td><span style="font-weight:600;color:var(--vehicle);">${d.vcName||'-'}</span></td>
-      <td style="font-weight:600;">${d.name||'-'}</td>
+      <td><span class="name-link" onclick="openDetailModal('vc',${allVcData.indexOf(d)})">${d.name||'-'}</span></td>
       <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.dept||'-'}</td>
       <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.eventName||'-'}</td>
       <td style="white-space:nowrap;font-size:12.5px;">${fmtDateTimeTH(d.startDT)}</td>
@@ -639,19 +706,19 @@ function renderTables() {
     '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">ไม่พบข้อมูลในช่วงเวลาที่เลือก</td></tr>';
 
   // Overdue table
-  const overdueEq = filteredEq.filter(d => d.endDateObj && d.endDateObj<now && !['รับของคืน','ยกเลิก'].some(s=>d.status.includes(s)));
-  const overdueVc = filteredVc.filter(d => d.endDTObj && d.endDTObj<now && !['คืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s)));
+  const overdueEq = filteredEq.filter(d=>d.endDateObj&&d.endDateObj<now&&!['รับของคืน','ยกเลิก'].some(s=>d.status.includes(s)));
+  const overdueVc = filteredVc.filter(d=>d.endDTObj&&d.endDTObj<now&&!['คืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s)));
   const allOverdue = [
-    ...overdueEq.map(d => ({ ...d, overdueStr: Math.floor((now-d.endDateObj)/86400000)+' วัน', endStr: fmtDateTH(d.endDate) })),
-    ...overdueVc.map(d => ({ ...d, overdueStr: Math.floor((now-d.endDTObj)/3600000)+' ชม.', endStr: fmtDateTimeTH(d.endDT) }))
+    ...overdueEq.map(d=>({...d, overdueStr:Math.floor((now-d.endDateObj)/86400000)+' วัน', endStr:fmtDateTH(d.endDate)})),
+    ...overdueVc.map(d=>({...d, overdueStr:Math.floor((now-d.endDTObj)/3600000)+' ชม.',  endStr:fmtDateTimeTH(d.endDT)}))
   ];
   document.getElementById('overdue-count').textContent = allOverdue.length ? `⚠️ ${allOverdue.length} รายการ — ต้องติดตาม!` : 'ไม่มีรายการค้าง ✅';
   document.getElementById('overdue-count').style.color = allOverdue.length ? '#c0392b' : '#27AE60';
   document.getElementById('tbody-overdue').innerHTML = allOverdue.length ?
-    allOverdue.map(d => `<tr>
+    allOverdue.map(d=>`<tr>
       <td><span class="tag ${d.type==='eq'?'tag-approved':'tag-active'}">${d.type==='eq'?'🦺 อุปกรณ์':'🚗 รถกอล์ฟ'}</span></td>
       <td style="font-size:12px;color:var(--muted);">${d.refCode||'—'}</td>
-      <td style="font-weight:600;">${d.name||'-'}</td>
+      <td><span class="name-link" onclick="openDetailModal('${d.type}',${d.type==='eq'?allEqData.indexOf(d):allVcData.indexOf(d)})">${d.name||'-'}</span></td>
       <td>${d.dept||'-'}</td>
       <td style="white-space:nowrap;">${d.endStr}</td>
       <td style="color:#c0392b;font-weight:700;">${d.overdueStr}</td>
@@ -664,45 +731,118 @@ function showTab(tab) {
   ['eq','vc','overdue'].forEach(t => {
     document.getElementById(`table-${t}`).style.display = t===tab ? 'block':'none';
   });
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.${tab}-tab`) ? document.querySelector(`.${tab==='overdue'?'overdue':tab}-tab`).classList.add('active') : null;
-  // Fix for overdue tab button
-  if (tab==='overdue') {
-    document.querySelectorAll('.tab-btn').forEach(b => { if(b.textContent.includes('เกินกำหนด')) b.classList.add('active'); });
-  }
-}
-
-// ═══════════════════════════════════════════════════════
-// PDF EXPORT — ใช้ fetch() โหลด font จาก ./fonts/ (ห้าม base64)
-// ═══════════════════════════════════════════════════════
-
-let fontNormalLoaded = null;
-let fontBoldLoaded   = null;
-let logoLoaded       = null;
-
-async function loadFontAsArrayBuffer(url) {
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error('โหลดฟอนต์ไม่ได้: ' + url);
-  return await resp.arrayBuffer();
-}
-
-async function loadImageAsBase64(url) {
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error('โหลดรูปไม่ได้: ' + url);
-  const blob = await resp.blob();
-  return new Promise((res, rej) => {
-    const reader = new FileReader();
-    reader.onload  = e => res(e.target.result);
-    reader.onerror = () => rej(new Error('อ่านรูปไม่ได้'));
-    reader.readAsDataURL(blob);
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active',
+      (tab==='eq' && b.classList.contains('eq-tab')) ||
+      (tab==='vc' && b.classList.contains('vc-tab')) ||
+      (tab==='overdue' && b.classList.contains('overdue-tab'))
+    );
   });
 }
 
-function arrayBufferToBase64(buffer) {
-  let binary = '';
-  const bytes = new Uint8Array(buffer);
-  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-  return btoa(binary);
+/* ═══ DETAIL MODAL ═══ */
+function openDetailModal(type, idx) {
+  const d = type==='eq' ? allEqData[idx] : allVcData[idx];
+  if (!d) return;
+  const isEq = type==='eq';
+  const banner = document.getElementById('detail-banner');
+  banner.className = 'detail-banner ' + (isEq ? 'eq' : 'vc');
+  document.getElementById('detail-type-text').textContent = `${isEq?'🦺':'🚗'} ${isEq?'ยืมอุปกรณ์':'จองรถกอล์ฟ'} — ${d.refCode||''}`;
+
+  let rows = '';
+  if (isEq) {
+    let itemsText = '-';
+    if (d.items) try { const arr=JSON.parse(d.items); itemsText=arr.map(it=>`${it.name}: ${it.qty} ${it.unit||''}`).join('<br>'); } catch(e) { itemsText=d.items; }
+    rows = `
+      <div class="detail-row"><span class="detail-key">📋 RefCode</span><span class="detail-val" style="font-weight:700;color:var(--primary);">${d.refCode||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">👤 ชื่อ</span><span class="detail-val">${d.prefix||''}${d.name||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">🏷️ ประเภท</span><span class="detail-val">${d.personType||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">🏢 คณะ/หน่วยงาน</span><span class="detail-val">${d.dept||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📞 โทร</span><span class="detail-val">${d.phone||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📧 Email</span><span class="detail-val">${d.email||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">🎪 ชื่องาน</span><span class="detail-val">${d.eventName||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📅 วันเริ่ม</span><span class="detail-val">${fmtDateTH(d.startDate)}${d.startTime?' เวลา '+d.startTime:''}</span></div>
+      <div class="detail-row"><span class="detail-key">📅 วันคืน</span><span class="detail-val">${fmtDateTH(d.endDate)}${d.endTime?' เวลา '+d.endTime:''} ${d.totalDays?'('+d.totalDays+' วัน)':''}</span></div>
+      <div class="detail-row"><span class="detail-key">🦺 อุปกรณ์</span><span class="detail-val">${itemsText}</span></div>
+      ${d.handlerName?`<div class="detail-row"><span class="detail-key">👮 เจ้าหน้าที่</span><span class="detail-val">${d.handlerName}${d.handlerEmail?' ('+d.handlerEmail+')':''}</span></div>`:''}
+      <div class="detail-row"><span class="detail-key">📋 สถานะ</span><span class="detail-val"><span class="tag ${getStatusTag(d.status)}">${d.status||'-'}</span></span></div>
+      ${d.note?`<div class="detail-row"><span class="detail-key">📝 หมายเหตุ</span><span class="detail-val">${d.note}</span></div>`:''}
+      ${d.updatedBy?`<div class="detail-row"><span class="detail-key">👤 อัปเดตโดย</span><span class="detail-val">${d.updatedBy}</span></div>`:''}
+      ${d.signatureUrl?`<div class="detail-row"><span class="detail-key">✍️ ลายเซ็น</span><span class="detail-val"><img src="https://drive.google.com/thumbnail?id=${(d.signatureUrl.match(/id=([a-zA-Z0-9_-]+)/)||d.signatureUrl.match(/\/d\/([a-zA-Z0-9_-]+)/))||[,''])[1]}&sz=w200" style="max-width:180px;height:60px;object-fit:contain;border:1px solid var(--border);border-radius:6px;" onerror="this.style.display='none'"></span></div>`:''}`;
+  } else {
+    rows = `
+      <div class="detail-row"><span class="detail-key">📋 RefCode</span><span class="detail-val" style="font-weight:700;color:var(--vehicle);">${d.refCode||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">🚗 รถที่จอง</span><span class="detail-val">${d.vcName||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">👤 ชื่อ</span><span class="detail-val">${d.name||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">🏢 คณะ/หน่วยงาน</span><span class="detail-val">${d.dept||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📞 โทร</span><span class="detail-val">${d.phone||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📧 Email</span><span class="detail-val">${d.email||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">🎪 ชื่องาน</span><span class="detail-val">${d.eventName||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📝 วัตถุประสงค์</span><span class="detail-val">${d.purpose||'-'}</span></div>
+      <div class="detail-row"><span class="detail-key">📅 เริ่มใช้งาน</span><span class="detail-val">${fmtDateTimeTH(d.startDT)}</span></div>
+      <div class="detail-row"><span class="detail-key">📅 สิ้นสุด</span><span class="detail-val">${fmtDateTimeTH(d.endDT)} ${d.totalHours?'('+d.totalHours+' ชม.)':''}</span></div>
+      <div class="detail-row"><span class="detail-key">👥 ผู้โดยสาร</span><span class="detail-val">${d.passengers||'-'} คน</span></div>
+      <div class="detail-row"><span class="detail-key">📋 สถานะ</span><span class="detail-val"><span class="tag ${getStatusTag(d.status)}">${d.status||'-'}</span></span></div>
+      ${d.note?`<div class="detail-row"><span class="detail-key">📝 หมายเหตุ</span><span class="detail-val">${d.note}</span></div>`:''}
+      ${d.returnNote?`<div class="detail-row"><span class="detail-key">🔵 สภาพตอนคืน</span><span class="detail-val">${d.returnNote}</span></div>`:''}
+      ${d.updatedBy?`<div class="detail-row"><span class="detail-key">👤 อัปเดตโดย</span><span class="detail-val">${d.updatedBy}</span></div>`:''}`;
+  }
+  document.getElementById('detail-body').innerHTML = rows;
+  document.getElementById('detail-modal-bg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function bgCloseDetail(e) { if(e.target===document.getElementById('detail-modal-bg')) closeDetailModal(); }
+function closeDetailModal() {
+  document.getElementById('detail-modal-bg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+/* ═══════════════════════════════════════════════
+   PDF — Font & Asset helpers
+   ใช้ fetch() เท่านั้น ห้ามใช้ base64 โดยตรง
+═══════════════════════════════════════════════ */
+async function _loadFontsAndAssets() {
+  if (!_fontNormal) {
+    const buf = await fetch('./fonts/NotoSansThai-Regular.ttf')
+      .then(r => { if (!r.ok) throw new Error('ไม่สามารถโหลดฟอนต์ Regular ได้'); return r.arrayBuffer(); });
+    let bin = ''; const b = new Uint8Array(buf);
+    for (let i=0; i<b.byteLength; i++) bin += String.fromCharCode(b[i]);
+    _fontNormal = btoa(bin);
+  }
+  if (!_fontBold) {
+    const buf = await fetch('./fonts/NotoSansThai-Bold.ttf')
+      .then(r => { if (!r.ok) throw new Error('ไม่สามารถโหลดฟอนต์ Bold ได้'); return r.arrayBuffer(); });
+    let bin = ''; const b = new Uint8Array(buf);
+    for (let i=0; i<b.byteLength; i++) bin += String.fromCharCode(b[i]);
+    _fontBold = btoa(bin);
+  }
+  if (!_logoB64) {
+    try {
+      const resp = await fetch('./assets/mu_logo.png');
+      if (resp.ok) {
+        const blob = await resp.blob();
+        _logoB64 = await new Promise((res,rej) => {
+          const rd = new FileReader();
+          rd.onload  = e => res(e.target.result);
+          rd.onerror = () => rej(new Error('อ่านโลโก้ไม่ได้'));
+          rd.readAsDataURL(blob);
+        });
+      }
+    } catch(e) { _logoB64 = null; }
+  }
+}
+
+/**
+ * _registerThaiFont — ลงทะเบียนฟอนต์ภาษาไทยกับ jsPDF instance
+ * ต้องเรียกทันทีหลัง new jsPDF() ก่อน render ข้อความใดๆ
+ */
+function _registerThaiFont(doc) {
+  doc.addFileToVFS('NotoSansThai-Regular.ttf', _fontNormal);
+  doc.addFont('NotoSansThai-Regular.ttf', 'NotoSansThai', 'normal');
+  doc.addFileToVFS('NotoSansThai-Bold.ttf', _fontBold);
+  doc.addFont('NotoSansThai-Bold.ttf', 'NotoSansThai', 'bold');
+  // ตั้ง default font เป็น Thai ทันที
+  doc.setFont('NotoSansThai', 'normal');
 }
 
 function setPdfProgress(pct, text) {
@@ -710,6 +850,7 @@ function setPdfProgress(pct, text) {
   document.getElementById('pdf-step-text').textContent     = text;
 }
 
+/* ═══ PDF EXPORT ═══ */
 async function exportPDF() {
   const btn = document.getElementById('btn-export-pdf');
   btn.disabled = true;
@@ -717,371 +858,304 @@ async function exportPDF() {
   setPdfProgress(5, 'เริ่มสร้างรายงาน...');
 
   try {
-    // ── 1. Load fonts ──
-    setPdfProgress(15, 'กำลังโหลดฟอนต์ภาษาไทย (Normal)...');
-    if (!fontNormalLoaded) {
-      const buf = await loadFontAsArrayBuffer('./fonts/NotoSansThai-Regular.ttf');
-      fontNormalLoaded = arrayBufferToBase64(buf);
-    }
-
-    setPdfProgress(30, 'กำลังโหลดฟอนต์ภาษาไทย (Bold)...');
-    if (!fontBoldLoaded) {
-      const buf = await loadFontAsArrayBuffer('./fonts/NotoSansThai-Bold.ttf');
-      fontBoldLoaded = arrayBufferToBase64(buf);
-    }
-
-    // ── 2. Load logo ──
-    setPdfProgress(45, 'กำลังโหลดโลโก้มหาวิทยาลัย...');
-    if (!logoLoaded) {
-      try { logoLoaded = await loadImageAsBase64('./assets/mu_logo.png'); } catch(e) { logoLoaded = null; }
-    }
-
-    setPdfProgress(55, 'กำลังสร้างเอกสาร PDF...');
+    // 1. Load fonts via fetch (ห้ามใช้ base64 โดยตรง)
+    setPdfProgress(15, 'กำลังโหลดฟอนต์ภาษาไทย Normal...');
+    await _loadFontsAndAssets();
+    setPdfProgress(45, 'ฟอนต์พร้อมใช้งาน กำลังสร้างเอกสาร...');
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
 
-    // Register fonts
-    doc.addFileToVFS('NotoSansThai-Regular.ttf', fontNormalLoaded);
-    doc.addFont('NotoSansThai-Regular.ttf', 'NotoSansThai', 'normal');
-    doc.addFileToVFS('NotoSansThai-Bold.ttf', fontBoldLoaded);
-    doc.addFont('NotoSansThai-Bold.ttf', 'NotoSansThai', 'bold');
+    // 2. ลงทะเบียนฟอนต์ทันทีก่อนทุกอย่าง
+    _registerThaiFont(doc);
 
     const W=210, margin=14;
     const now = new Date();
-    const month = document.getElementById('sel-month').value;
-    const year  = document.getElementById('sel-year').value;
-    const THAI_MONTHS=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-    const periodStr = month==='all' ? 'ทุกเดือน' : THAI_MONTHS[parseInt(month)];
-    const yearStr   = year==='all'  ? 'ทุกปี'    : 'พ.ศ. ' + (parseInt(year)+543);
-    const docCode   = 'RPT-DAI-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*900)+100);
-    const genStr    = now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    const mFrom   = document.getElementById('sel-month-from').value;
+    const mTo     = document.getElementById('sel-month-to').value;
+    const year    = document.getElementById('sel-year').value;
+    const yearStr = year==='all' ? 'ทุกปี' : 'พ.ศ. ' + (parseInt(year)+543);
+
+    let periodStr;
+    if (mFrom==='all' || mTo==='all') {
+      periodStr = 'ทุกเดือน';
+    } else if (mFrom===mTo) {
+      periodStr = THAI_MONTHS[parseInt(mFrom)];
+    } else {
+      periodStr = THAI_MONTHS[parseInt(mFrom)] + ' – ' + THAI_MONTHS[parseInt(mTo)];
+    }
+
+    const docCode = 'RPT-BRW-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*900)+100);
+    const genStr  = fmtDateLongTH(now) + String.fromCharCode(32) + 'เวลา' + String.fromCharCode(32) + String(now.getHours()).padStart(2,'0') + '.' + String(now.getMinutes()).padStart(2,'0') + ' น.';
 
     let y = 0;
 
-    // ── Helper functions ──
-    function setFont(bold=false, size=11) {
+    // ─── Helper functions ───
+    function sf(bold=false, size=11) {
       doc.setFont('NotoSansThai', bold?'bold':'normal');
       doc.setFontSize(size);
     }
-    function txtC(text, yPos, size=11, bold=false, color=[0,0,0]) {
-      setFont(bold, size);
-      doc.setTextColor(...color);
-      doc.text(String(text||''), W/2, yPos, { align:'center' });
+    function tc(text, yPos, size=11, bold=false, color=[0,0,0]) {
+      sf(bold,size); doc.setTextColor(...color);
+      doc.text(String(text||''), W/2, yPos, {align:'center'});
     }
-    function txt(text, xPos, yPos, size=11, bold=false, color=[0,0,0]) {
-      setFont(bold, size);
-      doc.setTextColor(...color);
-      doc.text(String(text||''), xPos, yPos);
+    function tl(text, x, y2, size=11, bold=false, color=[0,0,0]) {
+      sf(bold,size); doc.setTextColor(...color);
+      doc.text(String(text||''), x, y2);
     }
     function hRule(yPos, color=[15,76,117], lw=0.5) {
       doc.setDrawColor(...color); doc.setLineWidth(lw);
       doc.line(margin, yPos, W-margin, yPos);
     }
-    function newPage() {
-      doc.addPage(); y=0;
-      drawPageHeader();
-      drawPageFooter();
-    }
-    function checkY(need=12) { if (y+need > 270) newPage(); }
 
     function drawPageHeader() {
-      // Header background
-      doc.setFillColor(15,76,117);
-      doc.rect(0,0,W,26,  'F');
-      // Gold stripe
-      doc.setFillColor(242,169,0);
-      doc.rect(0,26,W,1.5,'F');
-
-      if (logoLoaded) {
-        try { doc.addImage(logoLoaded,'PNG',margin,3,18,18); } catch(e) {}
-      }
-
-      txt('Equipment & Golf Cart Borrowing System Report', margin+22, 9, 12, true, [255,255,255]);
-      txt('Traffic Control and Safety Unit, Division of Physical and Environmental, Mahidol University', margin+22, 15, 8, false, [200,220,240]);
-      txt(`Period: '${periodStr}' '(. ${yearStr}'  |  Page ${doc.getCurrentPageInfo().pageNumber}`, margin+22, 21, 7.5, false, [200,220,240]);
+      doc.setFillColor(15,76,117); doc.rect(0,0,W,26,'F');
+      doc.setFillColor(242,169,0); doc.rect(0,26,W,1.5,'F');
+      if (_logoB64) { try { doc.addImage(_logoB64,'PNG',margin,3,18,18); } catch(e){} }
+      // ── ชื่อระบบ (ภาษาไทย) ──
+      sf(true,12); doc.setTextColor(255,255,255);
+      doc.text('รายงานสรุปการยืม-คืนอุปกรณ์และรถกอล์ฟ', margin+22, 10);
+      sf(false,8); doc.setTextColor(200,220,245);
+      doc.text('งานจราจรและความปลอดภัย กองกายภาพและสิ่งแวดล้อม มหาวิทยาลัยมหิดล', margin+22, 16);
+      sf(false,7.5); doc.setTextColor(200,220,245);
+      doc.text('งวด: '+periodStr+'  '+yearStr+'  |  หน้า '+doc.getCurrentPageInfo().pageNumber, margin+22, 21);
       y = 34;
     }
 
     function drawPageFooter() {
       const pn = doc.getCurrentPageInfo().pageNumber;
-      doc.setFillColor(240,244,248);
-      doc.rect(0,285,W,12,'F');
-      doc.setDrawColor(208,218,232); doc.setLineWidth(0.3);
-      doc.line(0,285,W,285);
-      txt(`Prepared by:  งานจราจรและความปลอดภัย กองกายภาพและสิ่งแวดล้อม`, margin, 291, 7, false, [108,122,137]);
-      txt(`Generated: ${genStr}  |  Page ${pn}`, W-margin, 291, 7, false, [108,122,137]);
-      doc.setTextColor(108,122,137);
-      doc.setFont('NotoSansThai','normal'); doc.setFontSize(7);
-      doc.text('Traffic Control and Safety Unit, Mahidol University', W-margin, 295.5, {align:'right'});
-      txt(`Purpose:  รายงานสรุปการยืม-คืน`, margin, 295.5, 7, false, [108,122,137]);
+      doc.setFillColor(240,244,248); doc.rect(0,285,W,12,'F');
+      doc.setDrawColor(208,218,232); doc.setLineWidth(0.3); doc.line(0,285,W,285);
+      sf(false,7); doc.setTextColor(108,122,137);
+      doc.text('งานจราจรและความปลอดภัย กองกายภาพและสิ่งแวดล้อม มหาวิทยาลัยมหิดล', margin, 291);
+      doc.text('สร้างเมื่อ: '+genStr+'  |  หน้า '+pn, W-margin, 291, {align:'right'});
+      sf(false,7); doc.setTextColor(108,122,137);
+      doc.text('เอกสารอ้างอิง: '+docCode, W-margin, 295.5, {align:'right'});
+      doc.text('วัตถุประสงค์: รายงานสรุปการยืม-คืน', margin, 295.5);
     }
 
+    function newPage() {
+      doc.addPage();
+      // ลงทะเบียนฟอนต์ใหม่ทุก page เพื่อความมั่นใจ
+      _registerThaiFont(doc);
+      y = 0;
+      drawPageHeader();
+      drawPageFooter();
+    }
+    function checkY(need=12) { if (y+need > 270) newPage(); }
+
     // ── PAGE 1 ──
+    setPdfProgress(55, 'กำลังสร้างหน้าสรุปหลัก...');
     drawPageHeader();
     drawPageFooter();
 
-    // Report title
+    // Report title box
     doc.setFillColor(248,250,255);
     doc.roundedRect(margin, y, W-margin*2, 24, 3, 3, 'F');
     doc.setDrawColor(15,76,117); doc.setLineWidth(0.4);
     doc.roundedRect(margin, y, W-margin*2, 24, 3, 3, 'S');
-    txtC(`รายงานสรุปการยืม-คืนอุปกรณ์และรถกอล์ฟ  ${periodStr}  ${yearStr}`, y+8, 14, true, [15,76,117]);
-    txtC(`Doc Code: ${docCode}  |  Generated: ${genStr}`, y+16, 8, false, [108,122,137]);
+    tc('รายงานสรุปการยืม-คืนอุปกรณ์และรถกอล์ฟ', y+9, 14, true, [15,76,117]);
+    tc('งวด: '+periodStr+'  '+yearStr, y+16, 10, false, [50,130,184]);
+    tc('เลขที่เอกสาร: '+docCode+'  |  สร้างเมื่อ: '+genStr, y+21, 7.5, false, [108,122,137]);
     y += 30;
 
     // ── Equipment Summary ──
-    hRule(y, [242,169,0], 0.8); y+=4;
-    txt(`Equipment Summary / สรุปอุปกรณ์`, margin, y, 12, true, [15,76,117]); y+=6;
-    hRule(y, [208,218,232], 0.3); y+=5;
+    hRule(y,[242,169,0],0.8); y+=4;
+    tl('สรุปการยืมอุปกรณ์', margin, y, 12, true, [15,76,117]); y+=6;
+    hRule(y,[208,218,232],0.3); y+=5;
 
-    const eqNow = new Date();
+    const eqNow=new Date();
     const eqTotal    = filteredEq.length;
     const eqPending  = filteredEq.filter(d=>d.status.includes('รอดำเนินการ')).length;
     const eqActive   = filteredEq.filter(d=>d.status.includes('กำลัง')||d.status.includes('รับของแล้ว')).length;
     const eqReturned = filteredEq.filter(d=>d.status.includes('รับของคืน')).length;
+    const eqRetPend  = filteredEq.filter(d=>d.status.includes('แจ้งคืนแล้ว')).length;
     const eqOverdue  = filteredEq.filter(d=>d.endDateObj&&d.endDateObj<eqNow&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s))).length;
-    const eqRate     = eqTotal>0?Math.round(eqReturned/eqTotal*100):0;
+    const eqRate     = eqTotal>0 ? Math.round(eqReturned/eqTotal*100) : 0;
 
     const kpiEq=[
-      {label:'Total\nทั้งหมด', val:eqTotal, c:[15,76,117]},
-      {label:'Pending\nรอดำเนินการ', val:eqPending, c:[243,156,18]},
-      {label:'Active\nกำลังยืม', val:eqActive, c:[39,174,96]},
-      {label:'Returned\nคืนแล้ว', val:eqReturned, c:[41,128,185]},
-      {label:'Overdue\nเกินกำหนด', val:eqOverdue, c:[192,57,43]},
-      {label:'Rate\nอัตราคืน', val:eqRate+'%', c:[108,122,137]}
+      {label:'ทั้งหมด',    val:eqTotal,    c:[15,76,117]},
+      {label:'รอดำเนินการ',val:eqPending,  c:[243,156,18]},
+      {label:'กำลังยืม',   val:eqActive,   c:[39,174,96]},
+      {label:'รอยืนยันคืน',val:eqRetPend,  c:[232,160,32]},
+      {label:'คืนแล้ว',    val:eqReturned, c:[41,128,185]},
+      {label:'เกินกำหนด',  val:eqOverdue,  c:[192,57,43]},
+      {label:'อัตราคืน',   val:eqRate+'%', c:[108,122,137]}
     ];
     const colW = (W-margin*2)/kpiEq.length;
     kpiEq.forEach((k,i) => {
       const x = margin + i*colW;
-      // Card bg
-      doc.setFillColor(248,250,255);
-      doc.rect(x+0.5, y, colW-1, 16, 'F');
-      // Left border color
-      doc.setFillColor(...k.c);
-      doc.rect(x+0.5, y, 2, 16, 'F');
-      // Value
-      setFont(true, 16); doc.setTextColor(...k.c);
+      doc.setFillColor(248,250,255); doc.rect(x+0.5,y,colW-1,16,'F');
+      doc.setFillColor(...k.c);      doc.rect(x+0.5,y,2,16,'F');
+      sf(true,15); doc.setTextColor(...k.c);
       doc.text(String(k.val), x+colW/2+1, y+8, {align:'center'});
-      // Label
-      setFont(false, 6.5); doc.setTextColor(108,122,137);
-      const lines = k.label.split('\n');
-      doc.text(lines[1]||lines[0], x+colW/2+1, y+13.5, {align:'center'});
+      sf(false,6.5); doc.setTextColor(108,122,137);
+      doc.text(k.label, x+colW/2+1, y+13.5, {align:'center'});
     });
     y += 22;
 
-    // Golf Cart Summary
-    hRule(y, [26,107,58], 0.6); y+=4;
-    txt('Golf Cart Summary / สรุปรถกอล์ฟ', margin, y, 12, true, [26,107,58]); y+=6;
-    hRule(y, [208,218,232], 0.3); y+=5;
+    // ── Vehicle Summary ──
+    hRule(y,[26,107,58],0.6); y+=4;
+    tl('สรุปการจองรถกอล์ฟ', margin, y, 12, true, [26,107,58]); y+=6;
+    hRule(y,[208,218,232],0.3); y+=5;
 
     const vcTotal    = filteredVc.length;
     const vcPending  = filteredVc.filter(d=>d.status.includes('รอดำเนินการ')).length;
     const vcActive   = filteredVc.filter(d=>d.status.includes('อนุมัติ')||d.status.includes('กำลัง')).length;
     const vcReturned = filteredVc.filter(d=>d.status.includes('คืน')).length;
     const totalHrs   = filteredVc.reduce((a,d)=>a+(parseFloat(d.totalHours)||0),0).toFixed(1);
-    const vcNames2   = {'GC001':'EVT 8 ที่นั่ง','GC002':'EVT พยาบาล','GC003':'TADA LIFE'};
-    const vc001cnt = allVcData.filter(d=>d.vehicleId==='GC001').length;
-    const vc002cnt = allVcData.filter(d=>d.vehicleId==='GC002').length;
+    const vc001cnt   = filteredVc.filter(d=>d.vehicleId==='GC001').length;
+    const vc002cnt   = filteredVc.filter(d=>d.vehicleId==='GC002').length;
+    const vc003cnt   = filteredVc.filter(d=>d.vehicleId==='GC003').length;
 
     const kpiVc=[
-      {label:'Total Bookings\nการจองทั้งหมด', val:vcTotal, c:[26,107,58]},
-      {label:'Pending\nรอดำเนินการ', val:vcPending, c:[243,156,18]},
-      {label:'Active\nกำลังใช้งาน', val:vcActive, c:[39,174,96]},
-      {label:'Returned\nคืนแล้ว', val:vcReturned, c:[41,128,185]},
-      {label:'EVT 8 Seats 1H...\nรถ EVT 8 ที่นั่ง', val:vc001cnt, c:[26,107,58]},
-      {label:'EVT *2 2%\nรถ EVT พยาบาล', val:vc002cnt, c:[26,107,58]}
+      {label:'จองทั้งหมด',  val:vcTotal,    c:[26,107,58]},
+      {label:'รอดำเนินการ', val:vcPending,  c:[243,156,18]},
+      {label:'กำลังใช้งาน', val:vcActive,   c:[39,174,96]},
+      {label:'คืนแล้ว',     val:vcReturned, c:[41,128,185]},
+      {label:'EVT 8 ที่นั่ง',val:vc001cnt,   c:[26,107,58]},
+      {label:'EVT พยาบาล',  val:vc002cnt,   c:[26,107,58]},
+      {label:'TADA LIFE',    val:vc003cnt,   c:[26,107,58]}
     ];
+    const colWv = (W-margin*2)/kpiVc.length;
     kpiVc.forEach((k,i) => {
-      const x = margin + i*colW;
-      doc.setFillColor(240,248,244);
-      doc.rect(x+0.5, y, colW-1, 16, 'F');
-      doc.setFillColor(...k.c);
-      doc.rect(x+0.5, y, 2, 16, 'F');
-      setFont(true, 16); doc.setTextColor(...k.c);
-      doc.text(String(k.val), x+colW/2+1, y+8, {align:'center'});
-      setFont(false, 6.5); doc.setTextColor(108,122,137);
-      const lines = k.label.split('\n');
-      doc.text(lines[1]||lines[0], x+colW/2+1, y+13.5, {align:'center'});
+      const x = margin + i*colWv;
+      doc.setFillColor(240,248,244); doc.rect(x+0.5,y,colWv-1,16,'F');
+      doc.setFillColor(...k.c);      doc.rect(x+0.5,y,2,16,'F');
+      sf(true,15); doc.setTextColor(...k.c);
+      doc.text(String(k.val), x+colWv/2+1, y+8, {align:'center'});
+      sf(false,6.5); doc.setTextColor(108,122,137);
+      doc.text(k.label, x+colWv/2+1, y+13.5, {align:'center'});
     });
     y += 24;
 
-    // ── Document Certification ──
-    hRule(y, [208,218,232], 0.3); y+=6;
-    txt('Document Certification', margin, y, 11, true, [15,76,117]); y+=5;
-    txt('This report is generated from Equipment & Golf Cart Borrowing System,', margin, y, 9, false, [60,60,60]); y+=5;
-    txt('Traffic Control and Safety Unit, Division of Physical and Environmental, Mahidol University.', margin, y, 9, false, [60,60,60]); y+=10;
+    // ── Signature area ──
+    hRule(y,[208,218,232],0.3); y+=6;
+    tl('ลายมือชื่อผู้จัดทำรายงาน', margin, y, 11, true, [15,76,117]); y+=5;
 
-    // Signature boxes
-    const sigW = (W-margin*2-8)/3;
     const sigBoxes = [
-      { title:'Preparer / ผู้จัดทำ', name:'—', position:'(งาน จราจร ม.5H #4+2# 2' },
-      { title:'Checker / ผู้ตรวจสอบ', name:'2*#\'5 3@ 5*#', position:'(งาน จราจร ม.5H #4+2# 2' },
-      { title:'Approver / ผู้อนุมัติ', name:'2**8 9!4 2 @ 4H!', position:'(+1\'+ ล2 2  #2 #/)' }
+      { title:'ผู้จัดทำ',   name:'นายรวี จำเนียร',        position:'เจ้าหน้าที่บริหารงานทั่วไป' },
+      { title:'ผู้ตรวจสอบ', name:'นางสาวพิชญา ดลมินทร์', position:'เจ้าหน้าที่บริหารงานทั่วไป' },
+      { title:'ผู้อนุมัติ',  name:'นายยุทธภูมิ ญานเพิ่ม',  position:'หัวหน้างานจราจรและความปลอดภัย' }
     ];
+    const sigW = (W-margin*2-8)/3;
     sigBoxes.forEach((s,i) => {
       const x = margin + i*(sigW+4);
       doc.setDrawColor(208,218,232); doc.setLineWidth(0.4);
       doc.rect(x, y, sigW, 34, 'S');
-      // Title
-      doc.setFillColor(240,244,248);
-      doc.rect(x, y, sigW, 7, 'F');
-      setFont(true, 8); doc.setTextColor(15,76,117);
+      doc.setFillColor(240,244,248); doc.rect(x, y, sigW, 7, 'F');
+      sf(true,8); doc.setTextColor(15,76,117);
       doc.text(s.title, x+sigW/2, y+5, {align:'center'});
-      // Signature line
       doc.setDrawColor(180,180,180); doc.setLineWidth(0.3);
       doc.line(x+6, y+22, x+sigW-6, y+22);
-      // Name
-      setFont(false, 8); doc.setTextColor(40,40,40);
+      sf(false,8); doc.setTextColor(40,40,51);
       doc.text(s.name, x+sigW/2, y+27, {align:'center'});
-      setFont(false, 7); doc.setTextColor(108,122,137);
+      sf(false,7); doc.setTextColor(108,122,137);
       doc.text(s.position, x+sigW/2, y+32, {align:'center'});
     });
     y += 40;
 
     // ── PAGE 2: Equipment Details ──
-    setPdfProgress(65, 'สร้างหน้ารายละเอียดอุปกรณ์...');
+    setPdfProgress(65, 'กำลังสร้างหน้ารายละเอียดอุปกรณ์...');
     newPage();
 
-    txt('รายการยืมอุปกรณ์  /  Equipment Borrowing Details', margin, y, 13, true, [15,76,117]); y+=3;
+    tl('รายการยืมอุปกรณ์', margin, y, 13, true, [15,76,117]); y+=3;
     hRule(y,[242,169,0],0.8); y+=6;
 
-    // Table header
     const eqCols = [{h:'RefCode',w:28},{h:'ชื่อ-นามสกุล',w:36},{h:'คณะ/หน่วยงาน',w:40},{h:'วันเริ่ม',w:22},{h:'วันคืน',w:22},{h:'สถานะ',w:28},{h:'เจ้าหน้าที่',w:26}];
     let xOff = margin;
-    doc.setFillColor(15,76,117);
-    doc.rect(margin, y, W-margin*2, 7, 'F');
-    eqCols.forEach(col => {
-      setFont(true, 7.5); doc.setTextColor(255,255,255);
-      doc.text(col.h, xOff+1, y+5);
-      xOff += col.w;
-    });
+    doc.setFillColor(15,76,117); doc.rect(margin,y,W-margin*2,7,'F');
+    eqCols.forEach(col => { sf(true,7.5); doc.setTextColor(255,255,255); doc.text(col.h,xOff+1,y+5); xOff+=col.w; });
     y += 8;
 
-    const eqRowsForPdf = filteredEq.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
-    eqRowsForPdf.forEach((d,idx) => {
+    const eqRowsPdf = filteredEq.slice().sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+    eqRowsPdf.forEach((d,idx) => {
       checkY(7);
       if (idx%2===0) { doc.setFillColor(248,250,255); doc.rect(margin,y-1,W-margin*2,7,'F'); }
-      const rowData = [
-        d.refCode||'—', d.name||'-', d.dept||'-',
-        fmtDateTH(d.startDate), fmtDateTH(d.endDate), d.status||'-', d.handlerName||'-'
-      ];
+      const rowData = [d.refCode||'—', d.name||'-', d.dept||'-', fmtDateTH(d.startDate), fmtDateTH(d.endDate), d.status||'-', d.handlerName||'-'];
       let xd = margin;
       eqCols.forEach((col,ci) => {
         const val = rowData[ci];
         const maxLen = Math.floor(col.w/2.2);
         const display = String(val).length>maxLen ? String(val).substring(0,maxLen)+'…' : String(val);
-        setFont(false, 7);
-        const textColor = col.h==='สถานะ' && d.status.includes('เกิน') ? [192,57,43] : [28,40,51];
-        doc.setTextColor(...textColor);
-        doc.text(display, xd+1, y+4);
-        xd += col.w;
+        sf(false,7);
+        doc.setTextColor(...(col.h==='สถานะ'&&d.status.includes('เกิน')?[192,57,43]:[28,40,51]));
+        doc.text(display, xd+1, y+4); xd+=col.w;
       });
-      // Bottom border
-      doc.setDrawColor(220,225,232); doc.setLineWidth(0.2);
-      doc.line(margin, y+6, W-margin, y+6);
-      y += 7;
+      doc.setDrawColor(220,225,232); doc.setLineWidth(0.2); doc.line(margin,y+6,W-margin,y+6);
+      y+=7;
     });
-
-    if (!eqRowsForPdf.length) {
-      setFont(false,9); doc.setTextColor(108,122,137);
-      doc.text('ไม่มีข้อมูลในช่วงเวลาที่เลือก', W/2, y+8, {align:'center'});
-      y+=14;
-    }
+    if (!eqRowsPdf.length) { sf(false,9); doc.setTextColor(108,122,137); doc.text('ไม่มีข้อมูลในช่วงเวลาที่เลือก',W/2,y+8,{align:'center'}); y+=14; }
 
     // ── PAGE 3: Vehicle Details ──
-    setPdfProgress(78, 'สร้างหน้ารายละเอียดรถกอล์ฟ...');
+    setPdfProgress(78, 'กำลังสร้างหน้ารายละเอียดรถกอล์ฟ...');
     newPage();
 
-    txt('รายการจองรถกอล์ฟ  /  Golf Cart Booking Details', margin, y, 13, true, [26,107,58]); y+=3;
+    tl('รายการจองรถกอล์ฟ', margin, y, 13, true, [26,107,58]); y+=3;
     hRule(y,[26,107,58],0.8); y+=6;
 
     const vcCols = [{h:'RefCode',w:28},{h:'รถที่จอง',w:36},{h:'ชื่อ-นามสกุล',w:36},{h:'คณะ/หน่วยงาน',w:40},{h:'เริ่ม',w:30},{h:'สถานะ',w:28}];
     let xVc = margin;
-    doc.setFillColor(26,107,58);
-    doc.rect(margin, y, W-margin*2, 7, 'F');
-    vcCols.forEach(col => {
-      setFont(true, 7.5); doc.setTextColor(255,255,255);
-      doc.text(col.h, xVc+1, y+5);
-      xVc += col.w;
-    });
-    y += 8;
+    doc.setFillColor(26,107,58); doc.rect(margin,y,W-margin*2,7,'F');
+    vcCols.forEach(col => { sf(true,7.5); doc.setTextColor(255,255,255); doc.text(col.h,xVc+1,y+5); xVc+=col.w; });
+    y+=8;
 
-    const vcRowsForPdf = filteredVc.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
-    vcRowsForPdf.forEach((d,idx) => {
+    const vcRowsPdf = filteredVc.slice().sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
+    vcRowsPdf.forEach((d,idx) => {
       checkY(7);
       if (idx%2===0) { doc.setFillColor(240,248,244); doc.rect(margin,y-1,W-margin*2,7,'F'); }
       const rowData = [d.refCode||'—', d.vcName||'-', d.name||'-', d.dept||'-', fmtDateTimeTH(d.startDT), d.status||'-'];
       let xd = margin;
       vcCols.forEach((col,ci) => {
-        const val = rowData[ci];
-        const maxLen = Math.floor(col.w/2.2);
-        const display = String(val).length>maxLen ? String(val).substring(0,maxLen)+'…' : String(val);
-        setFont(false, 7);
-        const textColor = col.h==='สถานะ' && d.status.includes('เกิน') ? [192,57,43] : [28,40,51];
-        doc.setTextColor(...textColor);
-        doc.text(display, xd+1, y+4);
-        xd += col.w;
+        const val=rowData[ci]; const ml=Math.floor(col.w/2.2);
+        const dv=String(val).length>ml?String(val).substring(0,ml)+'…':String(val);
+        sf(false,7); doc.setTextColor(...(col.h==='สถานะ'&&d.status.includes('เกิน')?[192,57,43]:[28,40,51]));
+        doc.text(dv,xd+1,y+4); xd+=col.w;
       });
-      doc.setDrawColor(220,225,232); doc.setLineWidth(0.2);
-      doc.line(margin, y+6, W-margin, y+6);
-      y += 7;
+      doc.setDrawColor(220,225,232); doc.setLineWidth(0.2); doc.line(margin,y+6,W-margin,y+6); y+=7;
     });
-
-    if (!vcRowsForPdf.length) {
-      setFont(false,9); doc.setTextColor(108,122,137);
-      doc.text('ไม่มีข้อมูลในช่วงเวลาที่เลือก', W/2, y+8, {align:'center'});
-      y+=14;
-    }
+    if (!vcRowsPdf.length) { sf(false,9); doc.setTextColor(108,122,137); doc.text('ไม่มีข้อมูลในช่วงเวลาที่เลือก',W/2,y+8,{align:'center'}); y+=14; }
 
     // ── PAGE 4: Overdue + Top Items ──
-    setPdfProgress(88, 'สร้างหน้าสรุปรายการค้างและสถิติ...');
+    setPdfProgress(88, 'กำลังสร้างหน้าสรุปรายการค้างและสถิติ...');
     newPage();
 
-    txt('รายการเกินกำหนด  /  Overdue List', margin, y, 13, true, [192,57,43]); y+=3;
+    tl('รายการเกินกำหนด', margin, y, 13, true, [192,57,43]); y+=3;
     hRule(y,[192,57,43],0.8); y+=6;
 
-    const nowO = new Date();
-    const oEq = filteredEq.filter(d=>d.endDateObj&&d.endDateObj<nowO&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s)));
-    const oVc = filteredVc.filter(d=>d.endDTObj&&d.endDTObj<nowO&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s)));
-    const allO = [
-      ...oEq.map(d=>({...d,overdueStr:Math.floor((nowO-d.endDateObj)/86400000)+' วัน',endStr:fmtDateTH(d.endDate),typeStr:'🦺 อุปกรณ์'})),
-      ...oVc.map(d=>({...d,overdueStr:Math.floor((nowO-d.endDTObj)/3600000)+' ชม.',endStr:fmtDateTimeTH(d.endDT),typeStr:'🚗 รถกอล์ฟ'}))
+    const nowO=new Date();
+    const oEq=filteredEq.filter(d=>d.endDateObj&&d.endDateObj<nowO&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s)));
+    const oVc=filteredVc.filter(d=>d.endDTObj&&d.endDTObj<nowO&&!['คืน','ยกเลิก'].some(s=>d.status.includes(s)));
+    const allO=[
+      ...oEq.map(d=>({...d, overdueStr:Math.floor((nowO-d.endDateObj)/86400000)+' วัน', endStr:fmtDateTH(d.endDate), typeStr:'อุปกรณ์'})),
+      ...oVc.map(d=>({...d, overdueStr:Math.floor((nowO-d.endDTObj)/3600000)+' ชม.',   endStr:fmtDateTimeTH(d.endDT), typeStr:'รถกอล์ฟ'}))
     ];
 
     if (allO.length) {
-      const oCols = [{h:'ประเภท',w:22},{h:'RefCode',w:30},{h:'ชื่อ',w:38},{h:'คณะ/หน่วยงาน',w:44},{h:'กำหนดคืน',w:32},{h:'เกินมา',w:22}];
-      let xO = margin;
-      doc.setFillColor(192,57,43);
-      doc.rect(margin,y,W-margin*2,7,'F');
-      oCols.forEach(col => {
-        setFont(true,7.5); doc.setTextColor(255,255,255);
-        doc.text(col.h, xO+1, y+5); xO+=col.w;
-      });
+      const oCols=[{h:'ประเภท',w:22},{h:'RefCode',w:30},{h:'ชื่อ',w:38},{h:'คณะ/หน่วยงาน',w:44},{h:'กำหนดคืน',w:32},{h:'เกินมา',w:22}];
+      let xO=margin;
+      doc.setFillColor(192,57,43); doc.rect(margin,y,W-margin*2,7,'F');
+      oCols.forEach(col => { sf(true,7.5); doc.setTextColor(255,255,255); doc.text(col.h,xO+1,y+5); xO+=col.w; });
       y+=8;
-      allO.forEach((d,idx) => {
+      allO.forEach(d => {
         checkY(7);
-        doc.setFillColor(255,245,245);
-        doc.rect(margin,y-1,W-margin*2,7,'F');
+        doc.setFillColor(255,245,245); doc.rect(margin,y-1,W-margin*2,7,'F');
         const rowData=[d.typeStr,d.refCode||'—',d.name||'-',d.dept||'-',d.endStr,d.overdueStr];
         let xd=margin;
         oCols.forEach((col,ci) => {
-          const val=rowData[ci];
           const ml=Math.floor(col.w/2.2);
-          const dv=String(val).length>ml?String(val).substring(0,ml)+'…':String(val);
-          setFont(false,7); doc.setTextColor(192,57,43);
-          doc.text(dv,xd+1,y+4); xd+=col.w;
+          const dv=String(rowData[ci]).length>ml?String(rowData[ci]).substring(0,ml)+'…':String(rowData[ci]);
+          sf(false,7); doc.setTextColor(192,57,43); doc.text(dv,xd+1,y+4); xd+=col.w;
         });
-        doc.setDrawColor(248,215,218); doc.setLineWidth(0.2);
-        doc.line(margin,y+6,W-margin,y+6); y+=7;
+        doc.setDrawColor(248,215,218); doc.setLineWidth(0.2); doc.line(margin,y+6,W-margin,y+6); y+=7;
       });
     } else {
-      setFont(false,10); doc.setTextColor(39,174,96);
-      doc.text('✅ ไม่มีรายการเกินกำหนด', W/2, y+8, {align:'center'}); y+=14;
+      sf(false,10); doc.setTextColor(39,174,96);
+      doc.text('ไม่มีรายการเกินกำหนด', W/2, y+8, {align:'center'}); y+=14;
     }
 
     y+=8;
-    txt('Top อุปกรณ์ที่ยืมบ่อย  /  Most Borrowed Equipment', margin, y, 12, true, [15,76,117]); y+=3;
+    tl('อุปกรณ์ที่ยืมบ่อยสูงสุด 10 อันดับ', margin, y, 12, true, [15,76,117]); y+=3;
     hRule(y,[242,169,0],0.6); y+=6;
 
     const topItems2 = Object.entries(
@@ -1095,36 +1169,36 @@ async function exportPDF() {
     topItems2.forEach((item,i) => {
       checkY(6);
       const barW = Math.round((item[1]/maxV2)*(W-margin*2-50));
-      // Bar bg
-      doc.setFillColor(230,236,244); doc.rect(margin+40, y, W-margin*2-50, 4, 'F');
-      // Bar fill
-      doc.setFillColor(50,130,184); doc.rect(margin+40, y, barW, 4, 'F');
-      setFont(false,8); doc.setTextColor(40,40,51);
+      doc.setFillColor(230,236,244); doc.rect(margin+40,y,W-margin*2-50,4,'F');
+      doc.setFillColor(50,130,184);  doc.rect(margin+40,y,barW,4,'F');
+      sf(false,8); doc.setTextColor(40,40,51);
       doc.text(`${i+1}. ${String(item[0]).substring(0,18)}`, margin, y+3);
-      setFont(true,8); doc.setTextColor(15,76,117);
+      sf(true,8); doc.setTextColor(15,76,117);
       doc.text(String(item[1]), W-margin-5, y+3, {align:'right'});
       y+=7;
     });
 
-    setPdfProgress(96, 'บันทึก PDF...');
+    setPdfProgress(96, 'กำลังบันทึก PDF...');
 
-    const filename = `BorrowReport_${periodStr.replace(/\s/g,'')}_${yearStr.replace(/\s/g,'_')}_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.pdf`;
+    const safeYear = yearStr.replace(/\s/g,'_');
+    const safePeriod = periodStr.replace(/\s/g,'').replace(/–/g,'-');
+    const filename = `BorrowDashboard_${safePeriod}_${safeYear}_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.pdf`;
     doc.save(filename);
 
     setPdfProgress(100, 'สร้าง PDF เสร็จสมบูรณ์!');
     setTimeout(() => { document.getElementById('pdf-progress').classList.remove('show'); }, 1200);
-    showToast('✅ ดาวน์โหลด PDF เรียบร้อยแล้ว', 'success');
+    showToast('✅ ดาวน์โหลด PDF เรียบร้อย');
 
   } catch(err) {
     document.getElementById('pdf-progress').classList.remove('show');
-    showToast('❌ สร้าง PDF ไม่สำเร็จ: ' + err.message, 'error');
+    showToast('❌ สร้าง PDF ไม่สำเร็จ: '+err.message, 'error');
     console.error('PDF error:', err);
   } finally {
     btn.disabled = false;
   }
 }
 
-// ── Init ──
+/* ═══ INIT ═══ */
 window.onload = () => {
   const role = sessionStorage.getItem('dash_auth');
   if (role) {
@@ -1134,11 +1208,14 @@ window.onload = () => {
     loadData();
   }
 };
-document.addEventListener('keydown', e => { if(e.key==='Enter' && document.getElementById('login-wrap').style.display!=='none') doLogin(); });
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && document.getElementById('login-wrap').style.display!=='none') doLogin();
+  if (e.key==='Escape') closeDetailModal();
+});
 </script>
 
 <footer style="background:#0F4C75;color:rgba(255,255,255,0.7);font-family:'Sarabun',sans-serif;font-size:12px;padding:16px 24px;text-align:center;line-height:1.8;margin-top:0;">
-  <div><span style="font-weight:700;color:#F2A900;">Dashboard ระบบยืม-คืน — San v1.1.1</span></div>
+  <div><span style="font-weight:700;color:#F2A900;">Dashboard ระบบยืม-คืน — v1.2.0</span></div>
   <div style="font-size:11.5px;margin-top:3px;">© 2025–2026 Traffic Control and Premises Security Unit, Mahidol University. All rights reserved.</div>
 </footer>
 </body>
