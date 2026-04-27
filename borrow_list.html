@@ -6,6 +6,7 @@
 <title>จัดการรายการ | ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ มหาวิทยาลัยมหิดล</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
   --primary:#0F4C75; --primary-mid:#3282B8; --accent:#F2A900;
@@ -18,6 +19,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
+/* LOGIN */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary-mid));padding:20px;}
 .login-box{background:white;border-radius:20px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
 .login-logo{text-align:center;margin-bottom:28px;}
@@ -32,6 +34,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .login-btn:hover{background:var(--primary-mid);}
 .login-err{color:#c0392b;font-size:13px;text-align:center;margin-top:10px;display:none;}
 
+/* TOPBAR */
 .top-bar{background:linear-gradient(135deg,var(--primary),var(--primary-mid));padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(15,76,117,0.28);}
 .top-bar-left{display:flex;align-items:center;gap:12px;color:white;}
 .top-bar-left h1{font-size:16px;font-weight:700;}
@@ -41,6 +44,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .btn-topnav:hover{background:rgba(255,255,255,0.15);color:white;}
 .btn-logout{background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.25);padding:7px 14px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13.5px;cursor:pointer;}
 
+/* REFRESH BAR */
 .refresh-bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#0d3f63,var(--primary));padding:11px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.12);}
 .refresh-info{color:rgba(255,255,255,0.85);font-size:13px;display:flex;align-items:center;gap:10px;}
 .dot-live{width:8px;height:8px;background:#2ecc71;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
@@ -51,14 +55,17 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .btn-refresh-main.spinning svg{animation:spin 0.7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
+/* CONTENT */
 .content{max-width:1500px;margin:0 auto;padding:20px;}
 
+/* YEAR TABS */
 .year-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
 .year-tab{padding:8px 20px;border-radius:24px;font-size:14px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:white;font-family:'Sarabun',sans-serif;transition:all 0.2s;color:var(--muted);}
 .year-tab.active{background:var(--primary);color:white;border-color:var(--primary);}
 .year-tab .tab-count{font-size:12px;background:rgba(0,0,0,0.1);padding:1px 7px;border-radius:10px;margin-left:5px;}
 .year-tab.active .tab-count{background:rgba(255,255,255,0.25);}
 
+/* TYPE TABS */
 .type-tabs{display:flex;gap:0;margin-bottom:16px;background:white;border-radius:12px;padding:4px;box-shadow:var(--shadow);}
 .type-tab{flex:1;padding:10px;border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .type-tab.active{color:white;box-shadow:0 3px 10px rgba(0,0,0,0.15);}
@@ -67,6 +74,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .type-tab .tab-count{font-size:11px;background:rgba(255,255,255,0.25);padding:1px 7px;border-radius:10px;}
 .type-tab:not(.active) .tab-count{background:var(--bg);}
 
+/* DATE RANGE BAR */
 .date-range-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 16px;background:white;border-radius:10px;box-shadow:var(--shadow);margin-bottom:12px;}
 .date-range-bar label{font-size:13px;font-weight:600;color:var(--muted);}
 .date-range-bar input[type=date]{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13.5px;outline:none;}
@@ -74,15 +82,18 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 .btn-date-apply{padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;}
 .btn-date-clear{padding:8px 12px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13.5px;cursor:pointer;color:var(--muted);}
 
+/* FILTER ROW */
 .filter-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
 .filter-row select,.filter-row input[type=text]{padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;background:white;outline:none;color:var(--text);}
 .filter-row input[type=text]{flex:1;min-width:200px;}
 .filter-row input[type=text]:focus{border-color:var(--primary-mid);}
 
+/* TABLE */
 .table-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
 .table-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px;}
 .table-head h3{font-size:15px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:8px;}
 .overdue-badge{display:none;background:#c0392b;color:white;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.return-pending-badge{display:none;background:#e8a020;color:white;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;margin-left:4px;}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13.5px;}
 thead th{background:#f0f4f8;padding:11px 14px;text-align:left;font-weight:700;color:var(--primary);white-space:nowrap;border-bottom:2px solid var(--border);}
@@ -92,7 +103,10 @@ tbody td{padding:10px 14px;vertical-align:middle;}
 tr.row-overdue td{background:#fff5f5!important;}
 tr.row-overdue td:first-child{border-left:3px solid #c0392b;}
 tr.row-pending td{background:#fffdf5!important;}
+tr.row-return-pending td{background:#fffbf0!important;}
+tr.row-return-pending td:first-child{border-left:3px solid #e8a020;}
 
+/* TAGS */
 .tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;}
 .tag-type-eq{background:#e8f0ff;color:var(--primary);}
 .tag-type-vc{background:#e8f5ed;color:var(--vehicle);}
@@ -100,14 +114,64 @@ tr.row-pending td{background:#fffdf5!important;}
 .tag-approved{background:#cce5ff;color:#004085;}
 .tag-active{background:#d4edda;color:#155724;}
 .tag-returned{background:#c3e6cb;color:#1e5631;}
-.tag-overdue{background:#f5c6cb;color:#c0392b;}
-.tag-cancelled{background:#f8d7da;color:#721c24;}
-.overdue-warn{font-size:11px;color:#c0392b;font-weight:700;display:block;margin-top:3px;white-space:nowrap;}
+.tag-overdue{background:#fde8e8;color:#c0392b;}
+.tag-cancelled{background:#f2f3f5;color:#6c7a89;}
+.tag-return-pending{background:#fff3cd;color:#7a3000;border:1px solid #e8a020;}
 
+/* SIGNATURE PAD */
+.sig-section{margin-top:10px;margin-bottom:4px;}
+.sig-section-label{font-size:13px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.sig-section-label .req{color:#c0392b;}
+.sig-wrap{border:2px solid var(--border);border-radius:10px;overflow:hidden;background:white;position:relative;}
+.sig-wrap.has-sig{border-color:var(--status-active);}
+.sig-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;background:white;}
+.sig-toolbar{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#f8faff;border-top:1px solid var(--border);}
+.sig-hint{font-size:12px;color:var(--muted);}
+.btn-sig-clear{padding:4px 10px;background:white;border:1.5px solid var(--status-overdue);color:var(--status-overdue);border-radius:7px;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
+.sig-placeholder{position:absolute;top:0;left:0;right:0;bottom:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;gap:6px;}
+.sig-placeholder.hidden{opacity:0;}
+.sig-ph-icon{font-size:26px;opacity:0.25;}
+.sig-ph-text{font-size:12px;color:var(--muted);opacity:0.7;}
+.sig-behalf-note{background:#fff8e6;border:1px solid var(--accent);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#6b4c00;margin-top:6px;display:none;line-height:1.5;}
+
+/* CONDITION CHECKBOX */
+.condition-group{display:none;margin-top:4px;}
+.condition-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;background:#fafbfd;margin-bottom:8px;transition:all 0.18s;}
+.condition-item:hover{border-color:var(--primary-mid);}
+.condition-item.checked-ok{border-color:var(--status-active);background:#edf7f1;}
+.condition-item.checked-damage{border-color:#c0392b;background:#fff5f5;}
+.condition-item input[type=radio]{width:16px;height:16px;accent-color:var(--primary);flex-shrink:0;margin-top:2px;}
+.condition-item label{font-size:13.5px;cursor:pointer;line-height:1.5;}
+.damage-detail-wrap{display:none;margin-top:4px;}
+
+/* PDF INCOMPLETE MODAL */
+.pdf-incomplete-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);z-index:900;align-items:center;justify-content:center;padding:20px;}
+.pdf-incomplete-modal.show{display:flex;}
+.pdf-incomplete-box{background:white;border-radius:16px;padding:28px;max-width:420px;width:100%;box-shadow:0 16px 50px rgba(0,0,0,0.25);border-top:5px solid #e8a020;}
+.pdf-incomplete-box h3{color:#7a5000;font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.pdf-incomplete-box p{font-size:13.5px;color:var(--text);line-height:1.7;margin-bottom:18px;}
+.pdf-incomplete-btns{display:flex;gap:10px;}
+
+/* PDF PROGRESS */
+.pdf-progress-overlay{display:none;position:fixed;inset:0;background:rgba(15,40,60,0.7);backdrop-filter:blur(4px);z-index:999;align-items:center;justify-content:center;}
+.pdf-progress-overlay.show{display:flex;}
+.pdf-progress-box{background:white;border-radius:16px;padding:32px 36px;max-width:360px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.pdf-progress-box h3{font-size:17px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+.pdf-progress-box p{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.pdf-progress-spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+.pdf-progress-text{font-size:13px;color:var(--muted);min-height:18px;}
+
+/* BTN ACTIONS */
 .btn-action{padding:5px 11px;border-radius:7px;border:1.5px solid var(--border);font-family:'Sarabun',sans-serif;font-size:12px;cursor:pointer;background:white;transition:all 0.2s;color:var(--primary);display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
 .btn-action:hover{border-color:var(--primary);background:#f0f5ff;}
+.btn-action.btn-pdf{color:#c0392b;border-color:#f5c6cb;}
+.btn-action.btn-pdf:hover{background:#fff5f5;border-color:#c0392b;}
+.btn-action.btn-confirm-return{color:#1a6b3a;border-color:#b2dfc0;background:#f0faf4;}
+.btn-action.btn-confirm-return:hover{background:#d4edda;border-color:var(--vehicle);}
 .btn-action-group{display:flex;gap:5px;flex-wrap:wrap;}
+.overdue-warn{font-size:11px;color:#c0392b;font-weight:700;display:block;margin-top:3px;white-space:nowrap;}
 
+/* PAGINATION */
 .pagination{display:flex;justify-content:center;gap:8px;padding:16px 20px;flex-wrap:wrap;border-top:1px solid var(--border);}
 .page-btn{padding:7px 13px;border:1.5px solid var(--border);border-radius:8px;background:white;font-family:'Sarabun',sans-serif;font-size:13.5px;cursor:pointer;transition:all 0.18s;}
 .page-btn:hover:not(:disabled){border-color:var(--primary-mid);color:var(--primary);}
@@ -117,23 +181,26 @@ tr.row-pending td{background:#fffdf5!important;}
 /* STATUS MODAL */
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:600;align-items:center;justify-content:center;padding:20px;}
 .modal-backdrop.show{display:flex;}
-.modal-box{background:white;border-radius:16px;padding:28px;max-width:540px;width:100%;box-shadow:0 16px 50px rgba(0,0,0,0.25);max-height:90vh;overflow-y:auto;animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.modal-box{background:white;border-radius:16px;padding:28px;max-width:560px;width:100%;box-shadow:0 16px 50px rgba(0,0,0,0.25);max-height:92vh;overflow-y:auto;animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);}
 @keyframes popIn{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
 .modal-box h3{font-size:17px;font-weight:700;color:var(--primary);margin-bottom:6px;}
 .modal-ref{font-size:13px;color:var(--muted);margin-bottom:16px;}
 .modal-field{margin-bottom:14px;}
 .modal-field label{font-size:13px;font-weight:600;display:block;margin-bottom:6px;}
 .modal-field label .req{color:#c0392b;margin-left:3px;}
-.modal-field select,.modal-field textarea,.modal-field input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;}
+.modal-field select,.modal-field textarea,.modal-field input[type=text]{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;}
 .modal-field select:focus,.modal-field textarea:focus,.modal-field input:focus{border-color:var(--primary-mid);}
 .modal-field textarea{min-height:75px;resize:vertical;}
-.modal-field input.error{border-color:#c0392b;background:#fff5f5;}
+.modal-field input.error,.staff-ac-input.error{border-color:#c0392b!important;background:#fff5f5!important;}
 .modal-timestamp{background:#f0f5ff;border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--primary);margin-bottom:14px;border:1px solid #b6d0ef;}
 .modal-btns{display:flex;gap:10px;margin-top:6px;}
 .btn-modal-cancel{flex:1;padding:11px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:15px;cursor:pointer;}
 .btn-modal-save{flex:2;padding:11px;background:var(--primary);color:white;border:none;border-radius:9px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
 .btn-modal-save:hover{background:var(--primary-mid);}
 .btn-modal-save:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-modal-confirm{flex:2;padding:11px;background:var(--vehicle);color:white;border:none;border-radius:9px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-modal-confirm:hover{background:#1e8044;}
+.btn-modal-confirm:disabled{opacity:0.6;cursor:not-allowed;}
 
 /* UPLOAD ZONES */
 .file-zone-sm{border:2px dashed var(--border);border-radius:9px;padding:14px;text-align:center;cursor:pointer;background:#fafbfd;position:relative;transition:all 0.2s;margin-bottom:10px;}
@@ -147,7 +214,7 @@ tr.row-pending td{background:#fffdf5!important;}
 /* DETAIL MODAL */
 .detail-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(5px);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .detail-modal-bg.show{display:flex;}
-.detail-modal{background:white;border-radius:18px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,0.35);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);}
+.detail-modal{background:white;border-radius:18px;max-width:600px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,0.35);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);}
 .detail-banner{padding:14px 20px;color:white;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;border-radius:18px 18px 0 0;}
 .detail-banner.eq{background:var(--primary);}
 .detail-banner.vc{background:var(--vehicle);}
@@ -162,13 +229,14 @@ tr.row-pending td{background:#fffdf5!important;}
 .detail-photo{width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--border);cursor:pointer;transition:transform 0.15s;}
 .detail-photo:hover{transform:scale(1.05);}
 .detail-sig{max-width:200px;height:70px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:#f8f8f8;}
+.detail-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
+.detail-divider{border:none;border-top:2px dashed var(--border);margin:10px 0;}
 
-/* STAFF AC */
+/* STAFF AUTOCOMPLETE */
 .staff-ac-wrap{position:relative;}
 .staff-ac-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;}
 .staff-ac-input:focus{border-color:var(--primary-mid);}
-.staff-ac-input.error{border-color:#c0392b;background:#fff5f5;}
-.staff-ac-list{position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--primary-mid);border-top:none;border-radius:0 0 9px 9px;max-height:180px;overflow-y:auto;z-index:700;box-shadow:0 8px 20px rgba(0,0,0,0.12);display:none;}
+.staff-ac-list{position:fixed;background:white;border:1.5px solid var(--primary-mid);border-top:none;border-radius:0 0 9px 9px;max-height:180px;overflow-y:auto;z-index:9999;box-shadow:0 8px 20px rgba(0,0,0,0.12);display:none;min-width:240px;}
 .staff-ac-list.show{display:block;}
 .staff-ac-item{padding:9px 14px;font-size:13.5px;cursor:pointer;transition:background 0.15s;border-bottom:1px solid var(--border);}
 .staff-ac-item:last-child{border-bottom:none;}
@@ -199,8 +267,11 @@ tr.row-pending td{background:#fffdf5!important;}
 .toast-notify.show{display:flex;}
 .toast-notify.error{background:#c0392b;}
 
+/* MISC */
 .dash-loading{text-align:center;padding:40px;color:var(--muted);}
 .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--primary-mid);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+.divider-label{text-transform:uppercase;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;display:flex;align-items:center;gap:8px;margin:16px 0 10px;}
+.divider-label::before,.divider-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
 @media(max-width:768px){.content{padding:14px;}.table-wrap{font-size:12.5px;}thead th,tbody td{padding:8px 10px;}}
 </style>
@@ -214,7 +285,7 @@ tr.row-pending td{background:#fffdf5!important;}
       <div class="icon">📋</div>
       <h2>จัดการรายการยืม-คืน</h2>
       <p>งานจราจรและความปลอดภัย มหาวิทยาลัยมหิดล</p>
-      <p style="font-size:11px;color:#aaa;margin-top:4px;">v1.1.1</p>
+      <p style="font-size:11px;color:#aaa;margin-top:4px;">v1.2.0</p>
     </div>
     <div class="login-field">
       <label>ชื่อผู้ใช้</label>
@@ -229,11 +300,12 @@ tr.row-pending td{background:#fffdf5!important;}
   </div>
 </div>
 
+<!-- MAIN WRAP -->
 <div id="main-wrap" style="display:none;">
 <div class="top-bar">
   <div class="top-bar-left">
     <span style="font-size:20px;">📋</span>
-    <h1>จัดการรายการ <span class="ver-badge">v1.1.1</span></h1>
+    <h1>จัดการรายการ <span class="ver-badge">v1.2.0</span></h1>
   </div>
   <div class="top-bar-right">
     <a href="index.html" class="btn-topnav">🏠 หน้าหลัก</a>
@@ -283,6 +355,7 @@ tr.row-pending td{background:#fffdf5!important;}
       <option value="รอดำเนินการ">⏳ รอดำเนินการ</option>
       <option value="อนุมัติ">✅ อนุมัติแล้ว</option>
       <option value="กำลัง">📦 กำลังยืม/ใช้งาน</option>
+      <option value="แจ้งคืนแล้ว">🔔 แจ้งคืนแล้ว รอยืนยัน</option>
       <option value="คืนแล้ว">🔵 คืนแล้ว</option>
       <option value="เกินกำหนด">⚠️ เกินกำหนด</option>
       <option value="ยกเลิก">❌ ยกเลิก</option>
@@ -290,7 +363,10 @@ tr.row-pending td{background:#fffdf5!important;}
   </div>
   <div class="table-card">
     <div class="table-head">
-      <h3 id="table-title">📋 รายการ <span class="overdue-badge" id="overdue-badge"></span></h3>
+      <h3 id="table-title">📋 รายการ
+        <span class="overdue-badge" id="overdue-badge"></span>
+        <span class="return-pending-badge" id="return-pending-badge"></span>
+      </h3>
       <span style="font-size:13px;color:var(--muted)" id="result-count"></span>
     </div>
     <div class="table-wrap">
@@ -304,7 +380,7 @@ tr.row-pending td{background:#fffdf5!important;}
     <div class="pagination" id="pagination"></div>
   </div>
 </div>
-</div>
+</div><!-- end main-wrap -->
 
 <!-- STATUS MODAL (Equipment) -->
 <div class="modal-backdrop" id="status-modal-eq">
@@ -317,9 +393,9 @@ tr.row-pending td{background:#fffdf5!important;}
     </div>
     <div class="modal-field">
       <label>👤 ผู้บันทึก <span class="req">*</span></label>
-      <div class="hint" style="font-size:12px;color:var(--muted);margin-bottom:6px;">กรอกชื่อผู้บันทึก/เจ้าหน้าที่ที่อัปเดตสถานะ (บังคับ)</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">กรอกชื่อผู้บันทึก/เจ้าหน้าที่ที่อัปเดตสถานะ (บังคับ)</div>
       <div class="staff-ac-wrap">
-        <input type="text" class="staff-ac-input" id="eq-staff-input" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="staffAcSearch(this.value,'eq-staff-ac-list','eq-staff-name','eq-staff-email')" autocomplete="off">
+        <input type="text" class="staff-ac-input" id="eq-staff-input" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="staffAcSearch(this.value,'eq-staff-ac-list','eq-staff-name','eq-staff-email','eq-staff-input')" autocomplete="off">
         <div class="staff-ac-list" id="eq-staff-ac-list"></div>
         <input type="hidden" id="eq-staff-name">
         <input type="hidden" id="eq-staff-email">
@@ -361,9 +437,107 @@ tr.row-pending td{background:#fffdf5!important;}
         <div class="file-preview-sm" id="condition-photos-preview"></div>
       </div>
     </div>
+    <!-- Condition Checkbox (เมื่อสถานะ รับของคืนแล้ว) -->
+    <div class="condition-group" id="eq-condition-group">
+      <div class="divider-label">สภาพอุปกรณ์เมื่อรับคืน</div>
+      <div class="condition-item" id="cond-ok-item" onclick="selectCondition('ok')">
+        <input type="radio" name="eq-condition" id="cond-ok" value="สมบูรณ์">
+        <label for="cond-ok">✅ ได้รับอุปกรณ์/รถคืน ครบถ้วน สมบูรณ์ ไม่มีความเสียหาย</label>
+      </div>
+      <div class="condition-item" id="cond-damage-item" onclick="selectCondition('damage')">
+        <input type="radio" name="eq-condition" id="cond-damage" value="เสียหาย">
+        <label for="cond-damage">⚠️ ได้รับอุปกรณ์/รถคืน ครบถ้วน มีความเสียหายดังนี้</label>
+      </div>
+      <div class="damage-detail-wrap" id="damage-detail-wrap">
+        <div class="modal-field">
+          <label>รายละเอียดความเสียหาย <span class="req">*</span></label>
+          <textarea id="eq-damage-detail" placeholder="ระบุรายละเอียดความเสียหาย..."></textarea>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label>หมายเหตุเพิ่มเติม (ไม่บังคับ)</label>
+        <textarea id="eq-return-remark" placeholder="หมายเหตุเพิ่มเติม..."></textarea>
+      </div>
+    </div>
+    <!-- Signature Pad -->
+    <div class="sig-section">
+      <div class="sig-section-label">✍️ ลายเซ็นเจ้าหน้าที่ <span class="req">*</span></div>
+      <div class="sig-wrap" id="eq-sig-wrap">
+        <canvas class="sig-canvas" id="eq-sig-canvas" height="130"></canvas>
+        <div class="sig-placeholder" id="eq-sig-placeholder">
+          <span class="sig-ph-icon">✍️</span>
+          <span class="sig-ph-text">วาดลายเซ็นที่นี่</span>
+        </div>
+        <div class="sig-toolbar">
+          <span class="sig-hint">ลายเซ็นบังคับทุกครั้งที่บันทึก</span>
+          <button class="btn-sig-clear" type="button" onclick="clearSig('eq')">✕ ล้าง</button>
+        </div>
+      </div>
+      <div class="sig-behalf-note" id="eq-sig-behalf-note">📝 กรณีรับเรื่องแทน ให้วงเล็บ (แทน) ในลายเซ็น</div>
+    </div>
     <div class="modal-btns">
       <button class="btn-modal-cancel" onclick="closeEqModal()">ยกเลิก</button>
       <button class="btn-modal-save" id="eq-save-btn" onclick="saveEqStatus()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM RETURN MODAL (Equipment) -->
+<div class="modal-backdrop" id="confirm-return-modal">
+  <div class="modal-box">
+    <h3 style="color:var(--vehicle);">✅ ยืนยันการรับคืน</h3>
+    <div class="modal-ref">RefCode: <strong id="cr-modal-ref" style="color:var(--vehicle)"></strong></div>
+    <div style="background:#f0faf4;border:1px solid #b2dfc0;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#1a6b3a;">
+      ผู้ยืมได้แจ้งคืนอุปกรณ์แล้ว กรุณาตรวจสอบสภาพและยืนยันการรับคืน
+    </div>
+    <div class="modal-field">
+      <label>👤 เจ้าหน้าที่ผู้รับคืน <span class="req">*</span></label>
+      <div class="staff-ac-wrap">
+        <input type="text" class="staff-ac-input" id="cr-staff-input" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="staffAcSearch(this.value,'cr-staff-ac-list','cr-staff-name','cr-staff-email','cr-staff-input')" autocomplete="off">
+        <div class="staff-ac-list" id="cr-staff-ac-list"></div>
+        <input type="hidden" id="cr-staff-name">
+        <input type="hidden" id="cr-staff-email">
+      </div>
+    </div>
+    <div class="modal-timestamp" id="cr-modal-ts">🕐 <span id="cr-ts-display">—</span></div>
+    <!-- Condition -->
+    <div class="divider-label">สภาพอุปกรณ์เมื่อรับคืน <span style="color:#c0392b;margin-left:2px;">*</span></div>
+    <div class="condition-item" id="cr-cond-ok-item" onclick="selectCrCondition('ok')">
+      <input type="radio" name="cr-condition" id="cr-cond-ok" value="สมบูรณ์">
+      <label for="cr-cond-ok">✅ ได้รับอุปกรณ์/รถคืน ครบถ้วน สมบูรณ์ ไม่มีความเสียหาย</label>
+    </div>
+    <div class="condition-item" id="cr-cond-damage-item" onclick="selectCrCondition('damage')">
+      <input type="radio" name="cr-condition" id="cr-cond-damage" value="เสียหาย">
+      <label for="cr-cond-damage">⚠️ ได้รับอุปกรณ์/รถคืน ครบถ้วน มีความเสียหายดังนี้</label>
+    </div>
+    <div class="damage-detail-wrap" id="cr-damage-detail-wrap">
+      <div class="modal-field">
+        <label>รายละเอียดความเสียหาย <span class="req">*</span></label>
+        <textarea id="cr-damage-detail" placeholder="ระบุรายละเอียดความเสียหาย..."></textarea>
+      </div>
+    </div>
+    <div class="modal-field" style="margin-top:6px;">
+      <label>หมายเหตุเพิ่มเติม (ไม่บังคับ)</label>
+      <textarea id="cr-remark" placeholder="หมายเหตุเพิ่มเติม..."></textarea>
+    </div>
+    <!-- Signature -->
+    <div class="sig-section">
+      <div class="sig-section-label">✍️ ลายเซ็นเจ้าหน้าที่ผู้รับคืน <span class="req">*</span></div>
+      <div class="sig-wrap" id="cr-sig-wrap">
+        <canvas class="sig-canvas" id="cr-sig-canvas" height="130"></canvas>
+        <div class="sig-placeholder" id="cr-sig-placeholder">
+          <span class="sig-ph-icon">✍️</span>
+          <span class="sig-ph-text">วาดลายเซ็นที่นี่</span>
+        </div>
+        <div class="sig-toolbar">
+          <span class="sig-hint">📝 กรณีรับเรื่องแทน ให้วงเล็บ (แทน) ในลายเซ็น</span>
+          <button class="btn-sig-clear" type="button" onclick="clearSig('cr')">✕ ล้าง</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeConfirmReturnModal()">ยกเลิก</button>
+      <button class="btn-modal-confirm" id="cr-save-btn" onclick="saveConfirmReturn()">✅ ยืนยันรับคืน</button>
     </div>
   </div>
 </div>
@@ -379,9 +553,9 @@ tr.row-pending td{background:#fffdf5!important;}
     </div>
     <div class="modal-field">
       <label>👤 ผู้บันทึก <span class="req">*</span></label>
-      <div class="hint" style="font-size:12px;color:var(--muted);margin-bottom:6px;">กรอกชื่อผู้บันทึก/เจ้าหน้าที่ที่อัปเดตสถานะ (บังคับ)</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">กรอกชื่อผู้บันทึก/เจ้าหน้าที่ที่อัปเดตสถานะ (บังคับ)</div>
       <div class="staff-ac-wrap">
-        <input type="text" class="staff-ac-input" id="vc-staff-input" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="staffAcSearch(this.value,'vc-staff-ac-list','vc-staff-name','vc-staff-email')" autocomplete="off">
+        <input type="text" class="staff-ac-input" id="vc-staff-input" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="staffAcSearch(this.value,'vc-staff-ac-list','vc-staff-name','vc-staff-email','vc-staff-input')" autocomplete="off">
         <div class="staff-ac-list" id="vc-staff-ac-list"></div>
         <input type="hidden" id="vc-staff-name">
         <input type="hidden" id="vc-staff-email">
@@ -408,6 +582,38 @@ tr.row-pending td{background:#fffdf5!important;}
         <label>📝 สภาพรถตอนคืน</label>
         <textarea id="vc-return-note" placeholder="เช่น: สภาพปกติ, แบตเตอรี่ 80%..."></textarea>
       </div>
+      <!-- Condition Checkbox for vehicle -->
+      <div class="divider-label">สภาพรถที่รับคืน</div>
+      <div class="condition-item" id="vc-cond-ok-item" onclick="selectVcCondition('ok')">
+        <input type="radio" name="vc-condition" id="vc-cond-ok" value="สมบูรณ์">
+        <label for="vc-cond-ok">✅ ได้รับรถคืน สภาพสมบูรณ์ ไม่มีความเสียหาย</label>
+      </div>
+      <div class="condition-item" id="vc-cond-damage-item" onclick="selectVcCondition('damage')">
+        <input type="radio" name="vc-condition" id="vc-cond-damage" value="เสียหาย">
+        <label for="vc-cond-damage">⚠️ ได้รับรถคืน มีความเสียหายดังนี้</label>
+      </div>
+      <div class="damage-detail-wrap" id="vc-damage-detail-wrap">
+        <div class="modal-field">
+          <label>รายละเอียดความเสียหาย <span class="req">*</span></label>
+          <textarea id="vc-damage-detail" placeholder="ระบุรายละเอียดความเสียหาย..."></textarea>
+        </div>
+      </div>
+    </div>
+    <!-- Sig Pad -->
+    <div class="sig-section">
+      <div class="sig-section-label">✍️ ลายเซ็นเจ้าหน้าที่ <span class="req">*</span></div>
+      <div class="sig-wrap" id="vc-sig-wrap">
+        <canvas class="sig-canvas" id="vc-sig-canvas" height="130"></canvas>
+        <div class="sig-placeholder" id="vc-sig-placeholder">
+          <span class="sig-ph-icon">✍️</span>
+          <span class="sig-ph-text">วาดลายเซ็นที่นี่</span>
+        </div>
+        <div class="sig-toolbar">
+          <span class="sig-hint">ลายเซ็นบังคับทุกครั้งที่บันทึก</span>
+          <button class="btn-sig-clear" type="button" onclick="clearSig('vc')">✕ ล้าง</button>
+        </div>
+      </div>
+      <div class="sig-behalf-note" id="vc-sig-behalf-note">📝 กรณีรับเรื่องแทน ให้วงเล็บ (แทน) ในลายเซ็น</div>
     </div>
     <div class="modal-btns">
       <button class="btn-modal-cancel" onclick="closeVcModal()">ยกเลิก</button>
@@ -427,6 +633,32 @@ tr.row-pending td{background:#fffdf5!important;}
       <img id="detail-id-img" class="detail-img" src="" alt="รูปบัตร">
     </div>
     <div class="detail-body" id="detail-body"></div>
+    <div class="detail-footer">
+      <button class="btn-action btn-pdf" id="detail-pdf-btn" onclick="triggerPdfFromDetail()" style="font-size:13px;padding:8px 16px;">📄 Export PDF รายการนี้</button>
+      <button style="padding:8px 16px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;" onclick="closeDetailModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- PDF INCOMPLETE MODAL -->
+<div class="pdf-incomplete-modal" id="pdf-incomplete-modal">
+  <div class="pdf-incomplete-box">
+    <h3>⚠️ เอกสาร PDF ยังไม่สมบูรณ์</h3>
+    <p>ไฟล์เอกสาร PDF นี้ยังไม่สมบูรณ์ เนื่องจากผู้ยืมยังไม่คืนอุปกรณ์และลงนามในเอกสารดิจิทัล</p>
+    <div class="pdf-incomplete-btns">
+      <button style="flex:1;padding:10px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;cursor:pointer;" onclick="closePdfIncompleteModal()">ยกเลิก</button>
+      <button style="flex:2;padding:10px;background:#c0392b;color:white;border:none;border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;cursor:pointer;" onclick="proceedPdfAnyway()">📄 ออกเอกสารต่อ</button>
+    </div>
+  </div>
+</div>
+
+<!-- PDF PROGRESS OVERLAY -->
+<div class="pdf-progress-overlay" id="pdf-progress-overlay">
+  <div class="pdf-progress-box">
+    <div class="pdf-progress-spinner"></div>
+    <h3>กำลังสร้าง PDF...</h3>
+    <p>กรุณารอสักครู่</p>
+    <div class="pdf-progress-text" id="pdf-progress-text">กำลังโหลดฟอนต์...</div>
   </div>
 </div>
 
@@ -443,6 +675,9 @@ tr.row-pending td{background:#fffdf5!important;}
 <div class="toast-notify" id="toast-notify"></div>
 
 <script>
+/* ═══════════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════════ */
 const GAS_URL        = 'https://script.google.com/macros/s/AKfycbzhjJfMlXK-TI3g8d8f1b3S-mRhSfI-9FZAjfcsyA2fy5YQz_6RHSmzYOEsy03EbQG0AQ/exec';
 const ITEMS_PER_PAGE = 50;
 
@@ -477,14 +712,42 @@ const STAFF_LIST = [
   {name:'นายอำนาจ แม้นพรม',       email:'amnartmaen90@gmail.com'}
 ];
 
+const STAFF_POSITIONS = {
+  'นายรวี จำเนียร':        'เจ้าหน้าที่บริหารงานทั่วไป',
+  'นางสาวพิชญา ดลมินทร์': 'เจ้าหน้าที่บริหารงานทั่วไป',
+  'นายยุทธภูมิ ญานเพิ่ม':  'หัวหน้างานจราจรและความปลอดภัย'
+};
+function getStaffPosition(name) {
+  if (!name) return 'พนักงานรักษาความปลอดภัย';
+  for (const [n, p] of Object.entries(STAFF_POSITIONS)) {
+    if (name.includes(n.replace('นาย','').replace('นางสาว','').trim().split(' ')[0])) return p;
+  }
+  return 'พนักงานรักษาความปลอดภัย';
+}
+
+const THAI_MONTHS_LONG  = ['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const THAI_DAYS_LONG    = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
 let allEqData    = [], allVcData = [], filteredData = [];
 let currentPage  = 1, selectedYear = 2026, currentType = 'eq', currentRole = '';
 let editingRef   = '', editingType = '';
 let tsInterval   = null, refreshInterval = null, countdownInterval = null, secondsLeft = 300;
 let signedDocData = null, signedDocMime = '';
 let condPhotosData = [];
+let pendingPdfRef = null;
+let detailCurrentRef = null;
+// Sig pad state
+const sigStates = { eq: false, vc: false, cr: false };
+const sigCtx    = {};
+// Font cache
+let _fontNormal = null, _fontBold = null, _logoB64 = null;
 
-// ── Login ──
+/* ═══════════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════════ */
 function doLogin() {
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value.trim();
@@ -501,13 +764,13 @@ function doLogin() {
 }
 function logout() { sessionStorage.removeItem('borrow_auth'); location.reload(); }
 
-// ── Helpers ──
+/* ═══════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════ */
 function parseDate(str) {
   if (!str) return null;
   const s = String(str).trim();
-  // ISO format: 2026-04-27T17:00:00.000Z or 2026-04-27
   try { const d = new Date(s); if (!isNaN(d.getTime()) && d.getFullYear() > 2000) return d; } catch(e) {}
-  // dd/MM/yyyy HH:mm:ss or dd/MM/yyyy
   const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
   if (m) return new Date(parseInt(m[3]),parseInt(m[2])-1,parseInt(m[1]),parseInt(m[4]||0),parseInt(m[5]||0));
   return null;
@@ -515,36 +778,41 @@ function parseDate(str) {
 
 function fmtDateTH(str) {
   if (!str) return '-';
-  const s = String(str).trim();
-  // If it's ISO or looks like 2026-04-27T... convert to readable
-  const d = parseDate(s);
-  if (!d || isNaN(d.getTime())) return s;
-  try {
-    return d.toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric' });
-  } catch(e) { return s; }
+  const d = parseDate(String(str).trim());
+  if (!d || isNaN(d.getTime())) return String(str);
+  try { return d.toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric' }); } catch(e) { return String(str); }
 }
 
 function fmtDateTimeTH(str) {
   if (!str) return '-';
-  const s = String(str).trim();
-  const d = parseDate(s);
-  if (!d || isNaN(d.getTime())) return s;
-  try {
-    return d.toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
-  } catch(e) { return s; }
+  const d = parseDate(String(str).trim());
+  if (!d || isNaN(d.getTime())) return String(str);
+  try { return d.toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); } catch(e) { return String(str); }
 }
 
 function fmtNow() {
   return new Date().toLocaleString('th-TH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
+function fmtDateLong(d) {
+  if (!d) return '-';
+  const dd = (d instanceof Date) ? d : parseDate(d);
+  if (!dd || isNaN(dd)) return String(d);
+  const day  = THAI_DAYS_LONG[dd.getDay()];
+  const date = dd.getDate();
+  const mon  = THAI_MONTHS_LONG[dd.getMonth()+1];
+  const year = dd.getFullYear()+543;
+  return `วัน${day}ที่ ${date} ${mon} พ.ศ. ${year}`;
+}
+
 function getStatusTag(status) {
   const s = String(status||'').trim();
-  if (s.includes('เกินกำหนด'))             return 'tag-overdue';
-  if (s.includes('ยกเลิก'))                return 'tag-cancelled';
-  if (s.includes('คืนแล้ว')||s.includes('รับของคืน')) return 'tag-returned';
-  if (s.includes('กำลังยืม')||s.includes('รับของแล้ว')||s.includes('กำลังใช้งาน')) return 'tag-active';
-  if (s.includes('อนุมัติ'))               return 'tag-approved';
+  if (s.includes('เกินกำหนด'))                                    return 'tag-overdue';
+  if (s.includes('ยกเลิก'))                                       return 'tag-cancelled';
+  if (s.includes('แจ้งคืนแล้ว') || s.includes('รอยืนยัน'))       return 'tag-return-pending';
+  if (s.includes('รับของคืนแล้ว') || s.includes('คืนแล้ว'))      return 'tag-returned';
+  if (s.includes('กำลังยืม') || s.includes('รับของแล้ว') || s.includes('กำลังใช้งาน')) return 'tag-active';
+  if (s.includes('อนุมัติ'))                                       return 'tag-approved';
   return 'tag-pending';
 }
 
@@ -556,6 +824,10 @@ function driveThumb(raw, size='w400') {
   return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=${size}` : first;
 }
 
+function isReturnPending(status) {
+  return String(status||'').includes('แจ้งคืนแล้ว') || String(status||'').includes('รอยืนยัน');
+}
+
 function showToast(msg, isErr=false) {
   const el = document.getElementById('toast-notify');
   el.textContent = msg;
@@ -563,7 +835,6 @@ function showToast(msg, isErr=false) {
   setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-// ── Validation Popup ──
 function showValidationPopup(errors) {
   const body = document.getElementById('vp-body');
   body.innerHTML = '<ul>' + errors.map(e => `<li>${e}</li>`).join('') + '</ul>';
@@ -573,7 +844,9 @@ function closeValidationPopup() {
   document.getElementById('validation-popup').classList.remove('show');
 }
 
-// ── Load Data ──
+/* ═══════════════════════════════════════════════
+   LOAD DATA
+═══════════════════════════════════════════════ */
 async function loadData() {
   try {
     const [eqR, vcR] = await Promise.all([
@@ -591,13 +864,18 @@ async function loadData() {
       endDate:   fmtDateTH(r['EndDate']),
       startDateRaw: r['StartDate']||'',
       endDateRaw:   r['EndDate']||'',
+      startTime: r['StartTime']||'',
+      endTime:   r['EndTime']||'',
       totalDays:r['TotalDays']||'',
       items:r['BorrowedItems']||'', idImageUrl:r['ID_ImageUrl']||'',
       status:r['Status']||'รอดำเนินการ', signedDocUrl:r['SignedDoc_ImageUrl']||'',
       note:r['ActionNote']||'', updatedAt:r['UpdatedAt']||'',
       updatedBy:r['UpdatedBy']||'', conditionPhotos:r['Condition_Photos']||'',
       handlerName:r['HandlerName']||'', handlerEmail:r['HandlerEmail']||'',
-      equipmentPhotos:r['Equipment_Photos']||'', signatureUrl:r['Signature_Url']||'',
+      equipmentPhotos:r['Equipment_Photos']||'',
+      signatureUrl:r['Signature_Url']||'',
+      staffSigUrl:r['StaffSig_Url']||'',
+      staffSigUpdatedAt:r['StaffSig_UpdatedAt']||'',
       dateObj:parseDate(r['Timestamp'])
     }));
 
@@ -613,6 +891,9 @@ async function loadData() {
       status:r['Status']||'รอดำเนินการ',
       note:r['ActionNote']||'', updatedAt:r['UpdatedAt']||'',
       updatedBy:r['UpdatedBy']||'', returnNote:r['ReturnConditionNote']||'',
+      signatureUrl:r['Signature_Url']||'',
+      staffSigUrl:r['StaffSig_Url']||'',
+      staffSigUpdatedAt:r['StaffSig_UpdatedAt']||'',
       dateObj:parseDate(r['Timestamp'])
     }));
 
@@ -629,6 +910,9 @@ function updateYearCounts() {
   document.getElementById('cnt-vc-tab').textContent  = allVcData.length;
 }
 
+/* ═══════════════════════════════════════════════
+   FILTERS & TABLE
+═══════════════════════════════════════════════ */
 function setYear(yr) {
   selectedYear = yr;
   ['2569','2568','all-yr'].forEach(t => document.getElementById('tab-'+t).classList.remove('active'));
@@ -687,70 +971,81 @@ function renderTable() {
   const now    = new Date();
 
   document.getElementById('result-count').textContent = `แสดง ${Math.min(start+1,total)}–${Math.min(start+items.length,total)} จาก ${total} รายการ`;
-  document.getElementById('table-title').innerHTML = (currentType==='eq'?'🦺 อุปกรณ์':'🚗 รถกอล์ฟ') + ` <span class="overdue-badge" id="overdue-badge" style="display:none"></span>`;
 
   if (!items.length) {
     thead.innerHTML='';
     tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--muted);">ไม่พบข้อมูล</td></tr>';
     document.getElementById('pagination').innerHTML='';
+    document.getElementById('overdue-badge').style.display='none';
+    document.getElementById('return-pending-badge').style.display='none';
     return;
   }
 
-  let overdueCount = 0;
+  let overdueCount = 0, returnPendingCount = 0;
 
   if (currentType==='eq') {
     thead.innerHTML=`<tr>
       <th>RefCode</th><th>ชื่อ-นามสกุล</th><th>คณะ/หน่วยงาน</th>
       <th>ชื่องาน</th><th>วันเริ่ม–คืน</th><th>อุปกรณ์</th>
-      <th>สถานะ</th><th>อัปเดตโดย</th><th>แก้ไข</th>
+      <th>สถานะ</th><th>อัปเดตโดย</th><th>การดำเนินการ</th>
     </tr>`;
 
     tbody.innerHTML = items.map((d,i) => {
-      const tagCls = getStatusTag(d.status);
-      // Parse endDate for overdue check
+      const tagCls   = getStatusTag(d.status);
+      const isRP     = isReturnPending(d.status);
       const endDateObj = d.endDateRaw ? parseDate(d.endDateRaw) : null;
-      const isOverdue  = endDateObj && endDateObj < now && !['รับของคืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s));
-      if (isOverdue) overdueCount++;
+      const isOverdue  = endDateObj && endDateObj < now && !['รับของคืนแล้ว','ยกเลิก','แจ้งคืนแล้ว'].some(s=>d.status.includes(s));
+      if (isOverdue)  overdueCount++;
+      if (isRP)       returnPendingCount++;
       const overdueDays = isOverdue ? Math.floor((now - endDateObj) / 86400000) : 0;
       let itemsText = '-';
       if (d.items) try { const arr=JSON.parse(d.items); itemsText=arr.slice(0,2).map(it=>it.name+':'+it.qty).join(', ')+(arr.length>2?` +${arr.length-2}`:''); } catch(e) { itemsText=d.items.substring(0,40); }
       const updatedStr = d.updatedBy ? d.updatedBy.split('(')[0].trim() : '-';
-      return `<tr class="${isOverdue?'row-overdue':d.status==='รอดำเนินการ'?'row-pending':''}">
+      const rowCls = isOverdue ? 'row-overdue' : isRP ? 'row-return-pending' : d.status==='รอดำเนินการ' ? 'row-pending' : '';
+      return `<tr class="${rowCls}">
         <td style="font-size:12px;color:var(--muted);white-space:nowrap;">${d.refCode||'(เดิม)'}</td>
-        <td><span style="cursor:pointer;color:var(--primary);font-weight:600;" onclick="openDetailModal(${start+i})">${d.name||'-'}</span></td>
+        <td><span style="cursor:pointer;color:var(--primary);font-weight:600;text-decoration:underline dotted;" onclick="openDetailModal(${start+i})">${d.name||'-'}</span></td>
         <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${d.dept}">${d.dept||'-'}</td>
         <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.eventName||'-'}</td>
         <td style="white-space:nowrap;font-size:12.5px;">${d.startDate||'-'}<br>${d.endDate||'-'}${isOverdue?`<span class="overdue-warn">⚠️ เกิน ${overdueDays} วัน</span>`:''}${d.totalDays?`<br><span style="color:var(--muted);font-size:11px;">${d.totalDays} วัน</span>`:''}</td>
         <td style="max-width:160px;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${itemsText}</td>
-        <td><span class="tag ${tagCls}">${d.status||'รอดำเนินการ'}</span></td>
+        <td>${isRP ? `<span class="tag tag-return-pending">🔔 แจ้งคืนแล้ว รอยืนยัน</span>` : `<span class="tag ${tagCls}">${d.status||'รอดำเนินการ'}</span>`}</td>
         <td style="font-size:12px;color:var(--muted);">${updatedStr}</td>
         <td>
-          ${d.refCode?`<div class="btn-action-group">
-            <button class="btn-action" onclick="openEqModal('${d.refCode}','${d.status}','${(d.note||'').replace(/'/g,"\\'")}','${d.email||''}')">✏️ แก้ไข</button>
+          ${d.refCode ? `<div class="btn-action-group">
+            ${isRP
+              ? `<button class="btn-action btn-confirm-return" onclick="openConfirmReturnModal('${d.refCode}','${(d.email||'')}')">✅ ยืนยันคืน</button>`
+              : `<button class="btn-action" onclick="openEqModal('${d.refCode}','${d.status}','${(d.note||'').replace(/'/g,"\\'")}','${d.email||''}')">✏️ แก้ไข</button>`
+            }
+            <button class="btn-action btn-pdf" onclick="initPdfExport('${d.refCode}')">📄 PDF</button>
             <button class="btn-action" onclick="openDetailModal(${start+i})">👁️</button>
-          </div>`:`<span style="font-size:11px;color:#ccc;">—</span>`}
+          </div>` : `<span style="font-size:11px;color:#ccc;">—</span>`}
         </td>
       </tr>`;
     }).join('');
+
   } else {
     thead.innerHTML=`<tr>
       <th>RefCode</th><th>รถกอล์ฟ</th><th>ชื่อ-นามสกุล</th>
       <th>คณะ/หน่วยงาน</th><th>ชื่องาน</th>
       <th>ช่วงเวลา</th><th>ผู้โดยสาร</th>
-      <th>สถานะ</th><th>อัปเดตโดย</th><th>แก้ไข</th>
+      <th>สถานะ</th><th>อัปเดตโดย</th><th>การดำเนินการ</th>
     </tr>`;
 
     tbody.innerHTML = items.map((d,i) => {
       const tagCls    = getStatusTag(d.status);
+      const isRP      = isReturnPending(d.status);
       const endDTObj  = d.endDT ? parseDate(d.endDT) : null;
-      const isOverdue = endDTObj && endDTObj < now && !['คืนแล้ว','ยกเลิก'].some(s=>d.status.includes(s));
+      const isOverdue = endDTObj && endDTObj < now && !['คืนแล้ว','ยกเลิก','แจ้งคืนแล้ว'].some(s=>d.status.includes(s));
       if (isOverdue) overdueCount++;
+      if (isRP)      returnPendingCount++;
       const overdueHrs = isOverdue ? Math.floor((now-endDTObj)/3600000) : 0;
       const updatedStr = d.updatedBy ? d.updatedBy.split('(')[0].trim() : '-';
-      return `<tr class="${isOverdue?'row-overdue':d.status==='รอดำเนินการ'?'row-pending':''}">
+      const rowCls = isOverdue ? 'row-overdue' : isRP ? 'row-return-pending' : d.status==='รอดำเนินการ' ? 'row-pending' : '';
+      return `<tr class="${rowCls}">
         <td style="font-size:12px;color:var(--muted);white-space:nowrap;">${d.refCode||'-'}</td>
         <td><span class="tag tag-type-vc">🚗 ${d.vcName||'-'}</span></td>
-        <td><span style="cursor:pointer;color:var(--primary);font-weight:600;" onclick="openDetailModal(${start+i})">${d.name||'-'}</span></td>
+        <td><span style="cursor:pointer;color:var(--primary);font-weight:600;text-decoration:underline dotted;" onclick="openDetailModal(${start+i})">${d.name||'-'}</span></td>
         <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.dept||'-'}</td>
         <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.eventName||'-'}</td>
         <td style="white-space:nowrap;font-size:12.5px;">${fmtDateTimeTH(d.startDT)}<br>${fmtDateTimeTH(d.endDT)}${isOverdue?`<span class="overdue-warn">⚠️ เกิน ${overdueHrs} ชม.</span>`:''}</td>
@@ -758,18 +1053,24 @@ function renderTable() {
         <td><span class="tag ${tagCls}">${d.status||'รอดำเนินการ'}</span></td>
         <td style="font-size:12px;color:var(--muted);">${updatedStr}</td>
         <td>
-          ${d.refCode?`<div class="btn-action-group">
-            <button class="btn-action" onclick="openVcModal('${d.refCode}','${d.status}','${(d.note||'').replace(/'/g,"\\'")}','${d.email||''}')">✏️ แก้ไข</button>
+          ${d.refCode ? `<div class="btn-action-group">
+            ${isRP
+              ? `<button class="btn-action btn-confirm-return" onclick="openConfirmReturnModal('${d.refCode}','${(d.email||'')}')">✅ ยืนยันคืน</button>`
+              : `<button class="btn-action" onclick="openVcModal('${d.refCode}','${d.status}','${(d.note||'').replace(/'/g,"\\'")}','${d.email||''}')">✏️ แก้ไข</button>`
+            }
             <button class="btn-action" onclick="openDetailModal(${start+i})">👁️</button>
-          </div>`:`<span style="font-size:11px;color:#ccc;">—</span>`}
+          </div>` : `<span style="font-size:11px;color:#ccc;">—</span>`}
         </td>
       </tr>`;
     }).join('');
   }
 
+  // Badges
   const ob = document.getElementById('overdue-badge');
-  if (ob && overdueCount>0) { ob.textContent=`⚠️ ${overdueCount} รายการเกินกำหนด`; ob.style.display='inline'; }
-  else if (ob) ob.style.display='none';
+  if (overdueCount>0) { ob.textContent=`⚠️ ${overdueCount} เกินกำหนด`; ob.style.display='inline'; } else ob.style.display='none';
+  const rpb = document.getElementById('return-pending-badge');
+  if (returnPendingCount>0) { rpb.textContent=`🔔 ${returnPendingCount} รอยืนยันคืน`; rpb.style.display='inline'; } else rpb.style.display='none';
+
   renderPagination(pages);
 }
 
@@ -792,9 +1093,12 @@ function goPage(p) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ── Detail Modal ──
+/* ═══════════════════════════════════════════════
+   DETAIL MODAL
+═══════════════════════════════════════════════ */
 function openDetailModal(idx) {
   const d = filteredData[idx]; if (!d) return;
+  detailCurrentRef = d.refCode;
   const isEq = d.type==='eq';
   document.getElementById('detail-banner').className = 'detail-banner '+(isEq?'eq':'vc');
   document.getElementById('detail-type-text').textContent = `${isEq?'🦺':'🚗'} ${isEq?'ยืมอุปกรณ์':'จองรถกอล์ฟ'} — ${d.refCode||''}`;
@@ -814,23 +1118,18 @@ function openDetailModal(idx) {
       <div class="detail-row"><span class="detail-key">📞 โทร</span><span class="detail-val">${d.phone||'-'}</span></div>
       <div class="detail-row"><span class="detail-key">📧 Email</span><span class="detail-val">${d.email||'-'}</span></div>
       <div class="detail-row"><span class="detail-key">🎪 ชื่องาน</span><span class="detail-val">${d.eventName||'-'}</span></div>
-      <div class="detail-row"><span class="detail-key">📅 วันเริ่ม</span><span class="detail-val">${d.startDate||'-'}</span></div>
-      <div class="detail-row"><span class="detail-key">📅 วันคืน</span><span class="detail-val">${d.endDate||'-'} ${d.totalDays?'('+d.totalDays+' วัน)':''}</span></div>
+      <div class="detail-row"><span class="detail-key">📅 วันเริ่ม</span><span class="detail-val">${d.startDate||'-'}${d.startTime?' เวลา '+d.startTime:''}</span></div>
+      <div class="detail-row"><span class="detail-key">📅 วันคืน</span><span class="detail-val">${d.endDate||'-'}${d.endTime?' เวลา '+d.endTime:''} ${d.totalDays?'('+d.totalDays+' วัน)':''}</span></div>
       <div class="detail-row"><span class="detail-key">🦺 อุปกรณ์</span><span class="detail-val">${itemsText}</span></div>
       ${d.handlerName?`<div class="detail-row"><span class="detail-key">👮 เจ้าหน้าที่</span><span class="detail-val">${d.handlerName}${d.handlerEmail?' ('+d.handlerEmail+')':''}</span></div>`:''}
       <div class="detail-row"><span class="detail-key">📋 สถานะ</span><span class="detail-val"><span class="tag ${getStatusTag(d.status)}">${d.status||'-'}</span></span></div>
       ${d.note?`<div class="detail-row"><span class="detail-key">📝 หมายเหตุ</span><span class="detail-val">${d.note}</span></div>`:''}
       ${d.updatedBy?`<div class="detail-row"><span class="detail-key">👤 อัปเดตโดย</span><span class="detail-val">${d.updatedBy}</span></div>`:''}
       ${d.signedDocUrl?`<div class="detail-row"><span class="detail-key">📄 ใบยืมที่เซ็น</span><span class="detail-val"><a href="${d.signedDocUrl}" target="_blank" style="color:var(--primary-mid);">ดูรูป →</a></span></div>`:''}
-      ${d.signatureUrl?`<div class="detail-row"><span class="detail-key">✍️ ลายเซ็น</span><span class="detail-val"><img class="detail-sig" src="${driveThumb(d.signatureUrl,'w200')}" loading="lazy" onerror="this.style.display='none'"></span></div>`:''}`;
-    if(d.equipmentPhotos){
-      const epUrls=d.equipmentPhotos.split(',').map(u=>u.trim()).filter(Boolean);
-      if(epUrls.length) rows+=`<div class="detail-row"><span class="detail-key">📷 รูปอุปกรณ์</span><span class="detail-val"><div class="detail-photos">${epUrls.map(u=>`<a href="${u}" target="_blank"><img class="detail-photo" src="${driveThumb(u,'w200')}" loading="lazy" onerror="this.style.display='none'"></a>`).join('')}</div></span></div>`;
-    }
-    if(d.conditionPhotos){
-      const photos=d.conditionPhotos.split(',').map(u=>u.trim()).filter(Boolean);
-      if(photos.length) rows+=`<div class="detail-row"><span class="detail-key">📷 สภาพอุปกรณ์</span><span class="detail-val"><div class="detail-photos">${photos.map(u=>`<a href="${u}" target="_blank"><img class="detail-photo" src="${driveThumb(u,'w200')}" loading="lazy" onerror="this.style.display='none'"></a>`).join('')}</div></span></div>`;
-    }
+      ${d.signatureUrl?`<div class="detail-row"><span class="detail-key">✍️ ลายเซ็นผู้ยืม</span><span class="detail-val"><img class="detail-sig" src="${driveThumb(d.signatureUrl,'w200')}" loading="lazy" onerror="this.style.display='none'"></span></div>`:''}
+      ${d.staffSigUrl?`<div class="detail-row"><span class="detail-key">✍️ ลายเซ็นเจ้าหน้าที่</span><span class="detail-val"><img class="detail-sig" src="${driveThumb(d.staffSigUrl,'w200')}" loading="lazy" onerror="this.style.display='none'"><br><span style="font-size:11px;color:var(--muted);">${d.staffSigUpdatedAt?'อัปเดต '+fmtDateTH(d.staffSigUpdatedAt):''}</span></span></div>`:''}`;
+    if(d.equipmentPhotos){ const epUrls=d.equipmentPhotos.split(',').map(u=>u.trim()).filter(Boolean); if(epUrls.length) rows+=`<div class="detail-row"><span class="detail-key">📷 รูปอุปกรณ์</span><span class="detail-val"><div class="detail-photos">${epUrls.map(u=>`<a href="${u}" target="_blank"><img class="detail-photo" src="${driveThumb(u,'w200')}" loading="lazy" onerror="this.style.display='none'"></a>`).join('')}</div></span></div>`; }
+    if(d.conditionPhotos){ const photos=d.conditionPhotos.split(',').map(u=>u.trim()).filter(Boolean); if(photos.length) rows+=`<div class="detail-row"><span class="detail-key">📷 สภาพอุปกรณ์</span><span class="detail-val"><div class="detail-photos">${photos.map(u=>`<a href="${u}" target="_blank"><img class="detail-photo" src="${driveThumb(u,'w200')}" loading="lazy" onerror="this.style.display='none'"></a>`).join('')}</div></span></div>`; }
   } else {
     rows=`
       <div class="detail-row"><span class="detail-key">🚗 รถที่จอง</span><span class="detail-val">${d.vcName||'-'}</span></div>
@@ -846,22 +1145,28 @@ function openDetailModal(idx) {
       <div class="detail-row"><span class="detail-key">📋 สถานะ</span><span class="detail-val"><span class="tag ${getStatusTag(d.status)}">${d.status||'-'}</span></span></div>
       ${d.note?`<div class="detail-row"><span class="detail-key">📝 หมายเหตุ</span><span class="detail-val">${d.note}</span></div>`:''}
       ${d.returnNote?`<div class="detail-row"><span class="detail-key">🔵 สภาพตอนคืน</span><span class="detail-val">${d.returnNote}</span></div>`:''}
-      ${d.updatedBy?`<div class="detail-row"><span class="detail-key">👤 อัปเดตโดย</span><span class="detail-val">${d.updatedBy}</span></div>`:''}`;
+      ${d.updatedBy?`<div class="detail-row"><span class="detail-key">👤 อัปเดตโดย</span><span class="detail-val">${d.updatedBy}</span></div>`:''}
+      ${d.signatureUrl?`<div class="detail-row"><span class="detail-key">✍️ ลายเซ็นผู้ยืม</span><span class="detail-val"><img class="detail-sig" src="${driveThumb(d.signatureUrl,'w200')}" loading="lazy" onerror="this.style.display='none'"></span></div>`:''}
+      ${d.staffSigUrl?`<div class="detail-row"><span class="detail-key">✍️ ลายเซ็นเจ้าหน้าที่</span><span class="detail-val"><img class="detail-sig" src="${driveThumb(d.staffSigUrl,'w200')}" loading="lazy" onerror="this.style.display='none'"></span></div>`:''}`;
   }
   document.getElementById('detail-body').innerHTML=rows;
+  // Show/hide PDF button based on type
+  document.getElementById('detail-pdf-btn').style.display = (d.type==='eq') ? 'inline-flex' : 'none';
   document.getElementById('detail-modal-bg').classList.add('show');
   document.body.style.overflow='hidden';
 }
 function bgCloseDetail(e) { if(e.target===document.getElementById('detail-modal-bg')) closeDetailModal(); }
 function closeDetailModal() { document.getElementById('detail-modal-bg').classList.remove('show'); document.body.style.overflow=''; }
+function triggerPdfFromDetail() { closeDetailModal(); if(detailCurrentRef) initPdfExport(detailCurrentRef); }
 
-// ── Equipment Modal ──
+/* ═══════════════════════════════════════════════
+   EQUIPMENT MODAL
+═══════════════════════════════════════════════ */
 function openEqModal(refCode, status, note, email) {
   editingRef = refCode; editingType = 'eq';
   document.getElementById('eq-modal-ref').textContent = refCode;
   document.getElementById('eq-status-select').value   = status||'รอดำเนินการ';
   document.getElementById('eq-note').value            = note||'';
-  // Reset staff fields
   document.getElementById('eq-staff-input').value = '';
   document.getElementById('eq-staff-input').classList.remove('error');
   document.getElementById('eq-staff-name').value  = '';
@@ -870,49 +1175,102 @@ function openEqModal(refCode, status, note, email) {
   condPhotosData = [];
   document.getElementById('signed-doc-preview').innerHTML='';
   document.getElementById('condition-photos-preview').innerHTML='';
+  document.getElementById('eq-damage-detail').value = '';
+  document.getElementById('eq-return-remark').value = '';
+  // Reset condition radio
+  document.querySelectorAll('input[name="eq-condition"]').forEach(r=>r.checked=false);
+  document.getElementById('cond-ok-item').classList.remove('checked-ok');
+  document.getElementById('cond-damage-item').classList.remove('checked-damage');
+  document.getElementById('damage-detail-wrap').style.display='none';
   onEqStatusChange();
+  clearSig('eq');
   checkBlacklistAlert(email,'eq');
   startTsInterval('eq-ts-display');
   document.getElementById('status-modal-eq').classList.add('show');
   document.body.style.overflow='hidden';
+  setTimeout(()=>initSigPad('eq'), 100);
 }
 function closeEqModal() {
   document.getElementById('status-modal-eq').classList.remove('show');
   document.body.style.overflow='';
   clearInterval(tsInterval);
+  document.querySelectorAll('.staff-ac-list').forEach(l=>l.classList.remove('show'));
 }
 
 function onEqStatusChange() {
   const s = document.getElementById('eq-status-select').value;
-  document.getElementById('signed-doc-wrap').style.display      = s==='รับของแล้ว/กำลังยืม' ? 'block':'none';
-  document.getElementById('condition-photos-wrap').style.display= (s==='รับของแล้ว/กำลังยืม'||s==='รับของคืนแล้ว') ? 'block':'none';
+  document.getElementById('signed-doc-wrap').style.display       = s==='รับของแล้ว/กำลังยืม' ? 'block':'none';
+  document.getElementById('condition-photos-wrap').style.display = (s==='รับของแล้ว/กำลังยืม'||s==='รับของคืนแล้ว') ? 'block':'none';
+  document.getElementById('eq-condition-group').style.display    = s==='รับของคืนแล้ว' ? 'block':'none';
+  document.getElementById('eq-sig-behalf-note').style.display    = s==='รับของคืนแล้ว' ? 'block':'none';
+}
+
+function selectCondition(type) {
+  document.getElementById('cond-ok').checked      = type==='ok';
+  document.getElementById('cond-damage').checked  = type==='damage';
+  document.getElementById('cond-ok-item').classList.toggle('checked-ok', type==='ok');
+  document.getElementById('cond-damage-item').classList.toggle('checked-damage', type==='damage');
+  document.getElementById('damage-detail-wrap').style.display = type==='damage' ? 'block':'none';
 }
 
 async function saveEqStatus() {
-  // ── Validate: บังคับกรอกผู้บันทึก ──
+  const errors = [];
   const staffInput = document.getElementById('eq-staff-input').value.trim();
   const staffName  = document.getElementById('eq-staff-name').value || staffInput;
-  if (!staffName) {
-    document.getElementById('eq-staff-input').classList.add('error');
-    document.getElementById('eq-staff-input').focus();
-    showValidationPopup(['ผู้บันทึก — ยังไม่ได้ระบุ กรุณาพิมพ์ชื่อหรือเลือกจากรายการ']);
-    return;
-  }
-  document.getElementById('eq-staff-input').classList.remove('error');
+  if (!staffName) { document.getElementById('eq-staff-input').classList.add('error'); errors.push('ผู้บันทึก — ยังไม่ได้ระบุ'); }
+  else document.getElementById('eq-staff-input').classList.remove('error');
 
   const status = document.getElementById('eq-status-select').value;
-  const note   = document.getElementById('eq-note').value;
-  const btn    = document.getElementById('eq-save-btn');
+
+  // Validate sig
+  if (!sigStates['eq']) errors.push('ลายเซ็นเจ้าหน้าที่ — กรุณาวาดลายเซ็น');
+
+  // Validate condition when returning
+  if (status === 'รับของคืนแล้ว') {
+    const condVal = document.querySelector('input[name="eq-condition"]:checked');
+    if (!condVal) errors.push('สภาพอุปกรณ์ — กรุณาเลือกสภาพ');
+    else if (condVal.value === 'เสียหาย' && !document.getElementById('eq-damage-detail').value.trim()) {
+      errors.push('รายละเอียดความเสียหาย — กรุณาระบุ');
+    }
+  }
+
+  if (errors.length) { showValidationPopup(errors); return; }
+
+  const note       = document.getElementById('eq-note').value;
+  const btn        = document.getElementById('eq-save-btn');
   btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+
+  // Get sig data
+  const canvas   = document.getElementById('eq-sig-canvas');
+  const sigData  = canvas.toDataURL('image/png').split(',')[1];
+
   try {
-    const now = fmtNow();
+    const now    = fmtNow();
     const params = new URLSearchParams({
       action:'updateStatus', refCode:editingRef, status, note,
       updatedBy:`${staffName} (${now})`
     });
-    if (signedDocData)       { params.append('signedDocData', signedDocData); params.append('signedDocMime', signedDocMime); }
+    if (signedDocData)         { params.append('signedDocData', signedDocData); params.append('signedDocMime', signedDocMime); }
     if (condPhotosData.length) params.append('conditionPhotosData', JSON.stringify(condPhotosData));
+
+    // Add condition data if returning
+    if (status === 'รับของคืนแล้ว') {
+      const condVal = document.querySelector('input[name="eq-condition"]:checked');
+      params.append('conditionResult', condVal ? condVal.value : '');
+      params.append('damageDetail', document.getElementById('eq-damage-detail').value);
+      params.append('returnRemark', document.getElementById('eq-return-remark').value);
+    }
+
     await fetch(GAS_URL, { method:'POST', body:params, mode:'no-cors' });
+
+    // Post staff sig separately
+    const sigParams = new URLSearchParams({
+      action:'handleStaffSignature', refCode:editingRef,
+      staffName, staffEmail: document.getElementById('eq-staff-email').value,
+      sigData, sigMime:'image/png'
+    });
+    fetch(GAS_URL, { method:'POST', body:sigParams, mode:'no-cors' });
+
     const item = allEqData.find(d => d.refCode===editingRef);
     if(item){ item.status=status; item.note=note; item.updatedBy=staffName; }
     closeEqModal(); applyFilters();
@@ -922,7 +1280,95 @@ async function saveEqStatus() {
   finally { btn.disabled=false; btn.textContent='💾 บันทึก'; }
 }
 
-// ── Vehicle Modal ──
+/* ═══════════════════════════════════════════════
+   CONFIRM RETURN MODAL
+═══════════════════════════════════════════════ */
+function openConfirmReturnModal(refCode, email) {
+  editingRef = refCode;
+  document.getElementById('cr-modal-ref').textContent = refCode;
+  document.getElementById('cr-staff-input').value = '';
+  document.getElementById('cr-staff-input').classList.remove('error');
+  document.getElementById('cr-staff-name').value  = '';
+  document.getElementById('cr-staff-email').value = '';
+  document.getElementById('cr-damage-detail').value = '';
+  document.getElementById('cr-remark').value = '';
+  document.querySelectorAll('input[name="cr-condition"]').forEach(r=>r.checked=false);
+  document.getElementById('cr-cond-ok-item').classList.remove('checked-ok');
+  document.getElementById('cr-cond-damage-item').classList.remove('checked-damage');
+  document.getElementById('cr-damage-detail-wrap').style.display='none';
+  clearSig('cr');
+  startTsInterval('cr-ts-display');
+  document.getElementById('confirm-return-modal').classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>initSigPad('cr'), 100);
+}
+function closeConfirmReturnModal() {
+  document.getElementById('confirm-return-modal').classList.remove('show');
+  document.body.style.overflow='';
+  clearInterval(tsInterval);
+  document.querySelectorAll('.staff-ac-list').forEach(l=>l.classList.remove('show'));
+}
+
+function selectCrCondition(type) {
+  document.getElementById('cr-cond-ok').checked      = type==='ok';
+  document.getElementById('cr-cond-damage').checked  = type==='damage';
+  document.getElementById('cr-cond-ok-item').classList.toggle('checked-ok', type==='ok');
+  document.getElementById('cr-cond-damage-item').classList.toggle('checked-damage', type==='damage');
+  document.getElementById('cr-damage-detail-wrap').style.display = type==='damage' ? 'block':'none';
+}
+
+async function saveConfirmReturn() {
+  const errors = [];
+  const staffInput = document.getElementById('cr-staff-input').value.trim();
+  const staffName  = document.getElementById('cr-staff-name').value || staffInput;
+  if (!staffName) { document.getElementById('cr-staff-input').classList.add('error'); errors.push('เจ้าหน้าที่ผู้รับคืน — ยังไม่ได้ระบุ'); }
+  else document.getElementById('cr-staff-input').classList.remove('error');
+
+  const condVal = document.querySelector('input[name="cr-condition"]:checked');
+  if (!condVal) errors.push('สภาพอุปกรณ์ — กรุณาเลือกสภาพ');
+  else if (condVal.value==='เสียหาย' && !document.getElementById('cr-damage-detail').value.trim()) {
+    errors.push('รายละเอียดความเสียหาย — กรุณาระบุ');
+  }
+
+  if (!sigStates['cr']) errors.push('ลายเซ็นเจ้าหน้าที่ — กรุณาวาดลายเซ็น');
+
+  if (errors.length) { showValidationPopup(errors); return; }
+
+  const btn = document.getElementById('cr-save-btn');
+  btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+
+  const canvas  = document.getElementById('cr-sig-canvas');
+  const sigData = canvas.toDataURL('image/png').split(',')[1];
+  const staffEmail = document.getElementById('cr-staff-email').value;
+
+  try {
+    const now = fmtNow();
+    const params = new URLSearchParams({
+      action:'handleConfirmReturn',
+      refCode:editingRef,
+      staffConfirmBy: staffName,
+      staffEmail: staffEmail,
+      staffSigData: sigData,
+      staffSigMime: 'image/png',
+      condition: condVal ? condVal.value : '',
+      damageDetail: document.getElementById('cr-damage-detail').value,
+      remark: document.getElementById('cr-remark').value,
+      staffConfirmedAt: now
+    });
+    await fetch(GAS_URL, { method:'POST', body:params, mode:'no-cors' });
+
+    const item = allEqData.find(d => d.refCode===editingRef);
+    if(item){ item.status='รับของคืนแล้ว'; item.updatedBy=staffName; }
+    closeConfirmReturnModal(); applyFilters();
+    showToast('✅ ยืนยันรับคืนสำเร็จ');
+    setTimeout(loadData, 2000);
+  } catch(e) { showToast('❌ เกิดข้อผิดพลาด: '+e.message, true); }
+  finally { btn.disabled=false; btn.textContent='✅ ยืนยันรับคืน'; }
+}
+
+/* ═══════════════════════════════════════════════
+   VEHICLE MODAL
+═══════════════════════════════════════════════ */
 function openVcModal(refCode, status, note, email) {
   editingRef = refCode; editingType = 'vc';
   document.getElementById('vc-modal-ref').textContent = refCode;
@@ -933,48 +1379,90 @@ function openVcModal(refCode, status, note, email) {
   document.getElementById('vc-staff-name').value  = '';
   document.getElementById('vc-staff-email').value = '';
   document.getElementById('vc-return-note').value = '';
+  document.getElementById('vc-damage-detail').value = '';
+  document.querySelectorAll('input[name="vc-condition"]').forEach(r=>r.checked=false);
+  document.getElementById('vc-cond-ok-item').classList.remove('checked-ok');
+  document.getElementById('vc-cond-damage-item').classList.remove('checked-damage');
+  document.getElementById('vc-damage-detail-wrap').style.display='none';
   onVcStatusChange();
+  clearSig('vc');
   checkBlacklistAlert(email,'vc');
   startTsInterval('vc-ts-display');
   document.getElementById('status-modal-vc').classList.add('show');
   document.body.style.overflow='hidden';
+  setTimeout(()=>initSigPad('vc'), 100);
 }
 function closeVcModal() {
   document.getElementById('status-modal-vc').classList.remove('show');
   document.body.style.overflow='';
   clearInterval(tsInterval);
+  document.querySelectorAll('.staff-ac-list').forEach(l=>l.classList.remove('show'));
 }
 
 function onVcStatusChange() {
   const s = document.getElementById('vc-status-select').value;
   document.getElementById('vc-return-note-wrap').style.display = s==='คืนแล้ว' ? 'block':'none';
+  document.getElementById('vc-sig-behalf-note').style.display  = s==='คืนแล้ว' ? 'block':'none';
+}
+
+function selectVcCondition(type) {
+  document.getElementById('vc-cond-ok').checked     = type==='ok';
+  document.getElementById('vc-cond-damage').checked = type==='damage';
+  document.getElementById('vc-cond-ok-item').classList.toggle('checked-ok', type==='ok');
+  document.getElementById('vc-cond-damage-item').classList.toggle('checked-damage', type==='damage');
+  document.getElementById('vc-damage-detail-wrap').style.display = type==='damage' ? 'block':'none';
 }
 
 async function saveVcStatus() {
-  // ── Validate: บังคับกรอกผู้บันทึก ──
+  const errors = [];
   const staffInput = document.getElementById('vc-staff-input').value.trim();
   const staffName  = document.getElementById('vc-staff-name').value || staffInput;
-  if (!staffName) {
-    document.getElementById('vc-staff-input').classList.add('error');
-    document.getElementById('vc-staff-input').focus();
-    showValidationPopup(['ผู้บันทึก — ยังไม่ได้ระบุ กรุณาพิมพ์ชื่อหรือเลือกจากรายการ']);
-    return;
-  }
-  document.getElementById('vc-staff-input').classList.remove('error');
+  if (!staffName) { document.getElementById('vc-staff-input').classList.add('error'); errors.push('ผู้บันทึก — ยังไม่ได้ระบุ'); }
+  else document.getElementById('vc-staff-input').classList.remove('error');
 
-  const status     = document.getElementById('vc-status-select').value;
+  if (!sigStates['vc']) errors.push('ลายเซ็นเจ้าหน้าที่ — กรุณาวาดลายเซ็น');
+
+  const status = document.getElementById('vc-status-select').value;
+  if (status==='คืนแล้ว') {
+    const condVal = document.querySelector('input[name="vc-condition"]:checked');
+    if (!condVal) errors.push('สภาพรถ — กรุณาเลือกสภาพ');
+    else if (condVal.value==='เสียหาย' && !document.getElementById('vc-damage-detail').value.trim()) {
+      errors.push('รายละเอียดความเสียหาย — กรุณาระบุ');
+    }
+  }
+
+  if (errors.length) { showValidationPopup(errors); return; }
+
   const note       = document.getElementById('vc-note').value;
   const returnNote = document.getElementById('vc-return-note').value;
   const btn        = document.getElementById('vc-save-btn');
   btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+
+  const canvas   = document.getElementById('vc-sig-canvas');
+  const sigData  = canvas.toDataURL('image/png').split(',')[1];
+
   try {
     const now = fmtNow();
+    let noteText = note;
+    if (returnNote) noteText += '\nสภาพตอนคืน: ' + returnNote;
+    if (status==='คืนแล้ว') {
+      const condVal = document.querySelector('input[name="vc-condition"]:checked');
+      if (condVal) noteText += '\nสภาพรถ: ' + condVal.value + (condVal.value==='เสียหาย' ? ' — '+document.getElementById('vc-damage-detail').value : '');
+    }
     const params = new URLSearchParams({
       action:'updateVehicleStatus', refCode:editingRef, status,
-      note: note + (returnNote?'\nสภาพตอนคืน: '+returnNote:''),
-      updatedBy:`${staffName} (${now})`
+      note: noteText, updatedBy:`${staffName} (${now})`
     });
     await fetch(GAS_URL, { method:'POST', body:params, mode:'no-cors' });
+
+    // Staff sig
+    const sigParams = new URLSearchParams({
+      action:'handleStaffSignature', refCode:editingRef,
+      staffName, staffEmail: document.getElementById('vc-staff-email').value,
+      sigData, sigMime:'image/png'
+    });
+    fetch(GAS_URL, { method:'POST', body:sigParams, mode:'no-cors' });
+
     const item = allVcData.find(d => d.refCode===editingRef);
     if(item){ item.status=status; item.note=note; item.updatedBy=staffName; item.returnNote=returnNote; }
     closeVcModal(); applyFilters();
@@ -984,7 +1472,424 @@ async function saveVcStatus() {
   finally { btn.disabled=false; btn.textContent='💾 บันทึก'; }
 }
 
-// ── Blacklist ──
+/* ═══════════════════════════════════════════════
+   SIGNATURE PAD
+═══════════════════════════════════════════════ */
+function initSigPad(prefix) {
+  const canvas = document.getElementById(prefix+'-sig-canvas');
+  const wrap   = canvas.parentElement;
+  if (!canvas) return;
+  // Set canvas size to match display size
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width > 0) {
+    canvas.width  = rect.width;
+    canvas.height = canvas.height || 130;
+  }
+  const ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#1c2833';
+  ctx.lineWidth   = 2;
+  ctx.lineCap     = 'round';
+  ctx.lineJoin    = 'round';
+  sigCtx[prefix]  = ctx;
+  sigStates[prefix] = false;
+
+  let drawing = false;
+  let lastX = 0, lastY = 0;
+
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x:(src.clientX-r.left)*(canvas.width/r.width), y:(src.clientY-r.top)*(canvas.height/r.height) };
+  }
+  function start(e) {
+    e.preventDefault();
+    drawing = true;
+    const p = getPos(e);
+    lastX = p.x; lastY = p.y;
+    ctx.beginPath(); ctx.moveTo(lastX, lastY);
+  }
+  function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    lastX = p.x; lastY = p.y;
+    if (!sigStates[prefix]) {
+      sigStates[prefix] = true;
+      document.getElementById(prefix+'-sig-wrap').classList.add('has-sig');
+      const ph = document.getElementById(prefix+'-sig-placeholder');
+      if (ph) ph.classList.add('hidden');
+    }
+  }
+  function stop() { drawing = false; ctx.beginPath(); }
+
+  // Remove old listeners by cloning
+  const newCanvas = canvas.cloneNode(true);
+  canvas.parentNode.replaceChild(newCanvas, canvas);
+  sigCtx[prefix] = newCanvas.getContext('2d');
+  sigCtx[prefix].strokeStyle = '#1c2833';
+  sigCtx[prefix].lineWidth   = 2;
+  sigCtx[prefix].lineCap     = 'round';
+  sigCtx[prefix].lineJoin    = 'round';
+
+  newCanvas.addEventListener('mousedown',  start);
+  newCanvas.addEventListener('mousemove',  draw);
+  newCanvas.addEventListener('mouseup',    stop);
+  newCanvas.addEventListener('mouseleave', stop);
+  newCanvas.addEventListener('touchstart', start, {passive:false});
+  newCanvas.addEventListener('touchmove',  draw,  {passive:false});
+  newCanvas.addEventListener('touchend',   stop);
+}
+
+function clearSig(prefix) {
+  const canvas = document.getElementById(prefix+'-sig-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  sigStates[prefix] = false;
+  document.getElementById(prefix+'-sig-wrap')?.classList.remove('has-sig');
+  const ph = document.getElementById(prefix+'-sig-placeholder');
+  if (ph) ph.classList.remove('hidden');
+}
+
+/* ═══════════════════════════════════════════════
+   PDF — Return Data fetch
+═══════════════════════════════════════════════ */
+async function getReturnData(refCode) {
+  try {
+    const r = await fetch(`${GAS_URL}?action=getReturnDataByRef&refCode=${encodeURIComponent(refCode)}&t=${Date.now()}`);
+    const j = await r.json();
+    return j.data || null;
+  } catch(e) { return null; }
+}
+
+/* ═══════════════════════════════════════════════
+   PDF — Font helpers
+═══════════════════════════════════════════════ */
+async function _loadFonts() {
+  if (!_fontNormal) {
+    const buf = await fetch('./fonts/NotoSansThai-Regular.ttf').then(r=>{ if(!r.ok) throw new Error('โหลดฟอนต์ Normal ไม่ได้'); return r.arrayBuffer(); });
+    let bin=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.byteLength;i++) bin+=String.fromCharCode(bytes[i]);
+    _fontNormal = btoa(bin);
+  }
+  if (!_fontBold) {
+    const buf = await fetch('./fonts/NotoSansThai-Bold.ttf').then(r=>{ if(!r.ok) throw new Error('โหลดฟอนต์ Bold ไม่ได้'); return r.arrayBuffer(); });
+    let bin=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.byteLength;i++) bin+=String.fromCharCode(bytes[i]);
+    _fontBold = btoa(bin);
+  }
+  if (!_logoB64) {
+    try {
+      const resp = await fetch('./assets/mu_logo.png');
+      if (resp.ok) {
+        const blob = await resp.blob();
+        _logoB64 = await new Promise((res,rej)=>{ const rd=new FileReader(); rd.onload=e=>res(e.target.result); rd.onerror=()=>rej(); rd.readAsDataURL(blob); });
+      }
+    } catch(e) { _logoB64 = null; }
+  }
+}
+
+function _registerThaiFont(doc) {
+  doc.addFileToVFS('NotoSansThai-Regular.ttf', _fontNormal);
+  doc.addFont('NotoSansThai-Regular.ttf', 'NotoSansThai', 'normal');
+  doc.addFileToVFS('NotoSansThai-Bold.ttf', _fontBold);
+  doc.addFont('NotoSansThai-Bold.ttf', 'NotoSansThai', 'bold');
+}
+
+/* ═══════════════════════════════════════════════
+   PDF — INCOMPLETE MODAL FLOW
+═══════════════════════════════════════════════ */
+function initPdfExport(refCode) {
+  const d = allEqData.find(x=>x.refCode===refCode);
+  if (!d) return;
+  const isComplete = d.status.includes('รับของคืนแล้ว') || d.status.includes('คืนแล้ว');
+  if (!isComplete) {
+    pendingPdfRef = refCode;
+    document.getElementById('pdf-incomplete-modal').classList.add('show');
+  } else {
+    generateItemPDF(refCode);
+  }
+}
+function closePdfIncompleteModal() {
+  document.getElementById('pdf-incomplete-modal').classList.remove('show');
+  pendingPdfRef = null;
+}
+function proceedPdfAnyway() {
+  const ref = pendingPdfRef;
+  closePdfIncompleteModal();
+  generateItemPDF(ref);
+}
+
+/* ═══════════════════════════════════════════════
+   PDF — GENERATE ITEM PDF
+═══════════════════════════════════════════════ */
+async function generateItemPDF(refCode) {
+  const overlay = document.getElementById('pdf-progress-overlay');
+  const progTxt = document.getElementById('pdf-progress-text');
+  overlay.classList.add('show');
+
+  try {
+    progTxt.textContent = 'กำลังโหลดฟอนต์ภาษาไทย...';
+    await _loadFonts();
+
+    progTxt.textContent = 'กำลังดึงข้อมูลรายการ...';
+    const d = allEqData.find(x=>x.refCode===refCode);
+    if (!d) { showToast('ไม่พบข้อมูล: '+refCode, true); overlay.classList.remove('show'); return; }
+
+    const isReturned = d.status.includes('รับของคืนแล้ว') || d.status.includes('คืนแล้ว');
+    let returnData = null;
+    if (isReturned) {
+      progTxt.textContent = 'กำลังดึงข้อมูลการคืน...';
+      returnData = await getReturnData(refCode);
+    }
+
+    progTxt.textContent = 'กำลังสร้างเอกสาร PDF...';
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    _registerThaiFont(doc);
+
+    const W = 210, H = 297, margin = 15;
+    const genDate = new Date();
+    const genStr  = `สร้างเมื่อ ${fmtDateLong(genDate)} เวลา ${String(genDate.getHours()).padStart(2,'0')}.${String(genDate.getMinutes()).padStart(2,'0')} น.`;
+    const CASE_B  = isReturned && returnData;
+
+    // ── Helpers ──
+    function sf(bold=false, size=11) {
+      doc.setFont('NotoSansThai', bold?'bold':'normal');
+      doc.setFontSize(size);
+    }
+    function tc(text, yPos, size=11, bold=false, color=[0,0,0]) {
+      sf(bold,size); doc.setTextColor(...color);
+      doc.text(String(text||''), W/2, yPos, {align:'center'});
+    }
+    function tl(text, x, y, size=11, bold=false, color=[0,0,0]) {
+      sf(bold,size); doc.setTextColor(...color);
+      doc.text(String(text||''), x, y);
+    }
+    function tr(text, x, y, size=11, bold=false, color=[0,0,0]) {
+      sf(bold,size); doc.setTextColor(...color);
+      doc.text(String(text||''), x, y, {align:'right'});
+    }
+    function hline(y, c=[15,76,117], lw=0.5) {
+      doc.setDrawColor(...c); doc.setLineWidth(lw);
+      doc.line(margin, y, W-margin, y);
+    }
+    function box(x, y, w, h, fill=null, stroke=null) {
+      if (fill) { doc.setFillColor(...fill); doc.rect(x,y,w,h,'F'); }
+      if (stroke) { doc.setDrawColor(...stroke); doc.setLineWidth(0.3); doc.rect(x,y,w,h,'S'); }
+    }
+
+    let y = margin;
+
+    // ── HEADER ──
+    // Blue banner
+    box(0, 0, W, 32, [15,76,117]);
+    if (_logoB64) { try { doc.addImage(_logoB64,'PNG',margin,4,20,20); } catch(e){} }
+    sf(true,13); doc.setTextColor(255,255,255);
+    doc.text('ใบยืมของงานจราจรและความปลอดภัย', margin+24, 12);
+    sf(false,8); doc.setTextColor(200,220,245);
+    doc.text('กองกายภาพและสิ่งแวดล้อม มหาวิทยาลัยมหิดล', margin+24, 18);
+    // RefCode on right (bold)
+    sf(true,14); doc.setTextColor(242,169,0);
+    doc.text(refCode, W-margin, 14, {align:'right'});
+    sf(false,7); doc.setTextColor(200,220,245);
+    doc.text(genStr, W-margin, 20, {align:'right'});
+    y = 37;
+
+    // Status badge
+    const statusColor = isReturned ? [39,174,96] : [243,156,18];
+    box(margin, y, W-2*margin, 8, [...statusColor, 0.1]);
+    doc.setDrawColor(...statusColor); doc.setLineWidth(0.4);
+    doc.rect(margin, y, W-2*margin, 8, 'S');
+    sf(true,8.5); doc.setTextColor(...statusColor);
+    doc.text(`สถานะ: ${d.status}`, W/2, y+5.5, {align:'center'});
+    y += 11;
+
+    // ── BORROWER INFO ──
+    sf(true,10); doc.setTextColor(15,76,117);
+    doc.text('ข้อมูลผู้ยืม', margin, y); y += 2;
+    hline(y, [15,76,117], 0.8); y += 4;
+
+    const COL1 = margin, COL2 = W/2+5;
+    const rowH = 6.5;
+    function row2(label1, val1, label2, val2) {
+      sf(false,8.5); doc.setTextColor(108,122,137);
+      doc.text(label1+': ', COL1, y); doc.text(label2+': ', COL2, y);
+      sf(false,8.5); doc.setTextColor(28,40,51);
+      doc.text(String(val1||'-'), COL1+22, y); doc.text(String(val2||'-'), COL2+22, y);
+      y += rowH;
+    }
+    function row1(label, val) {
+      sf(false,8.5); doc.setTextColor(108,122,137);
+      doc.text(label+': ', COL1, y);
+      sf(false,8.5); doc.setTextColor(28,40,51);
+      doc.text(String(val||'-'), COL1+28, y);
+      y += rowH;
+    }
+
+    row2('ชื่อ-นามสกุล', `${d.prefix}${d.name}`, 'ประเภท', d.personType||'-');
+    row2('คณะ/หน่วยงาน', d.dept||'-', 'โทรศัพท์', d.phone||'-');
+    row1('อีเมล', d.email||'-');
+    row1('ชื่อกิจกรรม/โครงการ', d.eventName||'-');
+    y += 1;
+    hline(y, [210,218,230], 0.3); y += 3;
+
+    // ── BORROW PERIOD ──
+    sf(true,10); doc.setTextColor(15,76,117);
+    doc.text('ระยะเวลาการยืม', margin, y); y += 2;
+    hline(y, [15,76,117], 0.8); y += 4;
+
+    const startDateObj = parseDate(d.startDateRaw);
+    const endDateObj2  = parseDate(d.endDateRaw);
+    row2('วันเริ่มยืม', `${fmtDateLong(startDateObj)}${d.startTime?' เวลา '+d.startTime+' น.':''}`,
+         'วันกำหนดคืน', `${fmtDateLong(endDateObj2)}${d.endTime?' เวลา '+d.endTime+' น.':''}`);
+    if (d.totalDays) { row1('จำนวนวัน', `${d.totalDays} วัน`); }
+    y += 1;
+    hline(y, [210,218,230], 0.3); y += 3;
+
+    // ── ITEMS ──
+    sf(true,10); doc.setTextColor(15,76,117);
+    doc.text('รายการอุปกรณ์ที่ยืม', margin, y); y += 2;
+    hline(y, [15,76,117], 0.8); y += 4;
+
+    let items = [];
+    if (d.items) try { items = JSON.parse(d.items); } catch(e) {}
+
+    if (items.length) {
+      // Table header
+      box(margin, y-3, W-2*margin, 7, [15,76,117]);
+      sf(true,8); doc.setTextColor(255,255,255);
+      doc.text('ลำดับ', margin+3, y+1);
+      doc.text('รายการอุปกรณ์', margin+16, y+1);
+      doc.text('จำนวน', W-margin-24, y+1);
+      doc.text('หน่วย', W-margin-8, y+1, {align:'right'});
+      y += 5;
+      items.forEach((it, idx) => {
+        const bg = idx%2===0 ? [250,252,255] : [255,255,255];
+        box(margin, y-3, W-2*margin, 6.5, bg, [220,228,240]);
+        sf(false,8); doc.setTextColor(28,40,51);
+        doc.text(String(idx+1), margin+5, y+1, {align:'center'});
+        doc.text(String(it.name||'-'), margin+16, y+1);
+        sf(true,8); doc.setTextColor(15,76,117);
+        doc.text(String(it.qty||'-'), W-margin-22, y+1, {align:'right'});
+        sf(false,8); doc.setTextColor(108,122,137);
+        doc.text(String(it.unit||''), W-margin-7, y+1, {align:'right'});
+        y += 6.5;
+      });
+    } else {
+      sf(false,9); doc.setTextColor(108,122,137);
+      doc.text('ไม่มีข้อมูลอุปกรณ์', W/2, y+2, {align:'center'}); y += 7;
+    }
+    y += 2;
+
+    // ── HANDLER ──
+    if (d.handlerName) {
+      hline(y, [210,218,230], 0.3); y += 3;
+      sf(true,10); doc.setTextColor(15,76,117);
+      doc.text('เจ้าหน้าที่ผู้รับเรื่อง', margin, y); y += 2;
+      hline(y, [15,76,117], 0.8); y += 4;
+      row2('ชื่อเจ้าหน้าที่', d.handlerName||'-', 'ตำแหน่ง', getStaffPosition(d.handlerName));
+      y += 1;
+    }
+
+    // ── CASE B: RETURN INFO ──
+    if (CASE_B) {
+      hline(y, [39,174,96], 0.8); y += 3;
+      box(margin, y-1, W-2*margin, 7, [39,174,96]);
+      sf(true,10); doc.setTextColor(255,255,255);
+      doc.text('ข้อมูลการคืน', W/2, y+4, {align:'center'}); y += 9;
+
+      const rd = returnData;
+      row2('วันที่คืน', rd['Timestamp'] ? fmtDateLong(parseDate(rd['Timestamp'])) : '-',
+           'สภาพ', rd['Condition']||'-');
+      const returnedBy = rd['ReturnedBy']||'-';
+      const isOnBehalf = rd['IsReturnedOnBehalf']==='true'||rd['IsReturnedOnBehalf']===true;
+      row2('ผู้คืน', isOnBehalf ? `${returnedBy} (แทน)` : returnedBy,
+           'โทรผู้คืน', rd['ReturnedByPhone']||'-');
+      if (rd['DamageDetail']) row1('ความเสียหาย', rd['DamageDetail']);
+      if (rd['Remark'])       row1('หมายเหตุ', rd['Remark']);
+      if (rd['StaffConfirmBy']) row2('เจ้าหน้าที่รับคืน', rd['StaffConfirmBy'],
+                                     'เวลารับคืน', rd['StaffConfirmedAt']||'-');
+      y += 2;
+    }
+
+    // ── SIGNATURES ──
+    const sigAreaY = y + 4;
+    const needed   = H - sigAreaY - margin;
+    if (needed < 55) { doc.addPage(); y = margin; }
+    y = Math.max(y, sigAreaY);
+
+    hline(y, [210,218,230], 0.3); y += 4;
+    sf(true,10); doc.setTextColor(15,76,117);
+    doc.text('ลายมือชื่อ', margin, y); y += 2;
+    hline(y, [15,76,117], 0.8); y += 6;
+
+    const sigY    = y;
+    const sigH    = 40;
+    const numSigs = CASE_B ? 3 : 2;
+    const usableW = W - 2*margin;
+    const sigW    = usableW / numSigs;
+
+    const sigs = CASE_B ? [
+      { label:'ลายเซ็นผู้ยืม', url: d.signatureUrl||'', name: d.name, note:'(ผู้ยืม)' },
+      { label:'ลายเซ็นเจ้าหน้าที่', url: d.staffSigUrl||'', name: d.handlerName||'-', note:'(ผู้รับเรื่อง)' },
+      { label:'ลายเซ็นผู้คืน', url: returnData?.['ReturnSigUrl']||'', name: returnData?.['ReturnedBy']||(returnData?.['IsReturnedOnBehalf']?'(แทน)':''), note:'(ผู้คืน)' }
+    ] : [
+      { label:'ลายเซ็นผู้ยืม', url: d.signatureUrl||'', name: d.name, note:'(ผู้ยืม)' },
+      { label:'ลายเซ็นเจ้าหน้าที่', url: d.staffSigUrl||'', name: d.handlerName||'-', note:'(ผู้รับเรื่อง)' }
+    ];
+
+    for (let i=0; i<sigs.length; i++) {
+      const sx  = margin + i*sigW;
+      const s   = sigs[i];
+      box(sx+1, sigY, sigW-2, sigH, null, [210,218,230]);
+      sf(true,7.5); doc.setTextColor(15,76,117);
+      doc.text(s.label, sx+sigW/2, sigY+5, {align:'center'});
+      // Try to draw sig image
+      if (s.url) {
+        try {
+          const thumb = driveThumb(s.url, 'w200');
+          sf(false,7); doc.setTextColor(108,122,137);
+          doc.text('(ลายเซ็นดิจิทัล)', sx+sigW/2, sigY+20, {align:'center'});
+        } catch(e) {}
+      } else if (!CASE_B && i===1 && !d.staffSigUrl) {
+        sf(false,7); doc.setTextColor(192,57,43);
+        doc.text('ยังไม่ปรับสถานะและลงนาม', sx+sigW/2, sigY+22, {align:'center'});
+      }
+      // Bottom lines
+      hline(sigY+sigH-8, [180,190,200], 0.3);
+      sf(false,7.5); doc.setTextColor(40,40,51);
+      doc.text(String(s.name||'').substring(0,20), sx+sigW/2, sigY+sigH-4, {align:'center'});
+      sf(false,6.5); doc.setTextColor(108,122,137);
+      doc.text(CASE_B && i===1 ? getStaffPosition(s.name) : s.note, sx+sigW/2, sigY+sigH+1, {align:'center'});
+    }
+    y = sigY + sigH + 12;
+
+    // ── FOOTER ──
+    const footY = H - 10;
+    hline(footY-4, [210,218,230], 0.3);
+    sf(false,6.5); doc.setTextColor(108,122,137);
+    doc.text(`เอกสารอ้างอิง: ${refCode}  |  ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ มหาวิทยาลัยมหิดล`, W/2, footY, {align:'center'});
+    doc.text('งานจราจรและความปลอดภัย กองกายภาพและสิ่งแวดล้อม', W/2, footY+4, {align:'center'});
+
+    progTxt.textContent = 'บันทึก PDF...';
+    const filename = `BorrowDoc_${refCode}_${genDate.getFullYear()}${String(genDate.getMonth()+1).padStart(2,'0')}${String(genDate.getDate()).padStart(2,'0')}.pdf`;
+    doc.save(filename);
+    showToast('📄 Export PDF สำเร็จ: '+filename);
+
+  } catch(err) {
+    console.error('PDF error:', err);
+    showToast('❌ PDF Error: '+err.message, true);
+  } finally {
+    overlay.classList.remove('show');
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BLACKLIST
+═══════════════════════════════════════════════ */
 async function checkBlacklistAlert(email, prefix) {
   const alertEl  = document.getElementById('bl-alert-'+prefix);
   const reasonEl = document.getElementById('bl-reason-'+prefix);
@@ -1000,7 +1905,9 @@ async function checkBlacklistAlert(email, prefix) {
   } catch(e) {}
 }
 
-// ── File Handling ──
+/* ═══════════════════════════════════════════════
+   FILE HANDLING
+═══════════════════════════════════════════════ */
 function previewModalFile(input, previewId) {
   const file = input.files[0]; if (!file) return;
   signedDocMime = file.type;
@@ -1031,16 +1938,27 @@ function previewConditionPhotos(input) {
   });
 }
 
-// ── Staff Autocomplete ──
-function staffAcSearch(q, listId, nameId, emailId) {
-  const list = document.getElementById(listId);
+/* ═══════════════════════════════════════════════
+   STAFF AUTOCOMPLETE
+═══════════════════════════════════════════════ */
+function staffAcSearch(q, listId, nameId, emailId, inputId) {
+  const list   = document.getElementById(listId);
+  const input  = document.getElementById(inputId);
+  const inputRect = input.getBoundingClientRect();
   if (!q.trim()) { list.classList.remove('show'); return; }
   const matches = STAFF_LIST.filter(s => s.name.includes(q));
   if (!matches.length) { list.classList.remove('show'); return; }
-  list.innerHTML = matches.slice(0,8).map(s => `
-    <div class="staff-ac-item" onclick="pickStaff('${s.name.replace(/'/g,"\\'")}','${s.email}','${listId.replace('-ac-list','-input')}','${nameId}','${emailId}','${listId}')">
+  // Position fixed dropdown
+  list.style.top    = (inputRect.bottom + window.scrollY) + 'px';
+  list.style.left   = inputRect.left + 'px';
+  list.style.width  = inputRect.width + 'px';
+  list.innerHTML = matches.slice(0,8).map(s => {
+    const safeName  = s.name.replace(/'/g,"\\'");
+    const safeEmail = s.email.replace(/'/g,"\\'");
+    return `<div class="staff-ac-item" onclick="pickStaff('${safeName}','${safeEmail}','${inputId}','${nameId}','${emailId}','${listId}')">
       ${s.name}<div class="staff-email">${s.email}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   list.classList.add('show');
 }
 function pickStaff(name, email, inputId, nameId, emailId, listId) {
@@ -1051,10 +1969,12 @@ function pickStaff(name, email, inputId, nameId, emailId, listId) {
   document.getElementById(listId).classList.remove('show');
 }
 document.addEventListener('click', e => {
-  document.querySelectorAll('.staff-ac-list').forEach(l => { if(!l.parentElement.contains(e.target)) l.classList.remove('show'); });
+  document.querySelectorAll('.staff-ac-list').forEach(l => { if(!l.parentElement?.contains(e.target)) l.classList.remove('show'); });
 });
 
-// ── Timestamp ──
+/* ═══════════════════════════════════════════════
+   TIMESTAMP
+═══════════════════════════════════════════════ */
 function startTsInterval(elId) {
   clearInterval(tsInterval);
   const el = document.getElementById(elId);
@@ -1062,7 +1982,9 @@ function startTsInterval(elId) {
   update(); tsInterval = setInterval(update, 1000);
 }
 
-// ── Auto Refresh ──
+/* ═══════════════════════════════════════════════
+   AUTO REFRESH
+═══════════════════════════════════════════════ */
 function startAutoRefresh() {
   clearInterval(refreshInterval); clearInterval(countdownInterval);
   secondsLeft = 300;
@@ -1083,7 +2005,9 @@ async function manualRefresh() {
   showToast('🔄 โหลดข้อมูลใหม่แล้ว');
 }
 
-// ── Init ──
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
 window.onload = () => {
   const role = sessionStorage.getItem('borrow_auth');
   if (role) {
@@ -1102,8 +2026,10 @@ window.onload = () => {
       setTimeout(() => {
         const found = filteredData.find(d => d.refCode===ref);
         if (found) {
-          if (found.type==='eq') openEqModal(found.refCode,found.status,found.note,found.email);
-          else openVcModal(found.refCode,found.status,found.note,found.email);
+          if (found.type==='eq') {
+            if (isReturnPending(found.status)) openConfirmReturnModal(found.refCode, found.email);
+            else openEqModal(found.refCode, found.status, found.note, found.email);
+          } else openVcModal(found.refCode, found.status, found.note, found.email);
         }
       }, 1200);
     }
@@ -1111,12 +2037,19 @@ window.onload = () => {
 };
 
 document.addEventListener('keydown', e => {
-  if (e.key==='Escape') { closeEqModal(); closeVcModal(); closeDetailModal(); closeValidationPopup(); }
+  if (e.key==='Escape') {
+    closeEqModal();
+    closeVcModal();
+    closeConfirmReturnModal();
+    closeDetailModal();
+    closeValidationPopup();
+    closePdfIncompleteModal();
+  }
 });
 </script>
 
 <footer style="background:#0F4C75;color:rgba(255,255,255,0.7);font-family:'Sarabun',sans-serif;font-size:12px;padding:16px 24px;text-align:center;line-height:1.8;margin-top:20px;">
-  <div><span style="font-weight:700;color:#F2A900;">ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ — San v1.1.1</span></div>
+  <div><span style="font-weight:700;color:#F2A900;">ระบบยืม-คืนอุปกรณ์และรถกอล์ฟ — v1.2.0</span></div>
   <div style="font-size:11.5px;margin-top:3px;">© 2025–2026 Traffic Control and Premises Security Unit, Mahidol University. All rights reserved.</div>
 </footer>
 </body>
