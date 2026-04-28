@@ -915,9 +915,9 @@ async function exportPDF() {
     // Signature boxes
     const sigW = (W-margin*2-8)/3;
     const sigBoxes = [
-      { title:'Preparer / ผู้จัดทำ', name:'—', position:'(งาน จราจร ม.5H #4+2# 2' },
-      { title:'Checker / ผู้ตรวจสอบ', name:'2*#\'5 3@ 5*#', position:'(งาน จราจร ม.5H #4+2# 2' },
-      { title:'Approver / ผู้อนุมัติ', name:'2**8 9!4 2 @ 4H!', position:'(+1\'+ ล2 2  #2 #/)' }
+      { title:'Preparer / ผู้จัดทำ', name:'—', position:'(งานจราจรและความปลอดภัย)' },
+      { title:'Checker / ผู้ตรวจสอบ', name:'นางสาวพิชญา ดลมินทร์', position:'(เจ้าหน้าที่บริหารงานทั่วไป)' },
+      { title:'Approver / ผู้อนุมัติ', name:'นายยุทธภูมิ ญานเพิ่ม', position:'(หัวหน้างานจราจรและความปลอดภัย)' }
     ];
     sigBoxes.forEach((s,i) => {
       const x = margin + i*(sigW+4);
@@ -948,19 +948,28 @@ async function exportPDF() {
 
     // Table header
     const eqCols = [{h:'RefCode',w:28},{h:'ชื่อ-นามสกุล',w:36},{h:'คณะ/หน่วยงาน',w:40},{h:'วันเริ่ม',w:22},{h:'วันคืน',w:22},{h:'สถานะ',w:28},{h:'เจ้าหน้าที่',w:26}];
-    let xOff = margin;
-    doc.setFillColor(15,76,117);
-    doc.rect(margin, y, W-margin*2, 7, 'F');
-    eqCols.forEach(col => {
-      setFont(true, 7.5); doc.setTextColor(255,255,255);
-      doc.text(col.h, xOff+1, y+5);
-      xOff += col.w;
-    });
-    y += 8;
+
+    function drawEqTableHeader() {
+      let xOff = margin;
+      doc.setFillColor(15,76,117);
+      doc.rect(margin, y, W-margin*2, 7, 'F');
+      eqCols.forEach(col => {
+        setFont(true, 7.5); doc.setTextColor(255,255,255);
+        doc.text(col.h, xOff+1, y+5);
+        xOff += col.w;
+      });
+      y += 8;
+    }
+    drawEqTableHeader();
 
     const eqRowsForPdf = filteredEq.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
     eqRowsForPdf.forEach((d,idx) => {
-      checkY(7);
+      if (y+7 > 270) {
+        newPage();
+        txt('รายการยืมอุปกรณ์ (ต่อ)  /  Equipment Borrowing Details (cont.)', margin, y, 11, true, [15,76,117]); y+=3;
+        hRule(y,[242,169,0],0.6); y+=5;
+        drawEqTableHeader();
+      }
       if (idx%2===0) { doc.setFillColor(248,250,255); doc.rect(margin,y-1,W-margin*2,7,'F'); }
       const rowData = [
         d.refCode||'—', d.name||'-', d.dept||'-',
@@ -997,19 +1006,28 @@ async function exportPDF() {
     hRule(y,[26,107,58],0.8); y+=6;
 
     const vcCols = [{h:'RefCode',w:28},{h:'รถที่จอง',w:36},{h:'ชื่อ-นามสกุล',w:36},{h:'คณะ/หน่วยงาน',w:40},{h:'เริ่ม',w:30},{h:'สถานะ',w:28}];
-    let xVc = margin;
-    doc.setFillColor(26,107,58);
-    doc.rect(margin, y, W-margin*2, 7, 'F');
-    vcCols.forEach(col => {
-      setFont(true, 7.5); doc.setTextColor(255,255,255);
-      doc.text(col.h, xVc+1, y+5);
-      xVc += col.w;
-    });
-    y += 8;
+
+    function drawVcTableHeader() {
+      let xVc = margin;
+      doc.setFillColor(26,107,58);
+      doc.rect(margin, y, W-margin*2, 7, 'F');
+      vcCols.forEach(col => {
+        setFont(true, 7.5); doc.setTextColor(255,255,255);
+        doc.text(col.h, xVc+1, y+5);
+        xVc += col.w;
+      });
+      y += 8;
+    }
+    drawVcTableHeader();
 
     const vcRowsForPdf = filteredVc.sort((a,b)=>(b.dateObj||0)-(a.dateObj||0));
     vcRowsForPdf.forEach((d,idx) => {
-      checkY(7);
+      if (y+7 > 270) {
+        newPage();
+        txt('รายการจองรถกอล์ฟ (ต่อ)  /  Golf Cart Booking Details (cont.)', margin, y, 11, true, [26,107,58]); y+=3;
+        hRule(y,[26,107,58],0.6); y+=5;
+        drawVcTableHeader();
+      }
       if (idx%2===0) { doc.setFillColor(240,248,244); doc.rect(margin,y-1,W-margin*2,7,'F'); }
       const rowData = [d.refCode||'—', d.vcName||'-', d.name||'-', d.dept||'-', fmtDateTimeTH(d.startDT), d.status||'-'];
       let xd = margin;
